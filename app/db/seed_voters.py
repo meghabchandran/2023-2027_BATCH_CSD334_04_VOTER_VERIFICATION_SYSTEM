@@ -10,6 +10,7 @@ def seed_voters():
             name="Ananya Sharma",
             age=24,
             booth_id="B01",
+            aadhar_id="AAD123",
             has_voted=False,
             face_image_path="app/sample_data/faces/V001.jpg"
         ),
@@ -18,6 +19,7 @@ def seed_voters():
             name="Rahul Verma",
             age=32,
             booth_id="B02",
+            aadar_id="AAD456",
             has_voted=False,
             face_image_path="app/sample_data/faces/V002.jpg"
         ),
@@ -26,6 +28,7 @@ def seed_voters():
             name="Priya Nair",
             age=29,
             booth_id="B01",
+            aadhar_id="AAD789",
             has_voted=False,
             face_image_path="app/sample_data/faces/V003.jpg"
         ),
@@ -34,6 +37,7 @@ def seed_voters():
             name="Amitabh Singh",
             age=45,
             booth_id="B03",
+            aadhar_id="AAD012",
             has_voted=False,
             face_image_path="app/sample_data/faces/V004.jpg"
         ),
@@ -42,8 +46,18 @@ def seed_voters():
             name="Sneha Gupta",
             age=22,
             booth_id="B02",
+            aadhar_id="AAD345",
             has_voted=False,
             face_image_path="app/sample_data/faces/V005.jpg"
+        ),
+        Voter(
+            voter_id="V006",
+            name="Ananya Sharma",
+            age=24,
+            booth_id="B03",
+            aadhar_id="AAD123",
+            has_voted=False,
+            face_image_path="app/sample_data/faces/V001.jpg"
         ),
     ]
 
