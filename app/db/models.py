@@ -9,6 +9,6 @@ class Voter(Base):
     name = Column(String, nullable=False)
     age = Column(Integer, nullable=False)
     booth_id = Column(String, nullable=False)
-    aadhar_id = Column(String, index=True)
+    aadhaar_id = Column(String, index=True)
     has_voted = Column(Boolean, default=False)
     face_image_path = Column(String, nullable=False)

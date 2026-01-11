@@ -1,6 +1,7 @@
 from app.db.database import SessionLocal
 from app.db.models import Voter
 
+
 def seed_voters():
     db = SessionLocal()
 
@@ -10,7 +11,7 @@ def seed_voters():
             name="Ananya Sharma",
             age=24,
             booth_id="B01",
-            aadhar_id="AAD123",
+            aadhaar_id="AAD123",
             has_voted=False,
             face_image_path="app/sample_data/faces/V001.jpg"
         ),
@@ -19,7 +20,7 @@ def seed_voters():
             name="Rahul Verma",
             age=32,
             booth_id="B02",
-            aadar_id="AAD456",
+            aadhaar_id="AAD456",
             has_voted=False,
             face_image_path="app/sample_data/faces/V002.jpg"
         ),
@@ -28,7 +29,7 @@ def seed_voters():
             name="Priya Nair",
             age=29,
             booth_id="B01",
-            aadhar_id="AAD789",
+            aadhaar_id="AAD789",
             has_voted=False,
             face_image_path="app/sample_data/faces/V003.jpg"
         ),
@@ -37,7 +38,7 @@ def seed_voters():
             name="Amitabh Singh",
             age=45,
             booth_id="B03",
-            aadhar_id="AAD012",
+            aadhaar_id="AAD012",
             has_voted=False,
             face_image_path="app/sample_data/faces/V004.jpg"
         ),
@@ -46,7 +47,7 @@ def seed_voters():
             name="Sneha Gupta",
             age=22,
             booth_id="B02",
-            aadhar_id="AAD345",
+            aadhaar_id="AAD345",
             has_voted=False,
             face_image_path="app/sample_data/faces/V005.jpg"
         ),
@@ -55,20 +56,22 @@ def seed_voters():
             name="Ananya Sharma",
             age=24,
             booth_id="B03",
-            aadhar_id="AAD123",
+            aadhaar_id="AAD678",
             has_voted=False,
             face_image_path="app/sample_data/faces/V001.jpg"
         ),
     ]
 
     for voter in voters:
-        existing = db.query(Voter).filter(Voter.voter_id == voter.voter_id).first()
+        existing = db.query(Voter).filter(
+            Voter.voter_id == voter.voter_id).first()
         if not existing:
             db.add(voter)
 
     db.commit()
     db.close()
     print("✅ Dummy voters inserted successfully")
+
 
 if __name__ == "__main__":
     seed_voters()
