@@ -1,22 +1,28 @@
-import { useState } from "react"
-import { getVoterById } from "../api/voterApi"
+import { useState } from "react";
+import { getVoterById } from "../api/voterApi";
+import VoterProfile from "./VoterProfile";
 
 function Search() {
-  const [voterId, setVoterId] = useState("")
-  const [voter, setVoter] = useState(null)
-  const [error, setError] = useState("")
+  const [voterId, setVoterId] = useState("");
+  const [voter, setVoter] = useState(null);
+  const [error, setError] = useState("");
 
   const handleSearch = async () => {
-    if (!voterId) return
-    try {
-      const data = await getVoterById(voterId)
-      setVoter(data)
-      setError("")
-    } catch (err) {
-      setError("Voter not found")
-      setVoter(null)
+    setError("");
+    setVoter(null);
+
+    if (!voterId) {
+      setError("Please enter a Voter ID");
+      return;
     }
-  }
+
+    try {
+      const data = await getVoterById(voterId);
+      setVoter(data);
+    } catch (err) {
+      setError("Voter not found");
+    }
+  };
 
   return (
     <div style={{ padding: "20px" }}>
@@ -26,22 +32,15 @@ function Search() {
         placeholder="Enter Voter ID"
         value={voterId}
         onChange={(e) => setVoterId(e.target.value)}
+        style={{ marginRight: "10px" }}
       />
       <button onClick={handleSearch}>Search</button>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "red", marginTop: "20px" }}>{error}</p>}
 
-      {voter && (
-        <div style={{ marginTop: "20px" }}>
-          <h2>Voter Details</h2>
-          <p><strong>ID:</strong> {voter.voter_id}</p>
-          <p><strong>Name:</strong> {voter.name}</p>
-          <p><strong>Age:</strong> {voter.age}</p>
-          <p><strong>Has Voted:</strong> {voter.has_voted ? "Yes" : "No"}</p>
-        </div>
-      )}
+      {voter && <VoterProfile voter={voter} />}
     </div>
-  )
+  );
 }
 
-export default Search
+export default Search;

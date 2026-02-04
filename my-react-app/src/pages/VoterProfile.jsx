@@ -1,30 +1,43 @@
-import { useLocation } from "react-router-dom"
+import { useState } from "react";
+import { verifyVoterFace, markVoterAsVoted } from "../api/voterApi";
+import VerifyModal from "../components/VerifyModal";
 
-function VoterProfile() {
-  const { state } = useLocation()
+function VoterProfile({ voter }) {
+  const [showModal, setShowModal] = useState(false);
+  const [status, setStatus] = useState(voter.has_voted ? "VOTED" : "Not Verified");
 
-  if (!state) {
-    return <p>No voter data</p>
-  }
+  const handleVerificationSuccess = async () => {
+    setStatus("Verified");
+    // Mark as voted immediately after successful verification
+    try {
+      await markVoterAsVoted(voter.voter_id);
+      setStatus("VOTED");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h2>Voter Profile</h2>
-      <p><b>Name:</b> {state.name}</p>
-      <p><b>Voter ID:</b> {state.voter_id}</p>
-      <p><b>Age:</b> {state.age}</p>
-      <p><b>Booth ID:</b> {state.booth_id}</p>
+    <div style={{ marginTop: "20px" }}>
+      <h2>Voter Details</h2>
+      <p><strong>Name:</strong> {voter.name}</p>
+      <p><strong>ID:</strong> {voter.voter_id}</p>
+      <p><strong>Has Voted:</strong> {voter.has_voted ? "Yes" : "No"}</p>
+      <p><strong>Status:</strong> {status}</p>
 
-      <p>
-        <b>Status:</b>{" "}
-        {state.has_voted ? (
-          <span style={{ color: "red" }}>VOTED</span>
-        ) : (
-          <span style={{ color: "green" }}>NOT VOTED</span>
-        )}
-      </p>
+      {!voter.has_voted && (
+        <button onClick={() => setShowModal(true)}>Verify Face</button>
+      )}
+
+      {showModal && (
+        <VerifyModal
+          voterId={voter.voter_id}
+          onClose={() => setShowModal(false)}
+          onSuccess={handleVerificationSuccess}
+        />
+      )}
     </div>
-  )
+  );
 }
 
-export default VoterProfile
+export default VoterProfile;
