@@ -1,44 +1,45 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { getVoterById } from "../api/voterApi"
 
 function Search() {
   const [voterId, setVoterId] = useState("")
+  const [voter, setVoter] = useState(null)
   const [error, setError] = useState("")
-  const navigate = useNavigate()
 
   const handleSearch = async () => {
-    setError("")
-    if (!voterId) {
-      setError("Please enter Voter ID")
-      return
-    }
-
+    if (!voterId) return
     try {
       const data = await getVoterById(voterId)
-
-      // navigate to voter profile with data
-      navigate("/voter-profile", { state: data })
+      setVoter(data)
+      setError("")
     } catch (err) {
       setError("Voter not found")
+      setVoter(null)
     }
   }
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h2>Search Voter</h2>
-
+    <div style={{ padding: "20px" }}>
+      <h1>Search Voter</h1>
       <input
+        type="text"
         placeholder="Enter Voter ID"
         value={voterId}
         onChange={(e) => setVoterId(e.target.value)}
       />
-
-      <br /><br />
-
       <button onClick={handleSearch}>Search</button>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {voter && (
+        <div style={{ marginTop: "20px" }}>
+          <h2>Voter Details</h2>
+          <p><strong>ID:</strong> {voter.voter_id}</p>
+          <p><strong>Name:</strong> {voter.name}</p>
+          <p><strong>Age:</strong> {voter.age}</p>
+          <p><strong>Has Voted:</strong> {voter.has_voted ? "Yes" : "No"}</p>
+        </div>
+      )}
     </div>
   )
 }
