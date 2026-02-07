@@ -1,4 +1,4 @@
-const mockBooth = [
+const mockBooths = [
   {
     booth_id: "B01",
     booth_name: "Government Higher Secondary School",
@@ -16,4 +16,4 @@ const mockBooth = [
   },
 ];
 
-export default mockBooth;
+export default mockBooths;
