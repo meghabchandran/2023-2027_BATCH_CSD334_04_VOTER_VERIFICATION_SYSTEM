@@ -1,4 +1,20 @@
+import { useState } from "react";
+
 function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [boothId, setBoothId] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = () => {
+    if (!username || !password || !boothId) {
+      setError("All fields are required");
+      return;
+    }
+
+    setError("");
+  };
+
   return (
     <div>
       <h2>Voter Login</h2>
@@ -6,7 +22,12 @@ function Login() {
       <div>
         <label>Username</label>
         <br />
-        <input type="text" placeholder="Enter username" />
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
       </div>
 
       <br />
@@ -14,7 +35,12 @@ function Login() {
       <div>
         <label>Password</label>
         <br />
-        <input type="password" placeholder="Enter password" />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </div>
 
       <br />
@@ -22,12 +48,18 @@ function Login() {
       <div>
         <label>Booth ID</label>
         <br />
-        <input type="text" placeholder="Enter booth ID" />
+        <input
+          type="text"
+          placeholder="Booth ID"
+          value={boothId}
+          onChange={(e) => setBoothId(e.target.value)}
+        />
       </div>
 
       <br />
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <button>Login</button>
+      <button onClick={handleLogin}>Login</button>
     </div>
   );
 }
