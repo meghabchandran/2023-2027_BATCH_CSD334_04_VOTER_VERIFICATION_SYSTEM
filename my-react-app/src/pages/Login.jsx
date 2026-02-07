@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [boothId, setBoothId] = useState("");
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     if (!username || !password || !boothId) {
@@ -13,6 +16,11 @@ function Login() {
     }
 
     setError("");
+
+    localStorage.setItem("boothId", boothId);
+
+    // navigate to dashboard
+    navigate("/dashboard");
   };
 
   return (
