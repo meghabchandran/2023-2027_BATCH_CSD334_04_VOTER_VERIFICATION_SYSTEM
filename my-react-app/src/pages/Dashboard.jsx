@@ -1,9 +1,11 @@
 import mockBooths from "../mocks/mockbooth";
 import mockCandidates from "../mocks/mockcandidates";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const boothId = localStorage.getItem("boothId");
   const booth = mockBooths.find((b) => b.booth_id === boothId);
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -55,7 +57,7 @@ function Dashboard() {
       {/* Actions Section */}
       <section>
         <h2>Actions</h2>
-        <button>Search Voter</button>
+        <button onClick={() => navigate("/search")}>Search Voter</button>
       </section>
     </div>
   );
