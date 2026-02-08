@@ -14,6 +14,8 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/verify" element={<Verify />} />
         <Route path="/result" element={<Result />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         {/* <Route path="/login" element={<Login />} /> //need to delete it
         <Route path="/dashboard" element={<Dashboard />} /> //need to delete it */}
       </Routes>
