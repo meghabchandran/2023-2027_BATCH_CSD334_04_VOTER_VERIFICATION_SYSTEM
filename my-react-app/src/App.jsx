@@ -3,8 +3,7 @@ import Home from "./pages/Home"
 import Search from "./pages/Search"
 import Verify from "./pages/Verify"
 import Result from "./pages/Result"
-import Login from "./pages/Login"
-import Dashboard from "./pages/Dashboard"
+
 
 function App() {
   return (
