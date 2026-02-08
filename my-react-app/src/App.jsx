@@ -3,8 +3,8 @@ import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Verify from "./pages/Verify";
 import Result from "./pages/Result";
-// import Login from "./pages/Login"; //i need to delete it
-// import Dashboard from "./pages/Dashboard"; //i need to delete it
+import Login from "./pages/Login"; //i need to delete it
+import Dashboard from "./pages/Dashboard"; //i need to delete it
 
 function App() {
   return (
