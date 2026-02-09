@@ -5,3 +5,16 @@ venv/
 *.db
 .idea/
 .vscode/
+
+
+# Frontend
+my-react-app/
+
+# Node
+node_modules/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
