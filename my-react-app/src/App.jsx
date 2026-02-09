@@ -1,16 +1,25 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 import Search from "./pages/Search";
 import Verify from "./pages/Verify";
 import Result from "./pages/Result";
-import Login from "./pages/Login"; //i need to delete it
-import Dashboard from "./pages/Dashboard"; //i need to delete it
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Search />} />
+        {/* Redirect root to login */}
+        <Route path="/" element={<Navigate to="/login" />} />
+
+        {/* Auth */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+
+        {/* App pages */}
         <Route path="/search" element={<Search />} />
         <Route path="/verify" element={<Verify />} />
         <Route path="/result" element={<Result />} />
