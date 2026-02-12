@@ -22,7 +22,10 @@ def get_voter(voter_id: str, db: Session = Depends(get_db)):
     if voter.has_voted:
         return {
             "voter_id": voter.voter_id,
-            "has_voted": True
+            "name": voter.name,
+            "age": voter.age,
+            "booth_id": voter.booth_id,
+            "has_voted": voter.has_voted
         }
 
     return {
