@@ -3,8 +3,8 @@ import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Verify from "./pages/Verify";
 import Result from "./pages/Result";
-// import Login from "./pages/Login"; //i need to delete it
-// import Dashboard from "./pages/Dashboard"; //i need to delete it
+import Login from "./pages/Login"; //i need to delete it
+import Dashboard from "./pages/Dashboard"; //i need to delete it
 
 function App() {
   return (
@@ -16,8 +16,8 @@ function App() {
         <Route path="/result" element={<Result />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        {/* <Route path="/login" element={<Login />} /> //need to delete it
-        <Route path="/dashboard" element={<Dashboard />} /> //need to delete it */}
+        <Route path="/login" element={<Login />} /> //need to delete it
+        <Route path="/dashboard" element={<Dashboard />} /> //need to delete it
       </Routes>
     </BrowserRouter>
   );
