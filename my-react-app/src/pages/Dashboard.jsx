@@ -11,17 +11,14 @@ function Dashboard() {
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-800 tracking-tight">
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
             Polling Booth Dashboard
           </h1>
         </div>
 
         {/* Booth Details Section */}
 
-        <section
-          className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition
-"
-        >
+        <section className="bg-teal-50 rounded-2xl p-6 border border-gray-200">
           <h2 className="text-lg font-semibold text-gray-800 tracking-tight mb-4">
             Booth Details
           </h2>
@@ -49,6 +46,10 @@ function Dashboard() {
             Candidates
           </h2>
 
+          <p className="text-sm text-gray-500 mb-4">
+            List of candidates assigned to this booth
+          </p>
+
           <div className="space-y-4">
             {mockCandidates.map((candidate) => (
               <div
@@ -60,7 +61,8 @@ function Dashboard() {
                   <img
                     src={candidate.photo}
                     alt={candidate.name}
-                    className="w-16 h-16 rounded-full object-cover"
+                    className="w-16 h-16 rounded-full object-cover ring-2 ring-white shadow-sm
+"
                   />
 
                   <div>
