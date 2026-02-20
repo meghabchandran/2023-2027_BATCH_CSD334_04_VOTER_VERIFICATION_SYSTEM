@@ -8,8 +8,8 @@ def seed_voters():
     voters = [
         Voter(
             voter_id="V001",
-            name="Ananya Sharma",
-            age=24,
+            name="Akshaja Biju",
+            age=20,
             booth_id="B01",
             aadhaar_id="AAD123",
             has_voted=False,
@@ -17,7 +17,7 @@ def seed_voters():
         ),
         Voter(
             voter_id="V002",
-            name="Rahul Verma",
+            name="Krishnapriya Vinod",
             age=32,
             booth_id="B02",
             aadhaar_id="AAD456",
@@ -26,7 +26,7 @@ def seed_voters():
         ),
         Voter(
             voter_id="V003",
-            name="Priya Nair",
+            name="Malavika S",
             age=29,
             booth_id="B01",
             aadhaar_id="AAD789",
@@ -35,7 +35,7 @@ def seed_voters():
         ),
         Voter(
             voter_id="V004",
-            name="Amitabh Singh",
+            name="Megha B Chandran",
             age=45,
             booth_id="B03",
             aadhaar_id="AAD012",
