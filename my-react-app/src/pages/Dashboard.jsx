@@ -8,9 +8,9 @@ function Dashboard() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#eef1fa] via-[#f3f4f8] to-[#e6e9f5] p-6">
+    <div className="min-h-screen bg-gradient-to-b from-[#eef1fa] via-[#f3f4f8] to-[#e6e9f5] px-4 py-6 sm:px-6">
       {/* Workspace Surface */}
-      <div className="max-w-6xl mx-auto bg-[#eef1fa] rounded-3xl p-6 space-y-6 border border-[#d8dced]">
+      <div className="max-w-6xl mx-auto bg-[#eef1fa] rounded-3xl p-5 sm:p-6 space-y-5 sm:space-y-6 border border-[#d8dced]">
         {/* Header */}
         <div className="flex items-center justify-between pb-2 border-b border-[#d8dced]">
           <h1 className="text-3xl font-bold text-[#32292f] tracking-tight">
@@ -76,7 +76,7 @@ function Dashboard() {
                 <img
                   src={candidate.partyLogo}
                   alt={candidate.party}
-                  className="w-10 h-10 object-contain"
+                  className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
                 />
               </div>
             ))}
@@ -94,7 +94,7 @@ function Dashboard() {
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={() => navigate("/voters")}
-              className="inline-flex items-center gap-2 px-6 py-2 bg-[#5762d5] hover:bg-[#4b54c4] text-white font-medium rounded-lg shadow-sm hover:shadow-md transition"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2 bg-[#5762d5] hover:bg-[#4b54c4] text-white font-medium rounded-lg shadow-sm hover:shadow-md transition"
             >
               Search Voter
             </button>
