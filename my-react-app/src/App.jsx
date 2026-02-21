@@ -1,11 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Search from "./pages/Search";
-import Verify from "./pages/Verify";
+import VerifyVoter from "./pages/VerifyVoter"; // updated page name
 import Result from "./pages/Result";
 
 function App() {
@@ -21,7 +20,7 @@ function App() {
 
         {/* App pages */}
         <Route path="/search" element={<Search />} />
-        <Route path="/verify" element={<Verify />} />
+        <Route path="/verify/:voterId" element={<VerifyVoter />} />
         <Route path="/result" element={<Result />} />
       </Routes>
     </BrowserRouter>
