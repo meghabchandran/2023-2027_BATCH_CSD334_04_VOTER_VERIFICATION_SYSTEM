@@ -11,7 +11,6 @@ router = APIRouter()
 # Get Voter Details
 # --------------------------
 
-
 @router.get("/{voter_id}")
 def get_voter(voter_id: str, db: Session = Depends(get_db)):
     voter = db.query(Voter).filter(Voter.voter_id == voter_id).first()
@@ -19,27 +18,25 @@ def get_voter(voter_id: str, db: Session = Depends(get_db)):
     if not voter:
         raise HTTPException(status_code=404, detail="Voter not found")
 
-    if voter.has_voted:
-        return {
-            "voter_id": voter.voter_id,
-            "name": voter.name,
-            "age": voter.age,
-            "booth_id": voter.booth_id,
-            "has_voted": voter.has_voted
-        }
-
+    # Return **all details** for frontend display
     return {
         "voter_id": voter.voter_id,
         "name": voter.name,
+        "fathers_name": voter.fathers_name,
+        "spouse_name": voter.spouse_name,
+        "gender": voter.gender,
+        "address": voter.address,
+        "dob": voter.dob,
         "age": voter.age,
         "booth_id": voter.booth_id,
-        "has_voted": voter.has_voted
+        "aadhaar_id": voter.aadhaar_id,
+        "has_voted": voter.has_voted,
+        "face_image_path": voter.face_image_path
     }
 
 # --------------------------
 # Verify Face Endpoint
 # --------------------------
-
 
 @router.post("/{voter_id}/verify-face")
 def verify_voter_face(
@@ -68,7 +65,6 @@ def verify_voter_face(
 # --------------------------
 # Mark Voter as Voted
 # --------------------------
-
 
 @router.post("/{voter_id}/vote")
 def mark_voter_as_voted(
