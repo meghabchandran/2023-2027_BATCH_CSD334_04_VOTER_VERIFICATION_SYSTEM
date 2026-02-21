@@ -1,5 +1,10 @@
 from app.db.database import SessionLocal
 from app.db.models import Voter
+from app.db import models
+from app.db.database import engine
+
+# Create tables if they don't exist
+models.Base.metadata.create_all(bind=engine)
 
 
 def seed_voters():
