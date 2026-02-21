@@ -5,6 +5,7 @@ class Voter(Base):
 
     voter_id = Column(String, primary_key=True)
     name = Column(String)
+    age = Column(Integer) 
     fathers_name = Column(String)
     spouse_name = Column(String)
     gender = Column(String)
