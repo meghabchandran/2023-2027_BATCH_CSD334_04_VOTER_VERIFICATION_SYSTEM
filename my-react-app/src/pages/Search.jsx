@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getVoterById } from "../api/voterApi";
 import VoterProfile from "./VoterProfile";
 
@@ -6,6 +7,7 @@ function Search() {
   const [voterId, setVoterId] = useState("");
   const [voter, setVoter] = useState(null);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSearch = async () => {
     setError("");
@@ -24,6 +26,13 @@ function Search() {
     }
   };
 
+  const handleVerifyClick = () => {
+    if (voter) {
+      // Navigate to Verify page with voterId in URL
+      navigate(`/verify/${voter.voter_id}`);
+    }
+  };
+
   return (
     <div style={{ padding: "20px" }}>
       <h1>Search Voter</h1>
@@ -38,7 +47,14 @@ function Search() {
 
       {error && <p style={{ color: "red", marginTop: "20px" }}>{error}</p>}
 
-      {voter && <VoterProfile voter={voter} />}
+      {voter && (
+        <div style={{ marginTop: "20px" }}>
+          <VoterProfile voter={voter} />
+          <button onClick={handleVerifyClick} style={{ marginTop: "10px" }}>
+            Verify Face
+          </button>
+        </div>
+      )}
     </div>
   );
 }
