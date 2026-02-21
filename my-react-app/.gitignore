@@ -34,3 +34,7 @@ my-react-app/node_modules/
 # Python
 __pycache__/
 *.pyc
+
+# SQLite database
+voters.db
+*.db
