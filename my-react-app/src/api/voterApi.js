@@ -6,10 +6,10 @@ const BASE_URL = "http://127.0.0.1:8000"; // Backend URL
 export const getVoterById = async (voterId) => {
   try {
     const response = await axios.get(`${BASE_URL}/api/voters/${voterId}`);
-    return response.data; // returns voter object
+    return response.data; // returns voter object with all details
   } catch (error) {
     console.error("Error fetching voter:", error);
-    throw error; // let frontend handle it
+    throw error; // frontend handles errors
   }
 };
 
