@@ -8,19 +8,16 @@ function Dashboard() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-6 sm:px-6">
-      {/* Workspace Surface */}
-      <div className="max-w-6xl mx-auto bg-white rounded-3xl p-5 sm:p-6 space-y-5 sm:space-y-6 border border-[#d8dced]">
-        {/* Header */}
-        <div className="flex items-center justify-between pb-2 border-b border-[#d8dced]">
-          <h1 className="text-3xl font-bold text-[#32292f] tracking-tight">
+    <div className="min-h-screen bg-[#B9D6F2]/30 px-4 py-6 sm:px-6">
+      <div className="max-w-6xl mx-auto bg-white/80 backdrop-blur-md rounded-3xl p-8 space-y-8 border border-[#006DAA]/20 shadow-[0_10px_30px_rgba(3,83,164,0.08)]">
+        <div className="flex items-center justify-between pb-4 border-b border-[#0353A4]">
+          <h1 className="text-3xl font-bold text-[#0353A4] tracking-tight">
             Polling Booth Dashboard
           </h1>
         </div>
-
         {/* Booth Details Section */}
-        <section className="bg-[#d1e3dd]/70 rounded-2xl p-6 border border-[#cddfd8]">
-          <div className="h-1.5 w-20 bg-[#5762d5] rounded-full mb-3"></div>
+        <section className="bg-[#B9D6F2]/40 border border-[#006DAA] rounded-2xl p-6">
+          <div className="h-1.5 w-20 bg-[#0353A4] rounded-full mb-3"></div>
 
           <h2 className="text-lg font-semibold tracking-tight text-[#32292f]">
             Booth Details
@@ -40,52 +37,56 @@ function Dashboard() {
             </p>
           </div>
         </section>
-
         {/* Candidates Section */}
-        <section className="bg-white rounded-2xl border border-[#d8dced] p-6 shadow-sm hover:shadow-md transition">
-          <h2 className="text-lg font-semibold tracking-tight text-[#32292f]">
+        <section className="bg-[#B9D6F2]/40 border border-[#006DAA] rounded-2xl p-6 shadow-sm mt-6">
+          <h2 className="text-lg font-semibold tracking-tight text-[#061A40] mb-4">
             Candidates
           </h2>
 
-          <p className="text-sm text-[#575366] mb-4">
-            List of candidates assigned to this booth
-          </p>
-
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {mockCandidates.map((candidate) => (
               <div
                 key={candidate.id}
-                className="flex items-center justify-between bg-gray-50 p-4 rounded-xl border border-[#e2e5f2] hover:bg-[#eef1fa] hover:shadow-sm transition"
+                className="
+                bg-white
+                border border-[#006DAA]/30
+                rounded-xl
+                p-5
+                shadow-sm
+                hover:bg-[#eef4fb]
+                hover:shadow-md
+                transition-all duration-300
+                "
               >
-                {/* LEFT SIDE */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center space-x-4">
                   <img
                     src={candidate.photo}
                     alt={candidate.name}
-                    className="w-16 h-16 rounded-full object-cover ring-2 ring-white shadow-sm"
+                    className="w-16 h-16 rounded-full border-2 border-[#0353A4]"
                   />
                   <div>
-                    <p className="font-semibold text-[#32292f]">
+                    <h3 className="text-lg font-semibold text-[#061A40]">
                       {candidate.name}
+                    </h3>
+                    <p className="text-sm uppercase tracking-wide text-[#006DAA]">
+                      {candidate.party}
                     </p>
-                    <p className="text-[#575366] text-sm">{candidate.party}</p>
                   </div>
                 </div>
-
-                {/* RIGHT SIDE (Party Logo) */}
-                <img
-                  src={candidate.partyLogo}
-                  alt={candidate.party}
-                  className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
-                />
+                <div className="mt-4 flex justify-end">
+                  <img
+                    src={candidate.partyLogo}
+                    alt={`${candidate.party} logo`}
+                    className="w-8 h-8"
+                  />
+                </div>
               </div>
             ))}
           </div>
         </section>
-
         {/* Actions Section */}
         <section className="rounded-xl p-5 border border-[#d8dced] bg-white shadow-sm">
-          <div className="h-1.5 w-20 bg-[#5762d5] rounded-full mb-3"></div>
+          <div className="h-1.5 w-20 bg-[#0353A4] rounded-full mb-3"></div>
 
           <h2 className="text-lg font-semibold tracking-tight text-[#32292f] mb-4">
             Actions
@@ -94,7 +95,7 @@ function Dashboard() {
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={() => navigate("/voters")}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2 bg-[#5762d5] hover:bg-[#4b54c4] text-white font-medium rounded-lg shadow-sm hover:shadow-md transition"
+              className="px-6 py-2.5 bg-[#0353A4] hover:bg-[#003559] text-white font-medium rounded-lg shadow-sm transition"
             >
               Search Voter
             </button>
