@@ -25,7 +25,17 @@ function Login() {
 
   return (
     <div className="min-h-screen grid md:grid-cols-2 bg-[#B9D6F2]/20">
-      <div className="hidden md:flex items-center justify-center bg-[#003559]">
+      <div className="hidden md:flex items-center justify-center bg-[#003559] text-white px-12">
+        <div className="max-w-sm text-center">
+          <h1 className="text-3xl font-semibold tracking-tight">
+            Secure Voting System
+          </h1>
+
+          <p className="mt-3 text-sm text-white/70">
+            Authenticate polling officers and manage voter verification
+            securely.
+          </p>
+        </div>
         {/* Visual area placeholder */}
       </div>
 
@@ -35,6 +45,10 @@ function Login() {
           <h2 className="text-2xl font-semibold tracking-tight text-[#061A40]">
             Voter Login
           </h2>
+
+          <p className="text-sm text-gray-500 mt-1">
+            Enter your credentials to access the booth dashboard.
+          </p>
 
           <div className="space-y-4 mt-6">
             <div>
