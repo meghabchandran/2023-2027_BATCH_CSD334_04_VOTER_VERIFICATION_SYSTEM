@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import loginImage from "../mocks/image/login.jpg";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -25,23 +26,31 @@ function Login() {
 
   return (
     <div className="min-h-screen grid md:grid-cols-2 bg-[#B9D6F2]/20">
-      <div className="hidden md:flex items-center justify-center bg-[#003559] text-white px-12">
-        <div className="max-w-sm text-center">
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Secure Voting System
-          </h1>
+      <div className="hidden md:flex relative items-center justify-center bg-[#003559] text-white overflow-hidden">
+        {/* Background Illustration */}
+        <img
+          src={loginImage}
+          alt="Voting Illustration"
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+        />
 
-          <p className="mt-3 text-sm text-white/70">
-            Authenticate polling officers and manage voter verification
-            securely.
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-[#061A40]/70 z-0"></div>
+
+        {/* Foreground content */}
+        <div className="relative z-10 max-w-sm text-left px-12 animate-slideUp">
+          <h1 className="text-4xl font-bold tracking-tight text-white">
+            Empowering Democracy, One Vote at a Time
+          </h1>
+          <p className="mt-4 text-[#B9D6F2] text-base italic">
+            Your voice matters. Your vote counts.
           </p>
         </div>
-        {/* Visual area placeholder */}
       </div>
 
       <div className="flex items-center justify-center p-6">
         {/* Login form will go here */}
-        <div className="w-full max-w-md bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+        <div className="w-full max-w-md bg-white/30 backdrop-blur-md border border-[#0353A4]/30 p-8 rounded-2xl shadow-xl animate-fadeIn">
           <h2 className="text-2xl font-semibold tracking-tight text-[#061A40]">
             Voter Login
           </h2>
