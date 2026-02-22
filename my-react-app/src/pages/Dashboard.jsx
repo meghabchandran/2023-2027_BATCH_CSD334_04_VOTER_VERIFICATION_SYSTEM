@@ -103,7 +103,7 @@ function Dashboard() {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <button
-              onClick={() => navigate("/voters")}
+              onClick={() => navigate("/Search")}
               className="px-6 py-2.5 bg-[#0353A4] hover:bg-[#003559] text-white font-medium rounded-lg shadow-sm transition"
             >
               Search Voter

@@ -11,8 +11,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Redirect root to login */}
-        <Route path="/" element={<Navigate to="/login" />} />
+        {/* Home as the default route */}
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
 
         {/* Auth */}
         <Route path="/login" element={<Login />} />
