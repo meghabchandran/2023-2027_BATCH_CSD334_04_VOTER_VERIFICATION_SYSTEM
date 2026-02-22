@@ -22,3 +22,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.vite/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+my-react-app/node_modules/
+
+# Python
+__pycache__/
+*.pyc
+
+# SQLite database
+voters.db
+*.db
