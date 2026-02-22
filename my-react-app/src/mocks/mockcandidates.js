@@ -8,21 +8,21 @@ import logo3 from "./image/logo3.jpg";
 const mockCandidates = [
   {
     id: 1,
-    name: "Anil Kumar",
+    name: "Anil ",
     party: "People’s Democratic Party",
     photo: cand1,
     partyLogo: logo1,
   },
   {
     id: 2,
-    name: "Suma Reddy",
+    name: "Suma ",
     party: "National Reform Party",
     photo: cand2,
     partyLogo: logo2,
   },
   {
     id: 3,
-    name: "Rahul Verma",
+    name: "Rahul ",
     party: "United Citizens Front",
     photo: cand3,
     partyLogo: logo3,
