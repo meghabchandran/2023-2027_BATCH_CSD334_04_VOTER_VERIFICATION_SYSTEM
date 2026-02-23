@@ -28,33 +28,96 @@ function Search() {
 
   const handleVerifyClick = () => {
     if (voter) {
-      // Navigate to Verify page with voterId in URL
       navigate(`/verify/${voter.voter_id}`);
     }
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Search Voter</h1>
-      <input
-        type="text"
-        placeholder="Enter Voter ID"
-        value={voterId}
-        onChange={(e) => setVoterId(e.target.value)}
-        style={{ marginRight: "10px" }}
-      />
-      <button onClick={handleSearch}>Search</button>
+    <div className="min-h-screen flex items-center justify-center bg-white p-6">
 
-      {error && <p style={{ color: "red", marginTop: "20px" }}>{error}</p>}
+      {/* Search Voter Box */}
+      <div className="w-full max-w-2xl bg-[#B9D6F2]/40 border border-[#006DAA]/30 rounded-2xl p-8 shadow-[0_2px_10px_rgba(3,83,164,0.06)]">
 
-      {voter && (
-        <div style={{ marginTop: "20px" }}>
-          <VoterProfile voter={voter} />
-          <button onClick={handleVerifyClick} style={{ marginTop: "10px" }}>
-            Verify Face
+        {/* Heading */}
+        <h1 className="text-2xl font-semibold tracking-tight text-[#061A40] mb-2">
+          Search Voter
+        </h1>
+
+        <p className="text-sm text-[#003559] mb-6">
+          Enter the Voter ID to retrieve voter details securely.
+        </p>
+
+        {/* Search Section */}
+        <div className="flex flex-col md:flex-row gap-4">
+          <input
+            type="text"
+            placeholder="Enter Voter ID"
+            value={voterId}
+            onChange={(e) => setVoterId(e.target.value)}
+            className="
+              flex-1
+              px-4
+              py-3
+              rounded-lg
+              border border-[#006DAA]/30
+              focus:outline-none
+              focus:ring-2
+              focus:ring-[#0353A4]
+              transition
+            "
+          />
+
+          <button
+            onClick={handleSearch}
+            className="
+              px-6
+              py-3
+              bg-[#0353A4]
+              hover:bg-[#003559]
+              text-white
+              rounded-lg
+              transition
+            "
+          >
+            Search
           </button>
         </div>
-      )}
+
+        {/* Error */}
+        {error && (
+          <p className="text-red-500 mt-4 text-sm font-medium">
+            {error}
+          </p>
+        )}
+
+        {/* Voter Details */}
+        {voter && (
+          <div className="mt-8 bg-white border border-[#006DAA]/30 rounded-2xl p-6 shadow-sm hover:bg-[#eef4fb] hover:shadow-md transition-all duration-300">
+            
+            <h2 className="text-lg font-semibold text-[#061A40] mb-4">
+              Voter Details
+            </h2>
+
+            <VoterProfile voter={voter} />
+
+            <button
+              onClick={handleVerifyClick}
+              className="
+                w-full
+                mt-6
+                py-3
+                bg-[#0353A4]
+                hover:bg-[#003559]
+                text-white
+                rounded-lg
+                transition
+              "
+            >
+              Verify Face
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
