@@ -14,6 +14,8 @@ class OTPRequest(BaseModel):
     mobile_number: str
 
 class OTPVerify(BaseModel):
+    username: str
+    password: str
     mobile_number: str
     otp_code: str
 
@@ -38,14 +40,26 @@ def request_otp(data: OTPRequest):
 # --- STEP 2: VERIFY OTP ---
 @router.post("/verify-otp")
 def verify_otp(data: OTPVerify):
-    # Check if the number exists in our store
+
+    # Check if OTP exists
     if data.mobile_number not in otp_store:
         raise HTTPException(status_code=404, detail="No OTP requested for this number")
 
-    # Check if the code matches
-    if otp_store[data.mobile_number] == data.otp_code:
-        # Success! Clear the OTP so it can't be used twice
-        del otp_store[data.mobile_number]
-        return {"success": True, "message": "Login Successful"}
-    else:
+    # Check OTP match
+    if otp_store[data.mobile_number] != data.otp_code:
         raise HTTPException(status_code=400, detail="Invalid OTP code")
+
+    # OPTIONAL (Demo Login Check)
+    # Since you don't yet have users table,
+    # we simulate login validation.
+    if not data.username or not data.password:
+        raise HTTPException(status_code=400, detail="Username and password required")
+
+    # Clear OTP after success
+    del otp_store[data.mobile_number]
+
+    return {
+        "success": True,
+        "message": "Login Successful",
+        "role": "data_entry"
+    }
