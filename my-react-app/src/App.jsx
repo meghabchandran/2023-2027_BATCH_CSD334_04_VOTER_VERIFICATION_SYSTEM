@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Search from "./pages/Search";
 import VerifyVoter from "./pages/VerifyVoter"; // updated page name
 import Result from "./pages/Result";
+import DataEntryLogin from "./pages/DataEntryLogin"; // new data entry login page
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
 
         {/* Auth */}
         <Route path="/login" element={<Login />} />
+        <Route path="/login-data-entry" element={<DataEntryLogin />} />
         <Route path="/dashboard" element={<Dashboard />} />
 
         {/* App pages */}
