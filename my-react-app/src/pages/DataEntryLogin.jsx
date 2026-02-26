@@ -221,7 +221,11 @@ function Login() {
                 </button>
 
                 <button
-                  onClick={() => setOtpSent(false)}
+                  onClick={() => {
+                    setOtpSent(false);
+                    setSuccessMsg("");
+                    setError("");
+                  }}
                   className="w-full text-xs text-gray-500 hover:text-blue-600 transition"
                 >
                   Entered wrong number? Edit Mobile
