@@ -5,5 +5,16 @@ venv/
 *.db
 .idea/
 .vscode/
-my-react-app/node_modules/@esbuild/win32-x64/esbuild.exe
-my-react-app/node_modules/@rollup/rollup-win32-x64-msvc/rollup.win32-x64-msvc.node
+
+
+# Frontend
+my-react-app/
+
+# Node
+node_modules/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+

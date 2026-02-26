@@ -1,5 +1,10 @@
 from app.db.database import SessionLocal
 from app.db.models import Voter
+from app.db import models
+from app.db.database import engine
+
+# Create tables if they don't exist
+models.Base.metadata.create_all(bind=engine)
 
 
 def seed_voters():
@@ -9,7 +14,12 @@ def seed_voters():
         Voter(
             voter_id="V001",
             name="Akshaja Biju",
-            age=20,
+            age=21,
+            fathers_name="Biju",
+            spouse_name="N/A",
+            gender="Female",
+            address="Thrissur",
+            dob="2005-09-07",
             booth_id="B01",
             aadhaar_id="AAD123",
             has_voted=False,
@@ -18,7 +28,12 @@ def seed_voters():
         Voter(
             voter_id="V002",
             name="Krishnapriya Vinod",
-            age=32,
+            age=21,
+            fathers_name="Vinod",
+            spouse_name="N/A",
+            gender="Female",
+            address="Alappuzha",
+            dob="2005-08-23",
             booth_id="B02",
             aadhaar_id="AAD456",
             has_voted=False,
@@ -27,7 +42,12 @@ def seed_voters():
         Voter(
             voter_id="V003",
             name="Malavika S",
-            age=29,
+            age=20,
+            fathers_name="Money",
+            spouse_name="N/A",
+            gender="Female",
+            address="Mavelikkara",
+            dob="2005-06-15",
             booth_id="B01",
             aadhaar_id="AAD789",
             has_voted=False,
@@ -36,7 +56,12 @@ def seed_voters():
         Voter(
             voter_id="V004",
             name="Megha B Chandran",
-            age=45,
+            age=22,
+            fathers_name="Biji Chandran",
+            spouse_name="N/A",
+            gender="Female",
+            address="Pathanamthitta",
+            dob="2004-04-17",
             booth_id="B03",
             aadhaar_id="AAD012",
             has_voted=False,
@@ -45,7 +70,12 @@ def seed_voters():
         Voter(
             voter_id="V005",
             name="Sneha Gupta",
-            age=22,
+            age=25,
+            fathers_name="Ramesh Gupta",
+            spouse_name="N/A",
+            gender="Female",
+            address="89, Park Avenue, Kochi",
+            dob="2001-11-20",
             booth_id="B02",
             aadhaar_id="AAD345",
             has_voted=False,
@@ -54,7 +84,12 @@ def seed_voters():
         Voter(
             voter_id="V006",
             name="Ananya Sharma",
-            age=24,
+            age=26,
+            fathers_name="Rajesh Sharma",
+            spouse_name="N/A",
+            gender="Female",
+            address="33, Brigade Road, Bangalore",
+            dob="2000-07-12",
             booth_id="B03",
             aadhaar_id="AAD678",
             has_voted=False,
