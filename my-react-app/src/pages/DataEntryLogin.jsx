@@ -9,6 +9,7 @@ function Login() {
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   const navigate = useNavigate();
 
@@ -38,7 +39,8 @@ function Login() {
         localStorage.setItem("role", data.role);
         navigate("/data-entry-dashboard"); // Redirect to data entry dashboard
       } else {
-        setError(data.detail || "Login failed");
+        setError(data.detail || "Invalid OTP or login failed");
+        setSuccessMsg("");
       }
     } catch (err) {
       setError("Server error");
@@ -68,7 +70,8 @@ function Login() {
 
       if (res.ok) {
         setOtpSent(true);
-        alert("OTP sent! Check backend console.");
+        setSuccessMsg("OTP sent successfully!");
+        setError("");
       } else {
         setError(data.detail || "Failed to send OTP");
       }
@@ -163,24 +166,14 @@ function Login() {
               />
             </div>
 
+            {/* Mobile Number Field */}
             <div>
               <label className="text-sm font-medium text-[#061A40]">
                 Mobile Number
               </label>
-
               <input
-                className="
-                w-full
-                mt-1
-                px-3
-                py-2
-                rounded-lg
-                border border-gray-300
-                outline-none
-                transition
-                focus:border-[#006DAA]
-                focus:ring-2 focus:ring-[#006DAA]/20
-                "
+                disabled={otpSent} // Disable after sending to prevent errors
+                className={`w-full mt-1 px-3 py-2 rounded-lg border ${otpSent ? "bg-gray-100" : "border-gray-300"}`}
                 type="text"
                 placeholder="Mobile Number"
                 value={mobile}
@@ -188,46 +181,53 @@ function Login() {
               />
             </div>
 
-            <button
-              onClick={handleSendOtp}
-              className="w-full mt-2 bg-[#006DAA] text-white py-2 rounded-lg"
-            >
-              Send OTP
-            </button>
-
-            {otpSent && (
-              <div>
-                <label className="text-sm font-medium text-[#061A40]">
-                  Enter OTP
-                </label>
-                <input
-                  className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300"
-                  type="text"
-                  placeholder="OTP"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                />
-              </div>
+            {successMsg && (
+              <p className="text-green-600 text-sm font-medium">{successMsg}</p>
             )}
 
-            {error && <p className="text-red-500">{error}</p>}
+            {/* Action Area */}
+            {!otpSent ? (
+              <button
+                onClick={handleSendOtp}
+                className="w-full mt-4 bg-[#006DAA] hover:bg-[#0353A4] text-white py-2.5 rounded-lg font-medium transition"
+              >
+                Send OTP
+              </button>
+            ) : (
+              <div className="animate-fadeIn space-y-4 mt-4 bg-blue-50 p-4 rounded-xl border border-blue-100">
+                <div>
+                  <label className="text-sm font-semibold text-[#006DAA]">
+                    Enter 4-Digit Code
+                  </label>
+                  <input
+                    className="w-full mt-1 px-3 py-2 rounded-lg border border-[#006DAA] text-center text-xl tracking-widest outline-none"
+                    type="text"
+                    maxLength="4"
+                    placeholder="----"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                  />
+                </div>
 
-            <button
-              onClick={handleLogin}
-              className="
-              w-full
-              mt-4
-              bg-[#0353A4]
-              hover:bg-[#003559]
-              text-white
-              font-medium
-              rounded-lg
-              py-2.5
-              transition
-              "
-            >
-              Verify & Login
-            </button>
+                {error && (
+                  <p className="text-red-500 text-sm font-medium">{error}</p>
+                )}
+
+                <button
+                  onClick={handleLogin}
+                  className="w-full bg-[#0353A4] hover:bg-[#003559] text-white font-medium rounded-lg py-2.5 transition"
+                >
+                  Verify & Login
+                </button>
+
+                <button
+                  onClick={() => setOtpSent(false)}
+                  className="w-full text-xs text-gray-500 hover:text-blue-600 transition"
+                >
+                  Entered wrong number? Edit Mobile
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
