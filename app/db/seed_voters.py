@@ -63,7 +63,7 @@ def seed_voters():
             address="Pathanamthitta",
             dob="2004-04-17",
             booth_id="B03",
-            aadhaar_id="856142378659",
+            aadhaar_id="956142378659",
             has_voted=False,
             face_image_path="app/sample_data/faces/V004.jpg"
         ),
@@ -77,7 +77,7 @@ def seed_voters():
             address="89, Park Avenue, Kochi",
             dob="2001-11-20",
             booth_id="B02",
-            aadhaar_id="AAD345",
+            aadhaar_id="102345687956",
             has_voted=False,
             face_image_path="app/sample_data/faces/V005.jpg"
         ),
@@ -91,9 +91,9 @@ def seed_voters():
             address="33, Brigade Road, Bangalore",
             dob="2000-07-12",
             booth_id="B03",
-            aadhaar_id="AAD678",
+            aadhaar_id="12345578901",
             has_voted=False,
-            face_image_path="app/sample_data/faces/V001.jpg"
+            face_image_path="app/sample_data/faces/V006.jpg"
         ),
     ]
 
