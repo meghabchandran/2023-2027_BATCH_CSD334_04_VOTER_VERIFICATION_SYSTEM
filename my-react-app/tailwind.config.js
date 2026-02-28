@@ -17,6 +17,10 @@ export default {
           "100%": { opacity: 1, transform: "translateY(0)" },
         },
       },
+      fontFamily: {
+        heading: ["Syne", "sans-serif"],
+        body: ["DM Sans", "sans-serif"],
+      },
     },
   },
   plugins: [],
