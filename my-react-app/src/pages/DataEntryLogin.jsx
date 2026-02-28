@@ -37,7 +37,7 @@ function Login() {
 
       if (res.ok) {
         localStorage.setItem("role", data.role);
-        navigate("/data-entry-dashboard"); // Redirect to data entry dashboard
+        navigate("/add-details"); // Redirect to data entry dashboard
       } else {
         setError(data.detail || "Invalid OTP or login failed");
         setSuccessMsg("");
@@ -96,10 +96,10 @@ function Login() {
         {/* Foreground content */}
         <div className="relative z-10 max-w-sm text-left px-12 animate-slideUp">
           <h1 className="text-4xl font-bold tracking-tight text-white">
-            Empowering Democracy, One Vote at a Time
+            Managing the Democratic Process
           </h1>
           <p className="mt-4 text-[#B9D6F2] text-base italic">
-            Your voice matters. Your vote counts.
+            Streamlining secure voter verification.
           </p>
         </div>
       </div>
@@ -108,11 +108,12 @@ function Login() {
         {/* Login form will go here */}
         <div className="w-full max-w-md bg-white/30 backdrop-blur-md border border-[#0353A4]/30 p-8 rounded-2xl shadow-xl animate-fadeIn">
           <h2 className="text-2xl font-semibold tracking-tight text-[#061A40]">
-            Voter Login
+            Data Entry Operator Login
           </h2>
 
           <p className="text-sm text-gray-500 mt-1">
-            Enter your credentials to access the booth dashboard.
+            Enter your credentials to manage voter details and booth
+            information.
           </p>
 
           <div className="space-y-4 mt-6">
