@@ -21,7 +21,7 @@ def seed_voters():
             address="Thrissur",
             dob="2005-09-07",
             booth_id="B01",
-            aadhaar_id="AAD123",
+            aadhaar_id="856142378659",
             has_voted=False,
             face_image_path="app/sample_data/faces/V001.jpg"
         ),
@@ -35,7 +35,7 @@ def seed_voters():
             address="Alappuzha",
             dob="2005-08-23",
             booth_id="B02",
-            aadhaar_id="AAD456",
+            aadhaar_id="7784663259843",
             has_voted=False,
             face_image_path="app/sample_data/faces/V002.jpg"
         ),
@@ -49,7 +49,7 @@ def seed_voters():
             address="Mavelikkara",
             dob="2005-06-15",
             booth_id="B01",
-            aadhaar_id="AAD789",
+            aadhaar_id="623456789012",
             has_voted=False,
             face_image_path="app/sample_data/faces/V003.jpg"
         ),
@@ -63,7 +63,7 @@ def seed_voters():
             address="Pathanamthitta",
             dob="2004-04-17",
             booth_id="B03",
-            aadhaar_id="AAD012",
+            aadhaar_id="956142378659",
             has_voted=False,
             face_image_path="app/sample_data/faces/V004.jpg"
         ),
@@ -77,7 +77,7 @@ def seed_voters():
             address="89, Park Avenue, Kochi",
             dob="2001-11-20",
             booth_id="B02",
-            aadhaar_id="AAD345",
+            aadhaar_id="102345687956",
             has_voted=False,
             face_image_path="app/sample_data/faces/V005.jpg"
         ),
@@ -91,9 +91,9 @@ def seed_voters():
             address="33, Brigade Road, Bangalore",
             dob="2000-07-12",
             booth_id="B03",
-            aadhaar_id="AAD678",
+            aadhaar_id="12345578901",
             has_voted=False,
-            face_image_path="app/sample_data/faces/V001.jpg"
+            face_image_path="app/sample_data/faces/V006.jpg"
         ),
     ]
 
