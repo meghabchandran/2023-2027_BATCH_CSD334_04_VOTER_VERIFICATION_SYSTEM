@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import homeImage from "../mocks/image/login.jpg";
 
 /* ─────────────────────────────────────────────
@@ -36,10 +36,15 @@ const styles = `
     0%   { top: -2px; }
     100% { top: 100%; }
   }
+  @keyframes dropdownOpen {
+    from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
 
   .animate-slideUp  { animation: slideUp 0.65s cubic-bezier(.22,1,.36,1) both; }
   .animate-fadeIn   { animation: fadeIn 0.5s ease both; }
   .animate-fadeSlideIn { animation: fadeSlideIn 0.45s cubic-bezier(.22,1,.36,1) both; }
+  .animate-dropdownOpen { animation: dropdownOpen 0.22s cubic-bezier(.22,1,.36,1) both; }
 
   .delay-1 { animation-delay: 0.08s; }
   .delay-2 { animation-delay: 0.16s; }
@@ -123,6 +128,70 @@ const styles = `
   .glass-card:hover {
     box-shadow: 0 12px 40px rgba(3,83,164,0.12);
   }
+
+  /* ── Login Dropdown ── */
+  .login-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 230px;
+    background: #061A40;
+    border: 1px solid rgba(185,214,242,0.18);
+    border-radius: 12px;
+    box-shadow: 0 16px 48px rgba(6,26,64,0.55);
+    overflow: hidden;
+    z-index: 100;
+  }
+
+  .login-role-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 13px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    transition: background 0.18s ease;
+    font-family: 'DM Sans', sans-serif;
+    border-bottom: 1px solid rgba(185,214,242,0.08);
+  }
+  .login-role-btn:last-child {
+    border-bottom: none;
+  }
+  .login-role-btn:hover {
+    background: rgba(3,83,164,0.28);
+  }
+  .login-role-btn .role-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 15px;
+  }
+  .login-role-btn .role-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.01em;
+  }
+  .login-role-btn .role-sub {
+    font-size: 10px;
+    color: rgba(185,214,242,0.6);
+    margin-top: 1px;
+  }
+  .login-dropdown-arrow {
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform 0.2s ease;
+  }
+  .login-btn-open .login-dropdown-arrow {
+    transform: rotate(180deg);
+  }
 `;
 
 /* ─────────────────────────────────────────────
@@ -164,12 +233,167 @@ function FeatureItem({ icon, title, desc, delay }) {
   );
 }
 
+/* ── Login Dropdown Component ── */
+function LoginDropdown({ inCard = false }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const navigate = useNavigate();
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClick(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const roles = [
+    {
+      icon: "📋",
+      iconBg: "rgba(3,83,164,0.35)",
+      label: "Data Entry Officer",
+      sub: "Voter registration & records",
+      path: "/login-data-entry",
+    },
+    {
+      icon: "🗳️",
+      iconBg: "rgba(0,109,170,0.35)",
+      label: "Booth Officer",
+      sub: "Polling booth verification",
+      path: "/login",
+    },
+  ];
+
+  if (inCard) {
+    /* Inline version for the card CTA — full-width button + expanded choices */
+    return (
+      <div ref={ref} style={{ position: "relative" }}>
+        <button
+          className={`btn-primary w-full ${open ? "login-btn-open" : ""}`}
+          onClick={() => setOpen((v) => !v)}
+          style={{
+            width: "100%",
+            background: "#0353A4",
+            color: "white",
+            border: "none",
+            borderRadius: 10,
+            padding: "13px 0",
+            fontSize: 14,
+            fontWeight: 700,
+            cursor: "pointer",
+            letterSpacing: "0.03em",
+            fontFamily: "'Syne', sans-serif",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+          }}
+        >
+          Login to Continue
+          <span className="login-dropdown-arrow" style={{ fontSize: 11 }}>▼</span>
+        </button>
+
+        {open && (
+          <div
+            className="animate-dropdownOpen"
+            style={{
+              position: "absolute",
+              top: "calc(100% + 8px)",
+              left: 0, right: 0,
+              background: "#061A40",
+              border: "1px solid rgba(185,214,242,0.18)",
+              borderRadius: 12,
+              boxShadow: "0 16px 48px rgba(6,26,64,0.55)",
+              overflow: "hidden",
+              zIndex: 100,
+            }}
+          >
+            {roles.map((role) => (
+              <button
+                key={role.label}
+                className="login-role-btn"
+                onClick={() => { setOpen(false); navigate(role.path); }}
+              >
+                <div className="role-icon" style={{ background: role.iconBg }}>{role.icon}</div>
+                <div>
+                  <div className="role-label">{role.label} Login</div>
+                  <div className="role-sub">{role.sub}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  /* Navbar version — compact button */
+  return (
+    <div ref={ref} style={{ position: "relative" }}>
+      <button
+        className={`btn-primary ${open ? "login-btn-open" : ""}`}
+        onClick={() => setOpen((v) => !v)}
+        style={{
+          background: "#0353A4",
+          color: "white",
+          border: "none",
+          borderRadius: 8,
+          padding: "8px 18px",
+          fontSize: 13,
+          fontWeight: 600,
+          cursor: "pointer",
+          fontFamily: "'DM Sans', sans-serif",
+          letterSpacing: "0.02em",
+          display: "flex",
+          alignItems: "center",
+          gap: 5,
+        }}
+      >
+        Login
+        <span className="login-dropdown-arrow" style={{ fontSize: 10 }}>▼</span>
+      </button>
+
+      {open && (
+        <div className="login-dropdown animate-dropdownOpen">
+          <div
+            style={{
+              padding: "10px 14px 8px",
+              fontSize: 10,
+              color: "rgba(185,214,242,0.5)",
+              letterSpacing: "0.1em",
+              fontWeight: 600,
+              borderBottom: "1px solid rgba(185,214,242,0.08)",
+            }}
+          >
+            SELECT YOUR ROLE
+          </div>
+          {roles.map((role) => (
+            <button
+              key={role.label}
+              className="login-role-btn"
+              onClick={() => { setOpen(false); navigate(role.path); }}
+            >
+              <div className="role-icon" style={{ background: role.iconBg }}>{role.icon}</div>
+              <div>
+                <div className="role-label">{role.label} Login</div>
+                <div className="role-sub">{role.sub}</div>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ─────────────────────────────────────────────
    Main Component
 ───────────────────────────────────────────── */
 export default function Home() {
   const [showAbout, setShowAbout] = useState(false);
   const [time, setTime] = useState(new Date());
+  const navigate = useNavigate();
 
   useEffect(() => {
     const t = setInterval(() => setTime(new Date()), 1000);
@@ -200,7 +424,6 @@ export default function Home() {
         >
           {/* Left: brand */}
           <div className="flex items-center gap-3 py-4">
-            {/* Shield icon */}
             <div
               style={{
                 width: 34, height: 34,
@@ -234,7 +457,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right: links + time */}
+          {/* Right: links + time + login dropdown */}
           <div className="flex items-center gap-1 md:gap-2">
             {/* Live clock */}
             <div
@@ -265,28 +488,8 @@ export default function Home() {
               {showAbout ? "← Home" : "About"}
             </button>
 
-            <Link
-              to="/login"
-              style={{ textDecoration: "none" }}
-            >
-              <button
-                className="btn-primary"
-                style={{
-                  background: "#0353A4",
-                  color: "white",
-                  border: "none",
-                  borderRadius: 8,
-                  padding: "8px 18px",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  fontFamily: "'DM Sans', sans-serif",
-                  letterSpacing: "0.02em",
-                }}
-              >
-                Login
-              </button>
-            </Link>
+            {/* ── NAVBAR LOGIN DROPDOWN ── */}
+            <LoginDropdown />
 
             <a
               href="https://support.google.com/"
@@ -323,15 +526,12 @@ export default function Home() {
                 objectFit: "cover", opacity: 0.45,
               }}
             />
-            {/* gradient overlay */}
             <div
               style={{
                 position: "absolute", inset: 0,
                 background: "linear-gradient(160deg, rgba(6,26,64,0.55) 0%, rgba(0,53,89,0.85) 60%, rgba(6,26,64,0.97) 100%)",
               }}
             />
-
-            {/* Decorative grid lines */}
             <div
               style={{
                 position: "absolute", inset: 0,
@@ -340,7 +540,6 @@ export default function Home() {
               }}
             />
 
-            {/* Bottom content */}
             <div className="relative z-10 px-10 pb-12 animate-slideUp">
               <div
                 style={{
@@ -384,7 +583,6 @@ export default function Home() {
                   : "Real-time duplicate vote detection powered by facial recognition technology."}
               </p>
 
-              {/* Corner decoration */}
               <div style={{ position: "absolute", top: -40, right: -20, opacity: 0.12 }}>
                 <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
                   <circle cx="60" cy="60" r="58" stroke="#B9D6F2" strokeWidth="2" strokeDasharray="6 4" />
@@ -406,7 +604,6 @@ export default function Home() {
                 key="welcome"
                 className="glass-card animate-fadeIn rounded-2xl shadow-xl w-full max-w-md p-8"
               >
-                {/* Header */}
                 <div className="animate-slideUp delay-1">
                   <AccentBar />
                   <h2
@@ -458,38 +655,75 @@ export default function Home() {
                   ))}
                 </div>
 
-                {/* Divider */}
                 <div style={{ height: 1, background: "rgba(3,83,164,0.1)", marginBottom: 24 }} />
 
-                {/* CTA */}
-                <div className="animate-slideUp delay-3">
-                  <Link to="/login" style={{ textDecoration: "none", display: "block" }}>
+                {/* ── CARD CTA: Two Role Buttons ── */}
+                <div className="animate-slideUp delay-3" style={{ marginBottom: 10 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     <button
-                      className="btn-primary w-full"
+                      className="btn-primary"
+                      onClick={() => navigate("/login-data-entry")}
                       style={{
                         width: "100%",
                         background: "#0353A4",
                         color: "white",
                         border: "none",
                         borderRadius: 10,
-                        padding: "13px 0",
-                        fontSize: 14,
+                        padding: "13px 16px",
+                        fontSize: 13,
                         fontWeight: 700,
                         cursor: "pointer",
-                        letterSpacing: "0.03em",
                         fontFamily: "'Syne', sans-serif",
-                        marginBottom: 10,
+                        letterSpacing: "0.02em",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
                       }}
                     >
-                      Login to Continue →
+                      <span style={{ fontSize: 18 }}>📋</span>
+                      <div style={{ textAlign: "left" }}>
+                        <div>Data Entry Officer Login</div>
+                        <div style={{ fontSize: 10, fontWeight: 400, opacity: 0.75, fontFamily: "'DM Sans', sans-serif", marginTop: 1 }}>Voter registration &amp; records</div>
+                      </div>
+                      <span style={{ marginLeft: "auto", opacity: 0.7, fontSize: 14 }}>→</span>
                     </button>
-                  </Link>
-                  <p style={{ textAlign: "center", fontSize: 11, color: "#8096B0", marginTop: 6 }}>
+
+                    <button
+                      className="btn-primary"
+                      onClick={() => navigate("/login")}
+                      style={{
+                        width: "100%",
+                        background: "transparent",
+                        color: "#0353A4",
+                        border: "2px solid #0353A4",
+                        borderRadius: 10,
+                        padding: "11px 16px",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        fontFamily: "'Syne', sans-serif",
+                        letterSpacing: "0.02em",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        transition: "all 0.22s ease",
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.background = "rgba(3,83,164,0.08)"; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
+                    >
+                      <span style={{ fontSize: 18 }}>🗳️</span>
+                      <div style={{ textAlign: "left" }}>
+                        <div>Booth Officer Login</div>
+                        <div style={{ fontSize: 10, fontWeight: 400, opacity: 0.65, fontFamily: "'DM Sans', sans-serif", marginTop: 1 }}>Polling booth verification</div>
+                      </div>
+                      <span style={{ marginLeft: "auto", opacity: 0.5, fontSize: 14 }}>→</span>
+                    </button>
+                  </div>
+                  <p style={{ textAlign: "center", fontSize: 11, color: "#8096B0", marginTop: 10 }}>
                     Authorized election officers only · Secured with end-to-end encryption
                   </p>
                 </div>
 
-                {/* Bottom: About link */}
                 <div className="animate-slideUp delay-4" style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(3,83,164,0.1)", textAlign: "center" }}>
                   <button
                     onClick={() => setShowAbout(true)}
@@ -534,7 +768,6 @@ export default function Home() {
                   </p>
                 </div>
 
-                {/* Divider */}
                 <div
                   style={{
                     height: 1,
@@ -543,38 +776,15 @@ export default function Home() {
                   }}
                 />
 
-                {/* Features */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 20 }}>
-                  <FeatureItem
-                    delay="delay-1"
-                    icon="🪪"
-                    title="Face Recognition"
-                    desc="Instant biometric matching to identify the voter against registered records."
-                  />
-                  <FeatureItem
-                    delay="delay-2"
-                    icon="🗳️"
-                    title="One Person, One Vote"
-                    desc="Once a face is logged as voted, the system permanently prevents re-entry."
-                  />
-                  <FeatureItem
-                    delay="delay-3"
-                    icon="⚡"
-                    title="Real-Time Duplicate Detection"
-                    desc="Cross-references every scan against the live voted registry instantly."
-                  />
-                  <FeatureItem
-                    delay="delay-4"
-                    icon="🔒"
-                    title="Officer Authentication"
-                    desc="Only authorized election officers can access and operate the verification terminal."
-                  />
+                  <FeatureItem delay="delay-1" icon="🪪" title="Face Recognition" desc="Instant biometric matching to identify the voter against registered records." />
+                  <FeatureItem delay="delay-2" icon="🗳️" title="One Person, One Vote" desc="Once a face is logged as voted, the system permanently prevents re-entry." />
+                  <FeatureItem delay="delay-3" icon="⚡" title="Real-Time Duplicate Detection" desc="Cross-references every scan against the live voted registry instantly." />
+                  <FeatureItem delay="delay-4" icon="🔒" title="Officer Authentication" desc="Only authorized election officers can access and operate the verification terminal." />
                 </div>
 
-                {/* Divider */}
                 <div style={{ height: 1, background: "rgba(3,83,164,0.1)", marginBottom: 16 }} />
 
-                {/* Footer actions */}
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <button
                     onClick={() => setShowAbout(false)}
@@ -587,24 +797,8 @@ export default function Home() {
                   >
                     ← Back to Home
                   </button>
-                  <Link to="/login" style={{ textDecoration: "none" }}>
-                    <button
-                      className="btn-primary"
-                      style={{
-                        background: "#0353A4",
-                        color: "white",
-                        border: "none",
-                        borderRadius: 8,
-                        padding: "8px 16px",
-                        fontSize: 12,
-                        fontWeight: 700,
-                        cursor: "pointer",
-                        fontFamily: "'DM Sans', sans-serif",
-                      }}
-                    >
-                      Login to Continue →
-                    </button>
-                  </Link>
+                  {/* Small login dropdown for about card footer */}
+                  <LoginDropdown />
                 </div>
               </div>
             )}
