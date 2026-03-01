@@ -8,7 +8,7 @@ from app.db.seed_voters import seed_voters
 
 
 # ----------------------------
-# Create FastAPI App FIRST
+# Create FastAPI App
 # ----------------------------
 app = FastAPI(title="Voter Verification Backend")
 
