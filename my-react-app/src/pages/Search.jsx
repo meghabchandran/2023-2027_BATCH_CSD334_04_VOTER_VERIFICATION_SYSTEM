@@ -142,7 +142,7 @@ const styles = `
   }
   .vvs-btn-verify:active { transform: scale(0.98); }
 
-  /* Back to home button */
+  /* Back button */
   .vvs-btn-back {
     display: inline-flex;
     align-items: center;
@@ -327,10 +327,6 @@ export default function Search() {
     if (e.key === "Enter") handleSearch();
   };
 
-  const handleVerifyClick = () => {
-    if (voter) navigate(`/verify/${voter.voter_id}`);
-  };
-
   const alreadyVoted = voter?.has_voted === true || voter?.status === "voted";
 
   return (
@@ -350,8 +346,19 @@ export default function Search() {
           padding: "40px 16px 60px",
         }}
       >
-        {/* ── Back to Home button ── */}
-        <div className="vvs-fadeIn" style={{ width: "100%", maxWidth: 620, marginBottom: 20 }}>
+        {/* ── Top navigation row: Back to Home + Back to Data Entry Login ── */}
+        <div
+          className="vvs-fadeIn"
+          style={{
+            width: "100%", maxWidth: 620,
+            marginBottom: 20,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 10,
+          }}
+        >
+          {/* Back to Home */}
           <button
             className="vvs-btn-back"
             onClick={() => navigate("/")}
@@ -360,6 +367,18 @@ export default function Search() {
               <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             Back to Home
+          </button>
+
+          {/* Back to Data Entry Login */}
+          <button
+            className="vvs-btn-back"
+            onClick={() => navigate("/login-data-entry")}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="18" height="16" rx="2" stroke="#0353A4" strokeWidth="2"/>
+              <path d="M8 10h8M8 14h5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            Data Entry Login
           </button>
         </div>
 
@@ -587,9 +606,8 @@ export default function Search() {
               </div>
             </div>
 
-            {/* Info rows */}
+            {/* Info rows — VoterProfile renders details AND its own verify button */}
             <div style={{ padding: "8px 24px 4px" }}>
-              {/* If VoterProfile handles all fields, render it; else show fallback rows */}
               {typeof VoterProfile === "function" ? (
                 <VoterProfile voter={voter} />
               ) : (
@@ -603,49 +621,56 @@ export default function Search() {
               )}
             </div>
 
-            {/* Divider */}
-            <div style={{ height: 1, background: "rgba(185,214,242,0.7)", margin: "4px 24px 0" }} />
-
-            {/* CTA footer */}
-            <div style={{ padding: "18px 24px 22px" }}>
-              {alreadyVoted ? (
-                <div
-                  style={{
-                    padding: "14px 16px",
-                    background: "rgba(239,68,68,0.07)",
-                    border: "1px solid rgba(239,68,68,0.2)",
-                    borderRadius: 10,
-                    display: "flex", alignItems: "center", gap: 12,
-                  }}
-                >
-                  <div style={{ fontSize: 24 }}>🚫</div>
-                  <div>
-                    <p style={{ fontSize: 13, fontWeight: 700, color: "#B91C1C", marginBottom: 2 }}>
-                      Duplicate Vote Blocked
-                    </p>
-                    <p style={{ fontSize: 12, color: "#7F1D1D", lineHeight: 1.5 }}>
-                      This voter has already cast their vote. Verification cannot proceed.
-                    </p>
-                  </div>
+            {/*
+              ── CTA footer ──
+              ONLY shown when VoterProfile is NOT being used (fallback mode).
+              When VoterProfile renders, it already includes the verify button,
+              so we skip this block to avoid duplication.
+            */}
+            {typeof VoterProfile !== "function" && (
+              <>
+                <div style={{ height: 1, background: "rgba(185,214,242,0.7)", margin: "4px 24px 0" }} />
+                <div style={{ padding: "18px 24px 22px" }}>
+                  {alreadyVoted ? (
+                    <div
+                      style={{
+                        padding: "14px 16px",
+                        background: "rgba(239,68,68,0.07)",
+                        border: "1px solid rgba(239,68,68,0.2)",
+                        borderRadius: 10,
+                        display: "flex", alignItems: "center", gap: 12,
+                      }}
+                    >
+                      <div style={{ fontSize: 24 }}>🚫</div>
+                      <div>
+                        <p style={{ fontSize: 13, fontWeight: 700, color: "#B91C1C", marginBottom: 2 }}>
+                          Duplicate Vote Blocked
+                        </p>
+                        <p style={{ fontSize: 12, color: "#7F1D1D", lineHeight: 1.5 }}>
+                          This voter has already cast their vote. Verification cannot proceed.
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <button
+                        className="vvs-btn-verify"
+                        onClick={() => navigate(`/verify/${voter.voter_id}`)}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                          <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z" fill="white" fillOpacity="0.9"/>
+                          <path d="M9 12l2 2 4-4" stroke="#061A40" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        Proceed to Face Verification
+                      </button>
+                      <p style={{ textAlign: "center", fontSize: 11, color: "#8096B0", marginTop: 8 }}>
+                        Facial recognition will be used to confirm identity
+                      </p>
+                    </>
+                  )}
                 </div>
-              ) : (
-                <>
-                  <button
-                    className="vvs-btn-verify"
-                    onClick={handleVerifyClick}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z" fill="white" fillOpacity="0.9"/>
-                      <path d="M9 12l2 2 4-4" stroke="#061A40" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    Proceed to Face Verification
-                  </button>
-                  <p style={{ textAlign: "center", fontSize: 11, color: "#8096B0", marginTop: 8 }}>
-                    Facial recognition will be used to confirm identity
-                  </p>
-                </>
-              )}
-            </div>
+              </>
+            )}
           </div>
         )}
 
