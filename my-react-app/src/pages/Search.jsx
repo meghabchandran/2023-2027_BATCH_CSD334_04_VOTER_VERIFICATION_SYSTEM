@@ -142,6 +142,31 @@ const styles = `
   }
   .vvs-btn-verify:active { transform: scale(0.98); }
 
+  /* Back to home button */
+  .vvs-btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(3,83,164,0.18);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #0353A4;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  }
+  .vvs-btn-back:hover {
+    background: rgba(3,83,164,0.10);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(3,83,164,0.12);
+  }
+  .vvs-btn-back:active { transform: scale(0.97); }
+
   /* Voter result card */
   .vvs-result-card {
     background: white;
@@ -325,6 +350,19 @@ export default function Search() {
           padding: "40px 16px 60px",
         }}
       >
+        {/* ── Back to Home button ── */}
+        <div className="vvs-fadeIn" style={{ width: "100%", maxWidth: 620, marginBottom: 20 }}>
+          <button
+            className="vvs-btn-back"
+            onClick={() => navigate("/")}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Back to Home
+          </button>
+        </div>
+
         {/* ── Page header ── */}
         <div className="vvs-fadeUp" style={{ textAlign: "center", marginBottom: 32, maxWidth: 520 }}>
           <div

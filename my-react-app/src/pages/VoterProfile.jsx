@@ -45,8 +45,13 @@ const styles = `
     0%   { transform: scale(0);   opacity: 0.35; }
     100% { transform: scale(3.5); opacity: 0;    }
   }
+  @keyframes vvp-fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
 
   .vvp-fadeUp  { animation: vvp-fadeUp  0.55s cubic-bezier(.22,1,.36,1) both; }
+  .vvp-fadeIn  { animation: vvp-fadeIn  0.4s ease both; }
   .vvp-slideIn { animation: vvp-slideIn 0.45s cubic-bezier(.22,1,.36,1) both; }
 
   .vvp-d1 { animation-delay: 0.06s; }
@@ -116,6 +121,31 @@ const styles = `
     transform: scale(0);
     animation: vvp-ripple 0.55s ease-out forwards;
   }
+
+  /* ── Back to Search button ── */
+  .vvp-btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(3,83,164,0.18);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #0353A4;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  }
+  .vvp-btn-back:hover {
+    background: rgba(3,83,164,0.10);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(3,83,164,0.12);
+  }
+  .vvp-btn-back:active { transform: scale(0.97); }
 
   /* ── Pulse dot ── */
   .vvp-dot {
@@ -265,6 +295,19 @@ export default function VoterProfile({ voter }) {
         }}
       >
         <div style={{ width: "100%", maxWidth: 600 }}>
+
+          {/* ── Back to Search button ── */}
+          <div className="vvp-fadeIn" style={{ marginBottom: 20 }}>
+            <button
+              className="vvp-btn-back"
+              onClick={() => navigate("/search")}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Back to Search
+            </button>
+          </div>
 
           {/* ── Page badge ── */}
           <div
@@ -470,26 +513,16 @@ export default function VoterProfile({ voter }) {
                       </p>
                     </div>
                   </div>
-                  {/* Back button */}
+                  {/* Back to Search button */}
                   <button
-                    onClick={() => navigate(-1)}
-                    style={{
-                      width: "100%",
-                      background: "transparent",
-                      border: "1.5px solid rgba(3,83,164,0.25)",
-                      borderRadius: 10,
-                      padding: "12px 0",
-                      fontFamily: "'Syne', sans-serif",
-                      fontSize: 13, fontWeight: 700,
-                      color: "#0353A4",
-                      cursor: "pointer",
-                      transition: "background 0.2s, border-color 0.2s",
-                      letterSpacing: "0.03em",
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(3,83,164,0.06)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
+                    className="vvp-btn-back"
+                    onClick={() => navigate("/search")}
+                    style={{ width: "100%", justifyContent: "center" }}
                   >
-                    ← Back to Search
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                      <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    Back to Search
                   </button>
                 </div>
               ) : (
