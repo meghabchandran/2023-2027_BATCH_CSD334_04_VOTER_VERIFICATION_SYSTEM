@@ -1,85 +1,87 @@
-from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Form, UploadFile, File
 from sqlalchemy.orm import Session
-
+from sqlalchemy import func
 from app.db.database import get_db
-from app.db.models import Voter
-from app.services.face_verification import verify_face
+from app.db import models
+import os
 
 router = APIRouter()
 
-# --------------------------
-# Get Voter Details
-# --------------------------
 
+# --------------------------
+# GET VOTER BY ID
+# --------------------------
 @router.get("/{voter_id}")
 def get_voter(voter_id: str, db: Session = Depends(get_db)):
-    voter = db.query(Voter).filter(Voter.voter_id == voter_id).first()
+
+    # Clean voter ID (remove spaces)
+    voter_id = voter_id.strip()
+
+    # Case-insensitive search
+    voter = db.query(models.Voter).filter(
+        func.lower(models.Voter.voter_id) == voter_id.lower()
+    ).first()
 
     if not voter:
         raise HTTPException(status_code=404, detail="Voter not found")
 
-    # Return **all details** for frontend display
-    return {
-        "voter_id": voter.voter_id,
-        "name": voter.name,
-        "fathers_name": voter.fathers_name,
-        "spouse_name": voter.spouse_name,
-        "gender": voter.gender,
-        "address": voter.address,
-        "dob": voter.dob,
-        "age": voter.age,
-        "booth_id": voter.booth_id,
-        "aadhaar_id": voter.aadhaar_id,
-        "has_voted": voter.has_voted,
-        "face_image_path": voter.face_image_path
-    }
+    return voter
+
 
 # --------------------------
-# Verify Face Endpoint
+# ADD NEW VOTER
 # --------------------------
-
-@router.post("/{voter_id}/verify-face")
-def verify_voter_face(
-    voter_id: str,
+@router.post("/add")
+async def add_voter(
+    voter_id: str = Form(...),
+    name: str = Form(...),
+    age: int = Form(...),
+    fathers_name: str = Form(...),
+    spouse_name: str = Form(...),
+    gender: str = Form(...),
+    address: str = Form(...),
+    dob: str = Form(...),
+    booth_id: str = Form(...),
+    aadhaar_id: str = Form(...),
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
-    voter = db.query(Voter).filter(Voter.voter_id == voter_id).first()
 
-    if not voter:
-        raise HTTPException(status_code=404, detail="Voter not found")
+    voter_id = voter_id.strip()
 
-    if voter.has_voted:
-        raise HTTPException(status_code=400, detail="Voter already voted")
+    # Check if voter already exists (case-insensitive)
+    existing_voter = db.query(models.Voter).filter(
+        func.lower(models.Voter.voter_id) == voter_id.lower()
+    ).first()
 
-    verified = verify_face(voter.face_image_path, file)
+    if existing_voter:
+        raise HTTPException(status_code=400, detail="Voter already exists")
 
-    if verified:
-        return {"verified": True}
+    # Ensure folder exists
+    os.makedirs("app/sample_data/faces", exist_ok=True)
 
-    return {
-        "verified": False,
-        "message": "Face does not match"
-    }
+    # Save image file
+    file_location = f"app/sample_data/faces/{voter_id}.jpg"
+    with open(file_location, "wb") as buffer:
+        buffer.write(await file.read())
 
-# --------------------------
-# Mark Voter as Voted
-# --------------------------
+    new_voter = models.Voter(
+        voter_id=voter_id,
+        name=name,
+        age=age,
+        fathers_name=fathers_name,
+        spouse_name=spouse_name,
+        gender=gender,
+        address=address,
+        dob=dob,
+        booth_id=booth_id,
+        aadhaar_id=aadhaar_id,
+        has_voted=False,  # Always default to False
+        face_image_path=file_location
+    )
 
-@router.post("/{voter_id}/vote")
-def mark_voter_as_voted(
-    voter_id: str,
-    db: Session = Depends(get_db)
-):
-    voter = db.query(Voter).filter(Voter.voter_id == voter_id).first()
-
-    if not voter:
-        raise HTTPException(status_code=404, detail="Voter not found")
-
-    if voter.has_voted:
-        raise HTTPException(status_code=400, detail="Duplicate voting blocked")
-
-    voter.has_voted = True
+    db.add(new_voter)
     db.commit()
+    db.refresh(new_voter)
 
-    return {"message": "Voter marked as voted"}
+    return {"message": "Voter added successfully"}
