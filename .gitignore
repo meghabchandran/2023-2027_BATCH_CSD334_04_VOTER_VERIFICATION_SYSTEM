@@ -1,26 +1,7 @@
-__pycache__/
+**/__pycache__/
 *.pyc
-.env
 venv/
-*.db
-.idea/
-.vscode/
-
-
-
-
-# Node
+.env
 node_modules/
-
-# Python
-venv/
-__pycache__/
-*.pyc
-
-
-__pycache__/
-*.pyc
-venv/
-.env
-my-react-app/node_modules/
 .DS_Store
+sql_app.db
