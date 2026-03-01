@@ -372,13 +372,13 @@ export default function Search() {
           {/* Back to Data Entry Login */}
           <button
             className="vvs-btn-back"
-            onClick={() => navigate("/login-data-entry")}
+            onClick={() => navigate("/dashboard")}
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
               <rect x="3" y="4" width="18" height="16" rx="2" stroke="#0353A4" strokeWidth="2"/>
               <path d="M8 10h8M8 14h5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round"/>
             </svg>
-            Data Entry Login
+            Dashboard
           </button>
         </div>
 
