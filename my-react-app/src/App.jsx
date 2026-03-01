@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
+// Page Imports
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Search from "./pages/Search";
@@ -15,10 +16,13 @@ import AddVoter from "./pages/AddVoter";
 
 function App() {
   return (
-    /* Changed <Router> to <BrowserRouter> to match your import */
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* 1. Root Route: This fixes the blank page issue */}
+        <Route path="/" element={<Navigate to="/home" />} />
+        
+        {/* 2. Standard Routes */}
+        <Route path="/home" element={<Home />} />
         
         {/* Booth Officer Flow */}
         <Route path="/login" element={<Login />} />
@@ -32,6 +36,14 @@ function App() {
         <Route path="/add-voter" element={<AddVoter />} />
         <Route path="/add-details" element={<AddDetails />} />
         <Route path="/add-booth" element={<AddBooth />} />
+
+        {/* 3. Catch-all Route: Shows if a user types a wrong URL */}
+        <Route path="*" element={
+          <div style={{ padding: "20px", textAlign: "center" }}>
+            <h1>404 - Page Not Found</h1>
+            <p>The page you are looking for does not exist.</p>
+          </div>
+        } />
       </Routes>
     </BrowserRouter>
   );
