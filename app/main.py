@@ -5,6 +5,7 @@ from app.api.voters import router as voter_router
 from app.api.booths import router as booth_router
 from app.core.cors import add_cors
 from app.db.seed_voters import seed_voters
+from app.api.auth import router as auth_router
 
 
 # ----------------------------
@@ -30,6 +31,9 @@ models.Base.metadata.create_all(bind=engine)
 # ----------------------------
 seed_voters()
 
+
+# Register auth APIs
+app.include_router(auth_router)
 
 # ----------------------------
 # Register Routers
