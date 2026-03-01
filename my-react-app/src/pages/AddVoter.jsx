@@ -71,11 +71,24 @@ function AddVoter() {
     <div className="min-h-screen flex items-center justify-center bg-[#B9D6F2]/20 p-6">
       <div className="w-full max-w-xl bg-white/30 backdrop-blur-md border border-[#0353A4]/30 p-8 rounded-2xl shadow-xl">
 
-        <h2 className="text-2xl font-semibold text-[#061A40]">
-          Add Voter
-        </h2>
+        {/* Header row with title and back button */}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-semibold text-[#061A40]">
+            Add Voter
+          </h2>
+          <button
+            type="button"
+            onClick={() => navigate("/add-details")}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/50 backdrop-blur text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Add Details
+          </button>
+        </div>
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-3">
+        <form onSubmit={handleSubmit} className="space-y-3">
 
           {Object.keys(form).map((key) =>
             key !== "file" && key !== "has_voted" ? (
