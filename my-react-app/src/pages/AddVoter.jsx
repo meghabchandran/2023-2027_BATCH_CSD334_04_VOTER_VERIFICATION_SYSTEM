@@ -19,7 +19,6 @@ function AddVoter() {
     dob: "",
     booth_id: "",
     aadhaar_id: "",
-    has_voted: false,
     file: null,
   });
 
@@ -33,37 +32,41 @@ function AddVoter() {
   };
 
   const handleChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
+    const { name, value, type, files } = e.target;
 
-    if (type === "checkbox")
-      setForm({ ...form, [name]: checked });
-    else if (type === "file")
+    if (type === "file") {
       setForm({ ...form, file: files[0] });
-    else
+    } else {
       setForm({ ...form, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!agreed) return setMessage("Please confirm details.");
-    if (userCaptcha !== captcha) return setMessage("Incorrect captcha.");
+    if (userCaptcha !== captcha)
+      return setMessage("Incorrect captcha.");
 
     const formData = new FormData();
     Object.keys(form).forEach((key) => {
       formData.append(key, form[key]);
     });
 
-    const res = await fetch("http://127.0.0.1:8000/api/voters/add", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/voters/add", {
+        method: "POST",
+        body: formData,
+      });
 
-    const data = await res.json();
-    setMessage(data.message || data.detail);
+      const data = await res.json();
+      setMessage(data.message || data.detail);
 
-    if (res.ok) {
-      setTimeout(() => navigate("/add-details"), 1500);
+      if (res.ok) {
+        setTimeout(() => navigate("/add-details"), 1500);
+      }
+    } catch (error) {
+      setMessage("Something went wrong.");
     }
   };
 
@@ -91,7 +94,7 @@ function AddVoter() {
         <form onSubmit={handleSubmit} className="space-y-3">
 
           {Object.keys(form).map((key) =>
-            key !== "file" && key !== "has_voted" ? (
+            key !== "file" ? (
               <input
                 key={key}
                 name={key}
@@ -110,11 +113,6 @@ function AddVoter() {
             className="w-full text-sm"
             required
           />
-
-          <label className="flex items-center gap-2 text-sm text-[#061A40]">
-            <input type="checkbox" name="has_voted" onChange={handleChange} />
-            Has Voted
-          </label>
 
           <label className="flex items-center gap-2 text-sm text-[#061A40]">
             <input
