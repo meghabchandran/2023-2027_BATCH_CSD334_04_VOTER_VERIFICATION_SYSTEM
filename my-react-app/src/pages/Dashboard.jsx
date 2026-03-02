@@ -10,6 +10,8 @@ function Dashboard() {
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#B9D6F2]/40 px-4 py-6 sm:px-6">
       <div className="max-w-6xl mx-auto bg-white/80 backdrop-blur-md rounded-3xl p-8 space-y-8 border border-[#006DAA]/20 shadow-[0_10px_30px_rgba(3,83,164,0.08)]">
+
+        {/* ── Header ── */}
         <div className="flex items-center justify-between pb-4 border-b border-[#0353A4]">
           <h1 className="text-3xl font-bold text-[#0353A4] tracking-tight">
             Polling Booth Dashboard
@@ -19,7 +21,33 @@ function Dashboard() {
             <p className="text-sm font-medium text-[#061A40]">Booth Active</p>
           </div>
         </div>
-        {/* Booth Details Section */}
+
+        {/* ── Navigation buttons ── */}
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/70 text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Back to Home
+          </button>
+
+          <button
+            type="button"
+            onClick={() => navigate("/login")}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/70 text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Booth Officer Login
+          </button>
+        </div>
+
+        {/* ── Booth Details Section ── */}
         <section className="bg-[#B9D6F2]/40 border border-[#006DAA]/30 rounded-2xl p-6 shadow-[0_2px_10px_rgba(3,83,164,0.06)]">
           <div className="flex items-center gap-3 mb-3">
             <div className="h-1.5 w-12 bg-[#0353A4] rounded-full"></div>
@@ -42,7 +70,8 @@ function Dashboard() {
             </p>
           </div>
         </section>
-        {/* Candidates Section */}
+
+        {/* ── Candidates Section ── */}
         <section className="bg-[#B9D6F2]/40 border border-[#006DAA]/30 rounded-2xl p-6 shadow-[0_2px_10px_rgba(3,83,164,0.06)]">
           <div className="flex items-center gap-3 mb-3">
             <div className="h-1.5 w-12 bg-[#0353A4] rounded-full"></div>
@@ -55,16 +84,7 @@ function Dashboard() {
             {mockCandidates.map((candidate) => (
               <div
                 key={candidate.id}
-                className="
-                bg-white
-                border border-[#006DAA]/30
-                rounded-xl
-                p-5
-                shadow-sm
-                hover:bg-[#eef4fb]
-                hover:shadow-md
-                transition-all duration-300
-                "
+                className="bg-white border border-[#006DAA]/30 rounded-xl p-5 shadow-sm hover:bg-[#eef4fb] hover:shadow-md transition-all duration-300"
               >
                 <div className="flex items-center space-x-4">
                   <img
@@ -92,7 +112,8 @@ function Dashboard() {
             ))}
           </div>
         </section>
-        {/* Actions Section */}
+
+        {/* ── Actions Section ── */}
         <section className="rounded-xl p-5 border border-[#d8dced] bg-white shadow-sm">
           <div className="flex items-center gap-3 mb-3">
             <div className="h-1.5 w-12 bg-[#0353A4] rounded-full"></div>
@@ -110,6 +131,7 @@ function Dashboard() {
             </button>
           </div>
         </section>
+
       </div>
     </div>
   );
