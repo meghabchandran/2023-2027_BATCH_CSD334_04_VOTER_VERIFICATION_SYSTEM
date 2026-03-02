@@ -28,7 +28,7 @@ def request_otp(data: OTPRequest):
     # Store it: Key = Phone Number, Value = OTP
     otp_store[data.mobile_number] = otp
 
-    # CONSOLE LOG METHOD: This is the "Delivery"
+    #  This is the "Delivery"
     print("\n" + "="*30)
     print(f"DEBUG: SMS Sent to {data.mobile_number}")
     print(f"CODE: {otp}")
