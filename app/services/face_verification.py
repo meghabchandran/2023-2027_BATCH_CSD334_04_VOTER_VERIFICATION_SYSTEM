@@ -1,77 +1,105 @@
 import cv2
 import numpy as np
 import os
+import tempfile
+from deepface import DeepFace
 
 
-def verify_face(stored_image_path: str, uploaded_file) -> bool:
+async def verify_face(stored_image_path: str, uploaded_file) -> bool:
     """
-    Performs 1:1 face verification using OpenCV.
-    Compares stored reference image with uploaded image from webcam.
-    Returns True if match, else False.
+    Performs 1:1 face verification using DeepFace.
+    Uses multiple detector backends as fallback so face detection
+    doesn't fail on different lighting / image quality.
     """
 
-
-    # 1️⃣ Check if stored image exists
+    # ── 1. Check stored image ─────────────────────────────────────────────────
     if not os.path.exists(stored_image_path):
+        print("❌ Stored image not found:", stored_image_path)
         return False
 
-
-    # 2️⃣ Read stored reference image
-    stored_image = cv2.imread(stored_image_path)
-    if stored_image is None:
-        return False
-
-
-    # Convert to grayscale
-    stored_gray = cv2.cvtColor(stored_image, cv2.COLOR_BGR2GRAY)
-
-
-    # 3️⃣ Read uploaded image from UploadFile
-    uploaded_bytes = uploaded_file.file.read()
+    # ── 2. Decode uploaded image ──────────────────────────────────────────────
+    uploaded_bytes = await uploaded_file.read()
     nparr = np.frombuffer(uploaded_bytes, np.uint8)
     live_image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-
     if live_image is None:
+        print("❌ Live image could not be decoded")
         return False
 
+    # Save live image to temp file
+    with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
+        tmp_path = tmp.name
+        cv2.imwrite(tmp_path, live_image)
 
-    live_gray = cv2.cvtColor(live_image, cv2.COLOR_BGR2GRAY)
+    print(f"📸 Stored image: {stored_image_path}")
+    print(f"📸 Live image saved to: {tmp_path}")
 
+    try:
+        # ── 3. Try multiple detector backends as fallback ─────────────────────
+        # "opencv"     → fastest, struggles with angles/lighting
+        # "ssd"        → better detection
+        # "retinaface" → best detection, slowest
+        backends = ["opencv", "ssd", "retinaface"]
+        result = None
 
-    # 4️⃣ Detect faces using Haar Cascade
-    haar_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+        for backend in backends:
+            try:
+                print(f"🔍 Trying detector backend: {backend}")
+                result = DeepFace.verify(
+                    img1_path=stored_image_path,
+                    img2_path=tmp_path,
+                    model_name="Facenet",
+                    detector_backend=backend,
+                    enforce_detection=True,
+                    distance_metric="cosine"
+                )
+                print(f"✅ Face detected using backend: {backend}")
+                break  # Stop trying if one works
 
+            except ValueError as e:
+                print(f"⚠️  Backend '{backend}' failed: {e}")
+                continue  # Try next backend
 
-    stored_faces = haar_cascade.detectMultiScale(stored_gray, scaleFactor=1.1, minNeighbors=5)
-    live_faces = haar_cascade.detectMultiScale(live_gray, scaleFactor=1.1, minNeighbors=5)
+        # ── 4. If all backends failed, try with enforce_detection=False ───────
+        if result is None:
+            print("⚠️  All backends failed with enforce_detection=True")
+            print("🔁 Retrying with enforce_detection=False (no face required)...")
+            try:
+                result = DeepFace.verify(
+                    img1_path=stored_image_path,
+                    img2_path=tmp_path,
+                    model_name="Facenet",
+                    detector_backend="opencv",
+                    enforce_detection=False,  # Don't fail if no face found
+                    distance_metric="cosine"
+                )
+                print("✅ Completed with enforce_detection=False")
+            except Exception as e:
+                print(f"❌ Final fallback also failed: {e}")
+                return False
 
+        # ── 5. Decision based on distance and custom threshold ─────────────────────────────
+        distance  = result["distance"]
+        verified  = result["verified"]
+        similarity = (1 - distance) * 100
 
-    # No face detected
-    if len(stored_faces) == 0 or len(live_faces) == 0:
+        # Custom threshold: 0.55 suits ID photo vs webcam gap
+        CUSTOM_THRESHOLD = 0.55
+        verified = distance < CUSTOM_THRESHOLD
+
+        print(f"📊 Distance: {distance:.4f}  |  Threshold: {CUSTOM_THRESHOLD}  |  Similarity: {similarity:.1f}%")
+
+        if verified:
+            print("✅ Face verified")
+        else:
+            print("❌ Face does NOT match")
+
+        return verified
+
+    except Exception as e:
+        print(f"❌ Unexpected error during verification: {e}")
         return False
 
-
-    # 5️⃣ Take first detected face from each
-    x, y, w, h = stored_faces[0]
-    stored_face_crop = stored_gray[y:y+h, x:x+w]
-
-
-    x2, y2, w2, h2 = live_faces[0]
-    live_face_crop = live_gray[y2:y2+h2, x2:x2+w2]
-
-
-    # Resize to same size
-    stored_face_crop = cv2.resize(stored_face_crop, (100, 100))
-    live_face_crop = cv2.resize(live_face_crop, (100, 100))
-
-
-    # 6️⃣ Compare using Mean Squared Error
-    mse = np.mean((stored_face_crop - live_face_crop) ** 2)
-    threshold = 200  # tune this for demo purposes
-
-
-    return mse < threshold
-
-
-
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
