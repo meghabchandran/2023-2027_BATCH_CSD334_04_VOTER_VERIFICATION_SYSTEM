@@ -1,20 +1,21 @@
-__pycache__/
-*.pyc
+# Environment
 .env
 venv/
-*.db
-.idea/
-.vscode/
-
-
-# Frontend
-my-react-app/
 
 # Node
 node_modules/
+my-react-app/node_modules/
 
 # Python
-venv/
 __pycache__/
 *.pyc
 
+# Database
+*.db
+
+# IDE
+.idea/
+.vscode/
+
+# System
+.DS_Store
