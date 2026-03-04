@@ -35,7 +35,11 @@ function Login() {
 
       if (res.ok) {
         localStorage.setItem("role", data.role);
-        navigate("/add-details");
+        localStorage.setItem("isAuthenticated", "true");
+        navigate(
+          "/add-details" + (data.role === "data_entry" ? "" : "/dashboard"),
+          { replace: true },
+        );
       } else {
         setError(data.detail || "Invalid OTP or login failed");
         setSuccessMsg("");
@@ -76,7 +80,6 @@ function Login() {
 
   return (
     <div className="min-h-screen grid md:grid-cols-2 bg-[#B9D6F2]/20">
-
       {/* ── Left illustration panel ── */}
       <div className="hidden md:flex relative items-center justify-center bg-[#003559] text-white overflow-hidden">
         <img
@@ -97,7 +100,6 @@ function Login() {
 
       {/* ── Right login panel ── */}
       <div className="flex flex-col items-center justify-center p-6 gap-4">
-
         {/* Back to Home button — sits above the card, aligned left */}
         <div className="w-full max-w-md">
           <button
@@ -106,7 +108,13 @@ function Login() {
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/50 backdrop-blur text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M19 12H5M5 12L12 19M5 12L12 5"
+                stroke="#0353A4"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
             Back to Home
           </button>
@@ -119,12 +127,15 @@ function Login() {
           </h2>
 
           <p className="text-sm text-gray-500 mt-1">
-            Enter your credentials to manage voter details and booth information.
+            Enter your credentials to manage voter details and booth
+            information.
           </p>
 
           <div className="space-y-4 mt-6">
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Username</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Username
+              </label>
               <input
                 className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
                 type="text"
@@ -135,7 +146,9 @@ function Login() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Password</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Password
+              </label>
               <input
                 className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
                 type="password"
@@ -146,7 +159,9 @@ function Login() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Mobile Number</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Mobile Number
+              </label>
               <input
                 disabled={otpSent}
                 className={`w-full mt-1 px-3 py-2 rounded-lg border ${otpSent ? "bg-gray-100" : "border-gray-300"}`}

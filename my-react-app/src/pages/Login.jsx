@@ -18,12 +18,14 @@ function Login() {
 
     setError("");
     localStorage.setItem("boothId", boothId);
-    navigate("/dashboard");
+    localStorage.setItem("isAuthenticated", "true");
+    navigate("/dashboard" + (boothId === "data_entry" ? "/add-details" : ""), {
+      replace: true,
+    });
   };
 
   return (
     <div className="min-h-screen grid md:grid-cols-2 bg-[#B9D6F2]/20">
-
       {/* ── Left illustration panel ── */}
       <div className="hidden md:flex relative items-center justify-center bg-[#003559] text-white overflow-hidden">
         <img
@@ -44,7 +46,6 @@ function Login() {
 
       {/* ── Right login panel ── */}
       <div className="flex flex-col items-center justify-center p-6 gap-4">
-
         {/* Back to Home button — above the card, aligned left */}
         <div className="w-full max-w-md">
           <button
@@ -53,7 +54,13 @@ function Login() {
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/50 backdrop-blur text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M19 12H5M5 12L12 19M5 12L12 5"
+                stroke="#0353A4"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
             Back to Home
           </button>
@@ -71,7 +78,9 @@ function Login() {
 
           <div className="space-y-4 mt-6">
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Username</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Username
+              </label>
               <input
                 className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
                 type="text"
@@ -82,7 +91,9 @@ function Login() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Password</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Password
+              </label>
               <input
                 className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
                 type="password"
@@ -93,7 +104,9 @@ function Login() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Booth ID</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Booth ID
+              </label>
               <input
                 className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
                 type="text"
