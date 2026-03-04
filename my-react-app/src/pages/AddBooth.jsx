@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function AddBooth() {
   const [boothId, setBoothId] = useState("");
@@ -28,25 +29,52 @@ function AddBooth() {
     }
   };
 
+  useEffect(() => {
+    if (!localStorage.getItem("isAuthenticated")) {
+      navigate("/home", { replace: true });
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+    return () => {
+      window.onpopstate = null;
+    };
+  }, []);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#B9D6F2]/20 p-6">
       <div className="w-full max-w-md bg-white/30 backdrop-blur-md border border-[#0353A4]/30 p-8 rounded-2xl shadow-xl">
-
         {/* Header row with title and back button */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-semibold text-[#061A40]">
-            Add Booth
-          </h2>
-          <button
-            type="button"
-            onClick={() => navigate("/add-details")}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/50 backdrop-blur text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            Add Details
-          </button>
+          <h2 className="text-2xl font-semibold text-[#061A40]">Add Booth</h2>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate("/add-details")}
+              className="...existing classes..."
+            >
+              ← Add Details
+            </button>
+            <button
+              onClick={() => logout(navigate)}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-red-200 bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100 transition"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"
+                  stroke="#DC2626"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Logout
+            </button>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -82,9 +110,7 @@ function AddBooth() {
           </button>
 
           {message && (
-            <p className="text-center text-sm mt-2 text-[#061A40]">
-              {message}
-            </p>
+            <p className="text-center text-sm mt-2 text-[#061A40]">{message}</p>
           )}
         </form>
       </div>
