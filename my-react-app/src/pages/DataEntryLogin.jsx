@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../mocks/image/login.jpg";
+import { useEffect } from "react";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -9,7 +10,14 @@ function Login() {
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [error, setError] = useState("");
+  const [errors, setErrors] = useState({
+    username: "",
+    password: "",
+    mobile: "",
+  });
   const [successMsg, setSuccessMsg] = useState("");
+  const [timer, setTimer] = useState(60);
+  const [timerActive, setTimerActive] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,7 +43,8 @@ function Login() {
 
       if (res.ok) {
         localStorage.setItem("role", data.role);
-        navigate("/add-details");
+        localStorage.setItem("isAuthenticated", "true");
+        navigate("/add-details", { replace: true });
       } else {
         setError(data.detail || "Invalid OTP or login failed");
         setSuccessMsg("");
@@ -46,33 +55,68 @@ function Login() {
   };
 
   const handleSendOtp = async () => {
+    const newErrors = { username: "", password: "", mobile: "" };
+    let hasError = false;
+
+    if (!username) {
+      newErrors.username = "Username is required";
+      hasError = true;
+    }
+    if (!password) {
+      newErrors.password = "Password is required";
+      hasError = true;
+    }
     if (!mobile) {
-      setError("Mobile number required");
+      newErrors.mobile = "Mobile number is required";
+      hasError = true;
+    } else if (mobile.length < 10) {
+      newErrors.mobile = `${10 - mobile.length} more digit${10 - mobile.length !== 1 ? "s" : ""} needed`;
+      hasError = true;
+    } else if (!/^[6-9]/.test(mobile)) {
+      newErrors.mobile = "Must start with 6, 7, 8, or 9";
+      hasError = true;
+    }
+
+    if (hasError) {
+      setErrors(newErrors);
       return;
     }
 
-    try {
-      setError("");
+    // clear all errors and proceed
+    setErrors({ username: "", password: "", mobile: "" });
+    setError("");
 
+    try {
       const res = await fetch("http://127.0.0.1:8000/api/auth/request-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mobile_number: mobile }),
       });
-
       const data = await res.json();
-
       if (res.ok) {
         setOtpSent(true);
         setSuccessMsg("OTP sent successfully!");
-        setError("");
+        setTimer(60);
+        setTimerActive(true);
       } else {
         setError(data.detail || "Failed to send OTP");
       }
     } catch (err) {
-      setError("Server error");
+      setError("Server error. Please try again.");
     }
   };
+
+  useEffect(() => {
+    if (!timerActive) return;
+    if (timer === 0) {
+      setTimerActive(false);
+      return;
+    }
+    const interval = setInterval(() => {
+      setTimer((t) => t - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timer, timerActive]);
 
   return (
     <div className="min-h-screen grid md:grid-cols-2 bg-[#B9D6F2]/20">
@@ -133,12 +177,19 @@ function Login() {
                 Username
               </label>
               <input
-                className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
+                className={`w-full mt-1 px-3 py-2 rounded-lg border outline-none transition focus:ring-2
+      ${errors.username ? "border-red-400 focus:ring-red-200" : "border-gray-300 focus:border-[#006DAA] focus:ring-[#006DAA]/20"}`}
                 type="text"
                 placeholder="Username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  setErrors({ ...errors, username: "" });
+                }}
               />
+              {errors.username && (
+                <p className="text-red-500 text-xs mt-1">{errors.username}</p>
+              )}
             </div>
 
             <div>
@@ -146,12 +197,19 @@ function Login() {
                 Password
               </label>
               <input
-                className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
+                className={`w-full mt-1 px-3 py-2 rounded-lg border outline-none transition focus:ring-2
+      ${errors.password ? "border-red-400 focus:ring-red-200" : "border-gray-300 focus:border-[#006DAA] focus:ring-[#006DAA]/20"}`}
                 type="password"
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setErrors({ ...errors, password: "" });
+                }}
               />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
             </div>
 
             <div>
@@ -160,16 +218,30 @@ function Login() {
               </label>
               <input
                 disabled={otpSent}
-                className={`w-full mt-1 px-3 py-2 rounded-lg border ${otpSent ? "bg-gray-100" : "border-gray-300"}`}
-                type="text"
+                className={`w-full mt-1 px-3 py-2 rounded-lg border outline-none transition focus:ring-2
+      ${errors.mobile ? "border-red-400 focus:ring-red-200" : "border-gray-300 focus:border-[#006DAA] focus:ring-[#006DAA]/20"}
+      ${otpSent ? "bg-gray-100" : ""}`}
+                type="tel"
+                maxLength={10}
                 placeholder="Mobile Number"
                 value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, "");
+                  setMobile(val);
+                  setErrors({ ...errors, mobile: "" });
+                }}
               />
+              {errors.mobile && (
+                <p className="text-red-500 text-xs mt-1">{errors.mobile}</p>
+              )}
             </div>
 
             {successMsg && (
               <p className="text-green-600 text-sm font-medium">{successMsg}</p>
+            )}
+
+            {error && !otpSent && (
+              <p className="text-red-500 text-sm font-medium">{error}</p>
             )}
 
             {!otpSent ? (
@@ -182,9 +254,31 @@ function Login() {
             ) : (
               <div className="animate-fadeIn space-y-4 mt-4 bg-blue-50 p-4 rounded-xl border border-blue-100">
                 <div>
-                  <label className="text-sm font-semibold text-[#006DAA]">
-                    Enter 4-Digit Code
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-sm font-semibold text-[#006DAA]">
+                      Enter 4-Digit Code
+                    </label>
+                    {/* Timer or Resend */}
+                    {timerActive ? (
+                      <span className="text-xs font-medium text-gray-500">
+                        Expires in{" "}
+                        <span
+                          className={`font-bold ${timer <= 10 ? "text-red-500" : "text-[#0353A4]"}`}
+                        >
+                          0:{timer.toString().padStart(2, "0")}
+                        </span>
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleSendOtp}
+                        className="text-xs font-semibold text-[#0353A4] hover:underline transition"
+                      >
+                        Resend OTP
+                      </button>
+                    )}
+                  </div>
+
                   <input
                     className="w-full mt-1 px-3 py-2 rounded-lg border border-[#006DAA] text-center text-xl tracking-widest outline-none"
                     type="text"
@@ -195,13 +289,25 @@ function Login() {
                   />
                 </div>
 
+                {/* Expired warning */}
+                {!timerActive && otpSent && (
+                  <p className="text-red-500 text-xs font-medium">
+                    OTP expired. Please resend.
+                  </p>
+                )}
+
                 {error && (
                   <p className="text-red-500 text-sm font-medium">{error}</p>
                 )}
 
                 <button
                   onClick={handleLogin}
-                  className="w-full bg-[#0353A4] hover:bg-[#003559] text-white font-medium rounded-lg py-2.5 transition"
+                  disabled={!timerActive}
+                  className={`w-full font-medium rounded-lg py-2.5 transition ${
+                    timerActive
+                      ? "bg-[#0353A4] hover:bg-[#003559] text-white"
+                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  }`}
                 >
                   Verify & Login
                 </button>
@@ -211,6 +317,8 @@ function Login() {
                     setOtpSent(false);
                     setSuccessMsg("");
                     setError("");
+                    setTimer(60);
+                    setTimerActive(false);
                   }}
                   className="w-full text-xs text-gray-500 hover:text-blue-600 transition"
                 >

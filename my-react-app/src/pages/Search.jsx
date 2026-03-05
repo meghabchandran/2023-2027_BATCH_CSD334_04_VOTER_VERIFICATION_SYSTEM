@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getVoterById } from "../api/voterApi";
 import VoterProfile from "./VoterProfile";
+import { logout } from "../utils/auth";
+import { useEffect } from "react";
 
 /* ─────────────────────────────────────────────
    Styles — matches Home.jsx palette exactly
@@ -251,9 +253,15 @@ const styles = `
 /* ── Accent bar (matches Home.jsx) ── */
 function AccentBar() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-      <div style={{ width: 32, height: 3, borderRadius: 2, background: "#0353A4" }} />
-      <div style={{ width: 9, height: 3, borderRadius: 2, background: "#B9D6F2" }} />
+    <div
+      style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}
+    >
+      <div
+        style={{ width: 32, height: 3, borderRadius: 2, background: "#0353A4" }}
+      />
+      <div
+        style={{ width: 9, height: 3, borderRadius: 2, background: "#B9D6F2" }}
+      />
     </div>
   );
 }
@@ -264,23 +272,41 @@ function InfoRow({ icon, label, value, mono }) {
     <div className="vvs-info-row">
       <div
         style={{
-          width: 34, height: 34, borderRadius: 8, flexShrink: 0,
+          width: 34,
+          height: 34,
+          borderRadius: 8,
+          flexShrink: 0,
           background: "rgba(3,83,164,0.07)",
           border: "1px solid rgba(3,83,164,0.12)",
-          display: "flex", alignItems: "center", justifyContent: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           fontSize: 16,
         }}
       >
         {icon}
       </div>
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: 10, color: "#8096B0", letterSpacing: "0.1em", textTransform: "uppercase", fontFamily: "'DM Mono', monospace" }}>
+        <div
+          style={{
+            fontSize: 10,
+            color: "#8096B0",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            fontFamily: "'DM Mono', monospace",
+          }}
+        >
           {label}
         </div>
-        <div style={{
-          fontSize: 14, fontWeight: 600, color: "#061A40", marginTop: 1,
-          fontFamily: mono ? "'DM Mono', monospace" : "'DM Sans', sans-serif",
-        }}>
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 600,
+            color: "#061A40",
+            marginTop: 1,
+            fontFamily: mono ? "'DM Mono', monospace" : "'DM Sans', sans-serif",
+          }}
+        >
           {value || "—"}
         </div>
       </div>
@@ -292,10 +318,10 @@ function InfoRow({ icon, label, value, mono }) {
    Main Component
 ───────────────────────────────────────────── */
 export default function Search() {
-  const [voterId, setVoterId]   = useState("");
-  const [voter, setVoter]       = useState(null);
-  const [error, setError]       = useState("");
-  const [loading, setLoading]   = useState(false);
+  const [voterId, setVoterId] = useState("");
+  const [voter, setVoter] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [shakeKey, setShakeKey] = useState(0);
   const inputRef = useRef(null);
   const navigate = useNavigate();
@@ -306,7 +332,7 @@ export default function Search() {
 
     if (!voterId.trim()) {
       setError("Please enter a Voter ID to search.");
-      setShakeKey(k => k + 1);
+      setShakeKey((k) => k + 1);
       inputRef.current?.focus();
       return;
     }
@@ -316,8 +342,10 @@ export default function Search() {
       const data = await getVoterById(voterId.trim());
       setVoter(data);
     } catch {
-      setError("No voter record found for this ID. Please check and try again.");
-      setShakeKey(k => k + 1);
+      setError(
+        "No voter record found for this ID. Please check and try again.",
+      );
+      setShakeKey((k) => k + 1);
     } finally {
       setLoading(false);
     }
@@ -329,6 +357,22 @@ export default function Search() {
 
   const alreadyVoted = voter?.has_voted === true || voter?.status === "voted";
 
+  useEffect(() => {
+    if (!localStorage.getItem("isAuthenticated")) {
+      navigate("/home", { replace: true });
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+    return () => {
+      window.onpopstate = null;
+    };
+  }, []);
+
   return (
     <>
       <style>{styles}</style>
@@ -338,7 +382,8 @@ export default function Search() {
         className="vvs-search"
         style={{
           minHeight: "100vh",
-          background: "linear-gradient(135deg, #EBF3FB 0%, #D6E9F8 50%, #B9D6F2 100%)",
+          background:
+            "linear-gradient(135deg, #EBF3FB 0%, #D6E9F8 50%, #B9D6F2 100%)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -350,7 +395,8 @@ export default function Search() {
         <div
           className="vvs-fadeIn"
           style={{
-            width: "100%", maxWidth: 620,
+            width: "100%",
+            maxWidth: 620,
             marginBottom: 20,
             display: "flex",
             alignItems: "center",
@@ -358,35 +404,52 @@ export default function Search() {
             gap: 10,
           }}
         >
-          {/* Back to Home */}
-          <button
-            className="vvs-btn-back"
-            onClick={() => navigate("/")}
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            Back to Home
-          </button>
-
-          {/* Back to Data Entry Login */}
+          {/* Back to Dashboard */}
           <button
             className="vvs-btn-back"
             onClick={() => navigate("/dashboard")}
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="4" width="18" height="16" rx="2" stroke="#0353A4" strokeWidth="2"/>
-              <path d="M8 10h8M8 14h5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round"/>
+              <path
+                d="M19 12H5M5 12L12 19M5 12L12 5"
+                stroke="#0353A4"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
             Dashboard
+          </button>
+
+          {/* Logout */}
+          <button
+            className="vvs-btn-back"
+            onClick={() => logout(navigate)}
+            style={{ borderColor: "rgba(220,38,38,0.3)", color: "#DC2626" }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"
+                stroke="#DC2626"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Logout
           </button>
         </div>
 
         {/* ── Page header ── */}
-        <div className="vvs-fadeUp" style={{ textAlign: "center", marginBottom: 32, maxWidth: 520 }}>
+        <div
+          className="vvs-fadeUp"
+          style={{ textAlign: "center", marginBottom: 32, maxWidth: 520 }}
+        >
           <div
             style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
               background: "rgba(3,83,164,0.08)",
               border: "1px solid rgba(3,83,164,0.15)",
               borderRadius: 20,
@@ -394,11 +457,16 @@ export default function Search() {
               marginBottom: 14,
             }}
           >
+            <span className="vvs-dot" style={{ background: "#0353A4" }} />
             <span
-              className="vvs-dot"
-              style={{ background: "#0353A4" }}
-            />
-            <span style={{ fontSize: 10, color: "#0353A4", letterSpacing: "0.12em", fontWeight: 700, fontFamily: "'DM Mono', monospace" }}>
+              style={{
+                fontSize: 10,
+                color: "#0353A4",
+                letterSpacing: "0.12em",
+                fontWeight: 700,
+                fontFamily: "'DM Mono', monospace",
+              }}
+            >
               VOTER SEARCH TERMINAL
             </span>
           </div>
@@ -406,7 +474,8 @@ export default function Search() {
           <h1
             style={{
               fontFamily: "'Syne', sans-serif",
-              fontSize: 32, fontWeight: 800,
+              fontSize: 32,
+              fontWeight: 800,
               color: "#061A40",
               letterSpacing: "-0.01em",
               lineHeight: 1.1,
@@ -424,7 +493,8 @@ export default function Search() {
         <div
           className="vvs-fadeUp vvs-d1"
           style={{
-            width: "100%", maxWidth: 620,
+            width: "100%",
+            maxWidth: 620,
             background: "rgba(255,255,255,0.42)",
             backdropFilter: "blur(18px)",
             WebkitBackdropFilter: "blur(18px)",
@@ -440,9 +510,11 @@ export default function Search() {
             <h2
               style={{
                 fontFamily: "'Syne', sans-serif",
-                fontSize: 18, fontWeight: 800,
+                fontSize: 18,
+                fontWeight: 800,
                 color: "#061A40",
-                marginTop: 6, marginBottom: 2,
+                marginTop: 6,
+                marginBottom: 2,
               }}
             >
               Voter Lookup
@@ -456,16 +528,42 @@ export default function Search() {
           <div
             key={`shake-${shakeKey}`}
             className={shakeKey > 0 ? "vvs-shake" : ""}
-            style={{ display: "flex", gap: 10, alignItems: "center", position: "relative" }}
+            style={{
+              display: "flex",
+              gap: 10,
+              alignItems: "center",
+              position: "relative",
+            }}
           >
             {/* Search icon inside input */}
             <div style={{ position: "relative", flex: 1 }}>
               <svg
-                style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", opacity: 0.4, pointerEvents: "none" }}
-                width="18" height="18" viewBox="0 0 24 24" fill="none"
+                style={{
+                  position: "absolute",
+                  left: 14,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  opacity: 0.4,
+                  pointerEvents: "none",
+                }}
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
               >
-                <circle cx="11" cy="11" r="7" stroke="#0353A4" strokeWidth="2"/>
-                <path d="M16.5 16.5L21 21" stroke="#0353A4" strokeWidth="2" strokeLinecap="round"/>
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="7"
+                  stroke="#0353A4"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M16.5 16.5L21 21"
+                  stroke="#0353A4"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
               </svg>
               <input
                 ref={inputRef}
@@ -473,7 +571,10 @@ export default function Search() {
                 type="text"
                 placeholder="e.g. VID-20240001"
                 value={voterId}
-                onChange={(e) => { setVoterId(e.target.value); setError(""); }}
+                onChange={(e) => {
+                  setVoterId(e.target.value);
+                  setError("");
+                }}
                 onKeyDown={handleKeyDown}
                 style={{ width: "100%" }}
               />
@@ -493,8 +594,19 @@ export default function Search() {
               ) : (
                 <>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                    <circle cx="11" cy="11" r="7" stroke="white" strokeWidth="2.2"/>
-                    <path d="M16.5 16.5L21 21" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+                    <circle
+                      cx="11"
+                      cy="11"
+                      r="7"
+                      stroke="white"
+                      strokeWidth="2.2"
+                    />
+                    <path
+                      d="M16.5 16.5L21 21"
+                      stroke="white"
+                      strokeWidth="2.2"
+                      strokeLinecap="round"
+                    />
                   </svg>
                   Search
                 </>
@@ -503,12 +615,40 @@ export default function Search() {
           </div>
 
           {/* Hint */}
-          <p style={{ fontSize: 11, color: "#8096B0", marginTop: 8, display: "flex", alignItems: "center", gap: 5 }}>
+          <p
+            style={{
+              fontSize: 11,
+              color: "#8096B0",
+              marginTop: 8,
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+            }}
+          >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" stroke="#8096B0" strokeWidth="2"/>
-              <path d="M12 8v4M12 16h.01" stroke="#8096B0" strokeWidth="2" strokeLinecap="round"/>
+              <circle cx="12" cy="12" r="10" stroke="#8096B0" strokeWidth="2" />
+              <path
+                d="M12 8v4M12 16h.01"
+                stroke="#8096B0"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             </svg>
-            Press <kbd style={{ background: "rgba(3,83,164,0.08)", border: "1px solid rgba(3,83,164,0.15)", borderRadius: 4, padding: "0 5px", fontSize: 10, fontFamily: "'DM Mono', monospace", color: "#0353A4" }}>Enter</kbd> to search
+            Press{" "}
+            <kbd
+              style={{
+                background: "rgba(3,83,164,0.08)",
+                border: "1px solid rgba(3,83,164,0.15)",
+                borderRadius: 4,
+                padding: "0 5px",
+                fontSize: 10,
+                fontFamily: "'DM Mono', monospace",
+                color: "#0353A4",
+              }}
+            >
+              Enter
+            </kbd>{" "}
+            to search
           </p>
 
           {/* ── Error state ── */}
@@ -521,12 +661,23 @@ export default function Search() {
                 background: "rgba(239,68,68,0.07)",
                 border: "1px solid rgba(239,68,68,0.22)",
                 borderRadius: 10,
-                display: "flex", alignItems: "flex-start", gap: 10,
+                display: "flex",
+                alignItems: "flex-start",
+                gap: 10,
               }}
             >
-              <div style={{ fontSize: 18, flexShrink: 0, marginTop: 1 }}>⚠️</div>
+              <div style={{ fontSize: 18, flexShrink: 0, marginTop: 1 }}>
+                ⚠️
+              </div>
               <div>
-                <p style={{ fontSize: 13, fontWeight: 600, color: "#B91C1C", marginBottom: 2 }}>
+                <p
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "#B91C1C",
+                    marginBottom: 2,
+                  }}
+                >
                   Voter Not Found
                 </p>
                 <p style={{ fontSize: 12, color: "#7F1D1D" }}>{error}</p>
@@ -560,8 +711,11 @@ export default function Search() {
                   ? "rgba(239,68,68,0.04)"
                   : "rgba(3,83,164,0.04)",
                 borderBottom: "1px solid rgba(185,214,242,0.6)",
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                flexWrap: "wrap", gap: 8,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: 8,
               }}
             >
               <div>
@@ -569,8 +723,10 @@ export default function Search() {
                 <h2
                   style={{
                     fontFamily: "'Syne', sans-serif",
-                    fontSize: 17, fontWeight: 800,
-                    color: "#061A40", marginTop: 4,
+                    fontSize: 17,
+                    fontWeight: 800,
+                    color: "#061A40",
+                    marginTop: 4,
                   }}
                 >
                   Voter Details
@@ -586,18 +742,23 @@ export default function Search() {
                     borderRadius: 8,
                     padding: "4px 10px",
                     fontFamily: "'DM Mono', monospace",
-                    fontSize: 12, fontWeight: 500, color: "#0353A4",
+                    fontSize: 12,
+                    fontWeight: 500,
+                    color: "#0353A4",
                   }}
                 >
                   {voter.voter_id}
                 </div>
 
                 {/* Vote status badge */}
-                <span className={`vvs-badge ${alreadyVoted ? "vvs-badge-voted" : "vvs-badge-active"}`}>
+                <span
+                  className={`vvs-badge ${alreadyVoted ? "vvs-badge-voted" : "vvs-badge-active"}`}
+                >
                   <span
                     className="vvs-dot"
                     style={{
-                      width: 6, height: 6,
+                      width: 6,
+                      height: 6,
                       background: alreadyVoted ? "#DC2626" : "#10B981",
                     }}
                   />
@@ -612,11 +773,20 @@ export default function Search() {
                 <VoterProfile voter={voter} />
               ) : (
                 <>
-                  <InfoRow icon="👤" label="Full Name"     value={voter.name}           />
-                  <InfoRow icon="🪪" label="Voter ID"      value={voter.voter_id} mono  />
-                  <InfoRow icon="🗺️" label="Constituency"  value={voter.constituency}   />
-                  <InfoRow icon="🎂" label="Date of Birth" value={voter.dob}            />
-                  <InfoRow icon="🏠" label="Address"       value={voter.address}        />
+                  <InfoRow icon="👤" label="Full Name" value={voter.name} />
+                  <InfoRow
+                    icon="🪪"
+                    label="Voter ID"
+                    value={voter.voter_id}
+                    mono
+                  />
+                  <InfoRow
+                    icon="🗺️"
+                    label="Constituency"
+                    value={voter.constituency}
+                  />
+                  <InfoRow icon="🎂" label="Date of Birth" value={voter.dob} />
+                  <InfoRow icon="🏠" label="Address" value={voter.address} />
                 </>
               )}
             </div>
@@ -629,7 +799,13 @@ export default function Search() {
             */}
             {typeof VoterProfile !== "function" && (
               <>
-                <div style={{ height: 1, background: "rgba(185,214,242,0.7)", margin: "4px 24px 0" }} />
+                <div
+                  style={{
+                    height: 1,
+                    background: "rgba(185,214,242,0.7)",
+                    margin: "4px 24px 0",
+                  }}
+                />
                 <div style={{ padding: "18px 24px 22px" }}>
                   {alreadyVoted ? (
                     <div
@@ -638,16 +814,32 @@ export default function Search() {
                         background: "rgba(239,68,68,0.07)",
                         border: "1px solid rgba(239,68,68,0.2)",
                         borderRadius: 10,
-                        display: "flex", alignItems: "center", gap: 12,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
                       }}
                     >
                       <div style={{ fontSize: 24 }}>🚫</div>
                       <div>
-                        <p style={{ fontSize: 13, fontWeight: 700, color: "#B91C1C", marginBottom: 2 }}>
+                        <p
+                          style={{
+                            fontSize: 13,
+                            fontWeight: 700,
+                            color: "#B91C1C",
+                            marginBottom: 2,
+                          }}
+                        >
                           Duplicate Vote Blocked
                         </p>
-                        <p style={{ fontSize: 12, color: "#7F1D1D", lineHeight: 1.5 }}>
-                          This voter has already cast their vote. Verification cannot proceed.
+                        <p
+                          style={{
+                            fontSize: 12,
+                            color: "#7F1D1D",
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          This voter has already cast their vote. Verification
+                          cannot proceed.
                         </p>
                       </div>
                     </div>
@@ -657,13 +849,35 @@ export default function Search() {
                         className="vvs-btn-verify"
                         onClick={() => navigate(`/verify/${voter.voter_id}`)}
                       >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                          <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z" fill="white" fillOpacity="0.9"/>
-                          <path d="M9 12l2 2 4-4" stroke="#061A40" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"
+                            fill="white"
+                            fillOpacity="0.9"
+                          />
+                          <path
+                            d="M9 12l2 2 4-4"
+                            stroke="#061A40"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
                         Proceed to Face Verification
                       </button>
-                      <p style={{ textAlign: "center", fontSize: 11, color: "#8096B0", marginTop: 8 }}>
+                      <p
+                        style={{
+                          textAlign: "center",
+                          fontSize: 11,
+                          color: "#8096B0",
+                          marginTop: 8,
+                        }}
+                      >
                         Facial recognition will be used to confirm identity
                       </p>
                     </>
@@ -679,15 +893,20 @@ export default function Search() {
           <div
             className="vvs-fadeIn vvs-d3"
             style={{
-              marginTop: 24, textAlign: "center",
-              display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
+              marginTop: 24,
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 8,
             }}
           >
             <div style={{ fontSize: 36, opacity: 0.3 }}>🔍</div>
-            <p style={{ fontSize: 12, color: "#8096B0" }}>Search results will appear here</p>
+            <p style={{ fontSize: 12, color: "#8096B0" }}>
+              Search results will appear here
+            </p>
           </div>
         )}
-
       </div>
     </>
   );

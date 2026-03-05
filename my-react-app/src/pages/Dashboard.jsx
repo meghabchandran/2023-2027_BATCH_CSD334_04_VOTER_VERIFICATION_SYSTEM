@@ -1,11 +1,28 @@
 import mockBooths from "../mocks/mockbooth";
 import mockCandidates from "../mocks/mockcandidates";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../utils/auth";
+import { useEffect } from "react";
 
 function Dashboard() {
   const boothId = localStorage.getItem("boothId");
   const booth = mockBooths.find((b) => b.booth_id === boothId);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("isAuthenticated")) {
+      navigate("/", { replace: true });
+    }
+  }, []);
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+    return () => {
+      window.onpopstate = null;
+    };
+  }, []);
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#B9D6F2]/40 px-4 py-6 sm:px-6">
@@ -15,47 +32,31 @@ function Dashboard() {
           <h1 className="text-3xl font-bold text-[#0353A4] tracking-tight">
             Polling Booth Dashboard
           </h1>
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-[#B9D6F2]/50 border border-[#006DAA]/40 rounded-full">
-            <span className="w-2 h-2 rounded-full bg-[#006DAA]"></span>
-            <p className="text-sm font-medium text-[#061A40]">Booth Active</p>
+
+          {/* Right side: badge + logout */}
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-[#B9D6F2]/50 border border-[#006DAA]/40 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-[#006DAA]"></span>
+              <p className="text-sm font-medium text-[#061A40]">Booth Active</p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => logout(navigate)}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-red-200 bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100 transition"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Logout
+            </button>
           </div>
-        </div>
-
-        {/* ── Navigation buttons ── */}
-        <div className="flex items-center gap-3 flex-wrap">
-          <button
-            type="button"
-            onClick={() => navigate("/")}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/70 text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M19 12H5M5 12L12 19M5 12L12 5"
-                stroke="#0353A4"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            Back to Home
-          </button>
-
-          <button
-            type="button"
-            onClick={() => navigate("/login")}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/70 text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"
-                stroke="#0353A4"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            Booth Officer Login
-          </button>
         </div>
 
         {/* ── Booth Details Section ── */}
@@ -95,7 +96,7 @@ function Dashboard() {
             {mockCandidates.map((candidate) => (
               <div
                 key={candidate.id}
-                className="bg-white border border-[#006DAA]/30 rounded-xl p-5 shadow-sm hover:bg-[#eef4fb] hover:shadow-md transition-all duration-300"
+                className="bg-white border border-[#006DAA]/30 rounded-xl p-5 shadow-sm hover:bg-white hover:border-[#0353A4] hover:shadow-[0_0_0_3px_rgba(3,83,164,0.15)] transition-all duration-300"
               >
                 <div className="flex items-center space-x-4">
                   <img
