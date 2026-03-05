@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../utils/auth";
 
 function AddVoter() {
   const navigate = useNavigate();
@@ -37,8 +38,7 @@ function AddVoter() {
 
     if (type === "file") {
       setForm({ ...form, file: files[0] });
-    } 
-    else if (name === "dob") {
+    } else if (name === "dob") {
       const today = new Date();
       const birthDate = new Date(value);
 
@@ -61,8 +61,7 @@ function AddVoter() {
       } else {
         setEligible(true);
       }
-    } 
-    else {
+    } else {
       setForm({ ...form, [name]: value });
     }
   };
@@ -70,14 +69,11 @@ function AddVoter() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!eligible)
-      return setMessage("Ineligible to vote (Must be 18+)");
+    if (!eligible) return setMessage("Ineligible to vote (Must be 18+)");
 
-    if (!agreed)
-      return setMessage("Please confirm details.");
+    if (!agreed) return setMessage("Please confirm details.");
 
-    if (userCaptcha !== captcha)
-      return setMessage("Incorrect captcha.");
+    if (userCaptcha !== captcha) return setMessage("Incorrect captcha.");
 
     const formData = new FormData();
     Object.keys(form).forEach((key) => {
@@ -103,28 +99,57 @@ function AddVoter() {
     }
   };
 
+  useEffect(() => {
+    if (!localStorage.getItem("isAuthenticated")) {
+      navigate("/home", { replace: true });
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+    return () => {
+      window.onpopstate = null;
+    };
+  }, []);
+
   const inputStyle =
     "w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#B9D6F2]/20 p-6">
       <div className="w-full max-w-xl bg-white/30 backdrop-blur-md border border-[#0353A4]/30 p-8 rounded-2xl shadow-xl">
-
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-semibold text-[#061A40]">
-            Add Voter
-          </h2>
-          <button
-            type="button"
-            onClick={() => navigate("/add-details")}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/50 backdrop-blur text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
-          >
-            Add Details
-          </button>
+          <h2 className="text-2xl font-semibold text-[#061A40]">Add Voter</h2>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate("/add-details")}
+              className="...existing classes..."
+            >
+              ← Add Details
+            </button>
+            <button
+              onClick={() => logout(navigate)}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-red-200 bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100 transition"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"
+                  stroke="#DC2626"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Logout
+            </button>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3">
-
           <input
             name="voter_id"
             placeholder="VOTER ID"
@@ -238,9 +263,7 @@ function AddVoter() {
           </label>
 
           <div className="mt-3">
-            <p className="font-semibold text-[#061A40]">
-              Captcha: {captcha}
-            </p>
+            <p className="font-semibold text-[#061A40]">Captcha: {captcha}</p>
 
             <input
               placeholder="Enter Captcha"
@@ -264,9 +287,7 @@ function AddVoter() {
           </button>
 
           {message && (
-            <p className="text-center text-sm mt-2 text-[#061A40]">
-              {message}
-            </p>
+            <p className="text-center text-sm mt-2 text-[#061A40]">{message}</p>
           )}
         </form>
       </div>
