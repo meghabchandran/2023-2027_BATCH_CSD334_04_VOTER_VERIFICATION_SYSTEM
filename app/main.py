@@ -9,7 +9,7 @@ from app.api.auth import router as auth_router
 
 
 # ----------------------------
-# Create FastAPI App FIRST
+# Create FastAPI App
 # ----------------------------
 app = FastAPI(title="Voter Verification Backend")
 

@@ -1,23 +1,24 @@
-import os
-from fastapi import APIRouter, UploadFile, File, Form, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Form, UploadFile, File
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from app.db.database import get_db
-from app.db.models import Voter
+from app.db import models
 from app.services.face_verification import verify_face
+import os
+import re
 
-router = APIRouter(prefix="/voters", tags=["Voters"])
-
-UPLOAD_FOLDER = "app/uploaded_faces"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
+router = APIRouter()
 
 # --------------------------
-# Get Voter
+# GET VOTER BY ID
 # --------------------------
-
 @router.get("/{voter_id}")
 def get_voter(voter_id: str, db: Session = Depends(get_db)):
-    voter = db.query(Voter).filter(Voter.voter_id == voter_id).first()
+    voter_id = voter_id.strip()
+
+    voter = db.query(models.Voter).filter(
+        func.lower(models.Voter.voter_id) == voter_id.lower()
+    ).first()
 
     if not voter:
         raise HTTPException(status_code=404, detail="Voter not found")
@@ -26,16 +27,15 @@ def get_voter(voter_id: str, db: Session = Depends(get_db)):
 
 
 # --------------------------
-# Add Voter
+# ADD NEW VOTER
 # --------------------------
-
 @router.post("/add")
 async def add_voter(
     voter_id: str = Form(...),
     name: str = Form(...),
     age: int = Form(...),
     fathers_name: str = Form(...),
-    spouse_name: str = Form(...),
+    spouse_name: str = Form(None),  # OPTIONAL
     gender: str = Form(...),
     address: str = Form(...),
     dob: str = Form(...),
@@ -44,18 +44,34 @@ async def add_voter(
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
+    voter_id = voter_id.strip()
 
-    existing = db.query(Voter).filter(Voter.voter_id == voter_id).first()
+    # 🔎 Check duplicate voter
+    existing = db.query(models.Voter).filter(
+        func.lower(models.Voter.voter_id) == voter_id.lower()
+    ).first()
+
     if existing:
         raise HTTPException(status_code=400, detail="Voter already exists")
 
-    # Save image
-    file_path = os.path.join(UPLOAD_FOLDER, f"{voter_id}.jpg")
+    # 🔎 Age validation
+    if age < 18:
+        raise HTTPException(status_code=400, detail="Voter must be 18 years or older")
 
-    with open(file_path, "wb") as buffer:
-        buffer.write(await file.read())
+    # 🔎 Aadhaar validation
+    if not re.fullmatch(r"\d{12}", aadhaar_id):
+        raise HTTPException(status_code=400, detail="Aadhaar must be exactly 12 digits")
 
-    new_voter = Voter(
+    # 📁 Save face image
+    os.makedirs("app/sample_data/faces", exist_ok=True)
+    file_location = f"app/sample_data/faces/{voter_id}.jpg"
+
+    contents = await file.read()
+    with open(file_location, "wb") as f:
+        f.write(contents)
+
+    # 🧾 Create voter object
+    new_voter = models.Voter(
         voter_id=voter_id,
         name=name,
         age=age,
@@ -67,74 +83,64 @@ async def add_voter(
         booth_id=booth_id,
         aadhaar_id=aadhaar_id,
         has_voted=False,
-        face_image_path=file_path
+        face_image_path=file_location
     )
 
     db.add(new_voter)
     db.commit()
+    db.refresh(new_voter)
 
     return {"message": "Voter added successfully"}
 
 
 # --------------------------
-# Delete Voter
+# VERIFY FACE
 # --------------------------
-
-@router.delete("/{voter_id}")
-def delete_voter(voter_id: str, db: Session = Depends(get_db)):
-    voter = db.query(Voter).filter(Voter.voter_id == voter_id).first()
-
-    if not voter:
-        raise HTTPException(status_code=404, detail="Voter not found")
-
-    # Delete image also
-    if voter.face_image_path and os.path.exists(voter.face_image_path):
-        os.remove(voter.face_image_path)
-
-    db.delete(voter)
-    db.commit()
-
-    return {"message": "Voter deleted successfully"}
-
-
-# --------------------------
-# Verify Face
-# --------------------------
-
 @router.post("/{voter_id}/verify-face")
-def verify_voter_face(
+async def verify_voter_face(
     voter_id: str,
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
-    voter = db.query(Voter).filter(Voter.voter_id == voter_id).first()
+    voter_id = voter_id.strip()
+
+    voter = db.query(models.Voter).filter(
+        func.lower(models.Voter.voter_id) == voter_id.lower()
+    ).first()
 
     if not voter:
         raise HTTPException(status_code=404, detail="Voter not found")
 
-    if voter.has_voted:
-        raise HTTPException(status_code=400, detail="Already voted")
+    if not voter.face_image_path:
+        raise HTTPException(status_code=400, detail="No reference image found")
 
-    verified = verify_face(voter.face_image_path, file)
+    result = await verify_face(voter.face_image_path, file)
 
-    return {"verified": verified}
+    if not result:
+        raise HTTPException(status_code=401, detail="Face does not match")
+
+    return {"message": "Face verified successfully"}
 
 
 # --------------------------
-# Mark as Voted
+# MARK AS VOTED
 # --------------------------
-
 @router.post("/{voter_id}/vote")
-def mark_voter_as_voted(voter_id: str, db: Session = Depends(get_db)):
-    voter = db.query(Voter).filter(Voter.voter_id == voter_id).first()
+def mark_as_voted(voter_id: str, db: Session = Depends(get_db)):
+    voter_id = voter_id.strip()
+
+    voter = db.query(models.Voter).filter(
+        func.lower(models.Voter.voter_id) == voter_id.lower()
+    ).first()
 
     if not voter:
         raise HTTPException(status_code=404, detail="Voter not found")
 
     if voter.has_voted:
-        raise HTTPException(status_code=400, detail="Duplicate voting blocked")
+        raise HTTPException(status_code=400, detail="Voter has already voted")
 
     voter.has_voted = True
     db.commit()
+    db.refresh(voter)
 
-    return {"message": "Voter marked as voted"}
+    return {"message": "Voter marked as voted successfully"}

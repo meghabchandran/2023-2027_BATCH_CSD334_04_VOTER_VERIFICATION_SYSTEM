@@ -22,19 +22,18 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen grid md:grid-cols-2 bg-[#B9D6F2]/30 font-body">
-      {/* ───── LEFT PANEL ───── */}
+    <div className="min-h-screen grid md:grid-cols-2 bg-[#B9D6F2]/20">
+
+      {/* ── Left illustration panel ── */}
       <div className="hidden md:flex relative items-center justify-center bg-[#003559] text-white overflow-hidden">
         <img
           src={loginImage}
           alt="Voting Illustration"
           className="absolute inset-0 w-full h-full object-cover opacity-50"
         />
-
-        <div className="absolute inset-0 bg-[#061A40]/70"></div>
-
-        <div className="relative z-10 max-w-md px-12">
-          <h1 className="text-4xl font-heading font-extrabold tracking-tight leading-tight">
+        <div className="absolute inset-0 bg-[#061A40]/70 z-0" />
+        <div className="relative z-10 max-w-sm text-left px-12 animate-slideUp">
+          <h1 className="text-4xl font-bold tracking-tight text-white">
             Managing the Democratic Process
           </h1>
 
@@ -46,10 +45,26 @@ export default function Login() {
         </div>
       </div>
 
-      {/* ───── RIGHT PANEL ───── */}
-      <div className="flex items-center justify-center p-6">
-        <div className="w-full max-w-md bg-white/85 backdrop-blur-md border border-[#006DAA]/20 p-10 rounded-3xl shadow-[0_10px_30px_rgba(3,83,164,0.08)]">
-          <h2 className="text-2xl font-heading font-bold text-[#061A40]">
+      {/* ── Right login panel ── */}
+      <div className="flex flex-col items-center justify-center p-6 gap-4">
+
+        {/* Back to Home button — above the card, aligned left */}
+        <div className="w-full max-w-md">
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/50 backdrop-blur text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Back to Home
+          </button>
+        </div>
+
+        {/* Login card */}
+        <div className="w-full max-w-md bg-white/30 backdrop-blur-md border border-[#0353A4]/30 p-8 rounded-2xl shadow-xl animate-fadeIn">
+          <h2 className="text-2xl font-semibold tracking-tight text-[#061A40]">
             Booth Officer Login
           </h2>
 
@@ -60,14 +75,9 @@ export default function Login() {
           <div className="space-y-5 mt-8">
             {/* Username */}
             <div>
-              <label
-                htmlFor="username"
-                className="text-sm font-medium text-[#061A40]"
-              >
-                Username
-              </label>
+              <label className="text-sm font-medium text-[#061A40]">Username</label>
               <input
-                id="username"
+                className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -77,14 +87,9 @@ export default function Login() {
 
             {/* Password */}
             <div>
-              <label
-                htmlFor="password"
-                className="text-sm font-medium text-[#061A40]"
-              >
-                Password
-              </label>
+              <label className="text-sm font-medium text-[#061A40]">Password</label>
               <input
-                id="password"
+                className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -94,14 +99,9 @@ export default function Login() {
 
             {/* Booth ID */}
             <div>
-              <label
-                htmlFor="boothId"
-                className="text-sm font-medium text-[#061A40]"
-              >
-                Booth ID
-              </label>
+              <label className="text-sm font-medium text-[#061A40]">Booth ID</label>
               <input
-                id="boothId"
+                className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
                 type="text"
                 value={boothId}
                 onChange={(e) => setBoothId(e.target.value)}
@@ -109,13 +109,11 @@ export default function Login() {
               />
             </div>
 
-            {error && (
-              <p className="text-sm text-red-500 font-medium">{error}</p>
-            )}
+            {error && <p className="text-red-500 text-sm">{error}</p>}
 
             <button
               onClick={handleLogin}
-              className="w-full mt-4 bg-[#0353A4] hover:bg-[#003559] text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+              className="w-full mt-4 bg-[#0353A4] hover:bg-[#003559] text-white font-medium rounded-lg py-2.5 transition"
             >
               Login
             </button>
@@ -125,3 +123,5 @@ export default function Login() {
     </div>
   );
 }
+
+export default Login;

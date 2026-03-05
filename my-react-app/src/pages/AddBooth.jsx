@@ -6,12 +6,10 @@ function AddBooth() {
   const [location, setLocation] = useState("");
   const [officerName, setOfficerName] = useState("");
   const [message, setMessage] = useState("");
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.append("booth_id", boothId);
     formData.append("location", location);
@@ -34,12 +32,24 @@ function AddBooth() {
     <div className="min-h-screen flex items-center justify-center bg-[#B9D6F2]/20 p-6">
       <div className="w-full max-w-md bg-white/30 backdrop-blur-md border border-[#0353A4]/30 p-8 rounded-2xl shadow-xl">
 
-        <h2 className="text-2xl font-semibold text-[#061A40]">
-          Add Booth
-        </h2>
+        {/* Header row with title and back button */}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-semibold text-[#061A40]">
+            Add Booth
+          </h2>
+          <button
+            type="button"
+            onClick={() => navigate("/add-details")}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/50 backdrop-blur text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Add Details
+          </button>
+        </div>
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
             placeholder="Booth ID"
@@ -48,7 +58,6 @@ function AddBooth() {
             className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none"
             required
           />
-
           <input
             type="text"
             placeholder="Location"
@@ -57,7 +66,6 @@ function AddBooth() {
             className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none"
             required
           />
-
           <input
             type="text"
             placeholder="Officer Name"
@@ -66,7 +74,6 @@ function AddBooth() {
             className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none"
             required
           />
-
           <button
             type="submit"
             className="w-full bg-[#0353A4] hover:bg-[#003559] text-white py-2.5 rounded-lg transition"
