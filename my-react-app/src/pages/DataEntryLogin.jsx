@@ -162,7 +162,7 @@ function Login() {
 
         {/* Login card */}
         <div className="w-full max-w-md bg-white/30 backdrop-blur-md border border-[#0353A4]/30 p-8 rounded-2xl shadow-xl animate-fadeIn">
-          <h2 className="text-2xl font-semibold tracking-tight text-[#061A40]">
+          <h2 className="text-3xl font-bold tracking-tight text-[#061A40]">
             Data Entry Operator Login
           </h2>
 

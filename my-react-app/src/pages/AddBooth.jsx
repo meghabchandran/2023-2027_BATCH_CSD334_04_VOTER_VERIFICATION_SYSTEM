@@ -56,7 +56,7 @@ function AddBooth() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate("/add-details")}
-              className="...existing classes..."
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/50 backdrop-blur text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
             >
               ← Add Details
             </button>
@@ -79,39 +79,73 @@ function AddBooth() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Booth ID"
-            value={boothId}
-            onChange={(e) => setBoothId(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none"
-            required
-          />
-          <input
-            type="text"
-            placeholder="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none"
-            required
-          />
-          <input
-            type="text"
-            placeholder="Officer Name"
-            value={officerName}
-            onChange={(e) => setOfficerName(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none"
-            required
-          />
+          {/* Booth ID */}
+          <div>
+            <label className="text-xs font-medium text-gray-600">
+              Booth ID <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. B01"
+              value={boothId}
+              onChange={(e) => setBoothId(e.target.value)}
+              required
+              className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none"
+            />
+          </div>
+
+          {/* Location */}
+          <div>
+            <label className="text-xs font-medium text-gray-600">
+              Location <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Full address of the booth"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              required
+              className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none"
+            />
+          </div>
+
+          {/* Officer Name */}
+          <div>
+            <label className="text-xs font-medium text-gray-600">
+              Officer Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Presiding officer's full name"
+              value={officerName}
+              onChange={(e) => setOfficerName(e.target.value)}
+              required
+              className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none"
+            />
+          </div>
+
+          {/* Required fields note */}
+          <p className="text-xs text-gray-400">
+            <span className="text-red-500">*</span> Required fields
+          </p>
+
           <button
             type="submit"
-            className="w-full bg-[#0353A4] hover:bg-[#003559] text-white py-2.5 rounded-lg transition"
+            className="w-full bg-[#0353A4] hover:bg-[#003559] text-white py-2.5 rounded-lg font-medium transition"
           >
-            Submit
+            Submit Booth Details
           </button>
 
           {message && (
-            <p className="text-center text-sm mt-2 text-[#061A40]">{message}</p>
+            <p
+              className={`text-center text-sm mt-2 ${
+                message.toLowerCase().includes("success")
+                  ? "text-green-600"
+                  : "text-red-500"
+              }`}
+            >
+              {message}
+            </p>
           )}
         </form>
       </div>

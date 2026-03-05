@@ -7,10 +7,9 @@ import { useNavigate } from "react-router-dom";
    Secondary: #006DAA | Surface: #B9D6F2
 ───────────────────────────────────────────── */
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
   .vvp-root * { box-sizing: border-box; }
-  .vvp-root   { font-family: 'DM Sans', sans-serif; }
+  .vvp-root   { font-family: 'Inter', sans-serif; }
 
   /* ── Animations ── */
   @keyframes vvp-fadeUp {
@@ -33,10 +32,7 @@ const styles = `
     0%   { background-position: -400px 0; }
     100% { background-position:  400px 0; }
   }
-  @keyframes vvp-scanline {
-    0%   { top: 0;    }
-    100% { top: 100%; }
-  }
+  
   @keyframes vvp-spin {
     to { transform: rotate(360deg); }
   }
@@ -77,7 +73,7 @@ const styles = `
     border: none;
     border-radius: 10px;
     padding: 14px 0;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -122,15 +118,7 @@ const styles = `
     animation: vvp-pulse 2.2s ease-in-out infinite;
   }
 
-  /* ── Scanline (card header) ── */
-  .vvp-scanline { position: relative; overflow: hidden; }
-  .vvp-scanline::after {
-    content: '';
-    position: absolute; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(3,83,164,0.25), transparent);
-    animation: vvp-scanline 3.5s linear infinite;
-    pointer-events: none;
-  }
+ 
 
   /* ── Avatar ring ── */
   .vvp-avatar-ring {
@@ -164,9 +152,15 @@ const styles = `
 /* ── Accent bar ── */
 function AccentBar() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-      <div style={{ width: 32, height: 3, borderRadius: 2, background: "#0353A4" }} />
-      <div style={{ width: 9,  height: 3, borderRadius: 2, background: "#B9D6F2" }} />
+    <div
+      style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}
+    >
+      <div
+        style={{ width: 32, height: 3, borderRadius: 2, background: "#0353A4" }}
+      />
+      <div
+        style={{ width: 9, height: 3, borderRadius: 2, background: "#B9D6F2" }}
+      />
     </div>
   );
 }
@@ -178,12 +172,15 @@ function InfoRow({ icon, label, value, mono, delay, highlight }) {
       {/* Icon bubble */}
       <div
         style={{
-          width: 36, height: 36, borderRadius: 9, flexShrink: 0,
-          background: highlight
-            ? "rgba(3,83,164,0.10)"
-            : "rgba(3,83,164,0.06)",
+          width: 36,
+          height: 36,
+          borderRadius: 9,
+          flexShrink: 0,
+          background: highlight ? "rgba(3,83,164,0.10)" : "rgba(3,83,164,0.06)",
           border: `1px solid rgba(3,83,164,${highlight ? "0.20" : "0.10"})`,
-          display: "flex", alignItems: "center", justifyContent: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           fontSize: 17,
         }}
       >
@@ -194,8 +191,10 @@ function InfoRow({ icon, label, value, mono, delay, highlight }) {
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
           style={{
-            fontSize: 10, color: "#8096B0",
-            letterSpacing: "0.10em", textTransform: "uppercase",
+            fontSize: 10,
+            color: "#8096B0",
+            letterSpacing: "0.10em",
+            textTransform: "uppercase",
             fontFamily: "'DM Mono', monospace",
           }}
         >
@@ -203,11 +202,14 @@ function InfoRow({ icon, label, value, mono, delay, highlight }) {
         </div>
         <div
           style={{
-            fontSize: 14, fontWeight: highlight ? 700 : 500,
+            fontSize: 14,
+            fontWeight: highlight ? 700 : 500,
             color: highlight ? "#0353A4" : "#061A40",
             marginTop: 1,
-            fontFamily: mono ? "'DM Mono', monospace" : "'DM Sans', sans-serif",
-            overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+            fontFamily: mono ? "'DM Mono', monospace" : "'Inter', sans-serif",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
           }}
         >
           {value || "—"}
@@ -216,8 +218,20 @@ function InfoRow({ icon, label, value, mono, delay, highlight }) {
 
       {/* Right tick for populated rows */}
       {value && (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, opacity: 0.3 }}>
-          <path d="M5 13l4 4L19 7" stroke="#0353A4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          style={{ flexShrink: 0, opacity: 0.3 }}
+        >
+          <path
+            d="M5 13l4 4L19 7"
+            stroke="#0353A4"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       )}
     </div>
@@ -228,23 +242,28 @@ function InfoRow({ icon, label, value, mono, delay, highlight }) {
    Main Component
 ───────────────────────────────────────────── */
 export default function VoterProfile({ voter }) {
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
   const [ripples, setRipples] = useState([]);
   const alreadyVoted = voter?.has_voted === true || voter?.status === "voted";
 
   /* Derive initials for avatar */
   const initials = voter?.name
-    ? voter.name.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase()
+    ? voter.name
+        .split(" ")
+        .map((w) => w[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase()
     : "??";
 
   /* Ripple effect on verify button */
   const handleVerifyClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left - 30;
-    const y = e.clientY - rect.top  - 30;
+    const y = e.clientY - rect.top - 30;
     const id = Date.now();
-    setRipples(r => [...r, { id, x, y }]);
-    setTimeout(() => setRipples(r => r.filter(rp => rp.id !== id)), 600);
+    setRipples((r) => [...r, { id, x, y }]);
+    setTimeout(() => setRipples((r) => r.filter((rp) => rp.id !== id)), 600);
     setTimeout(() => navigate(`/verify/${voter.voter_id}`), 220);
   };
 
@@ -256,7 +275,8 @@ export default function VoterProfile({ voter }) {
         className="vvp-root"
         style={{
           minHeight: "100vh",
-          background: "linear-gradient(135deg, #EBF3FB 0%, #D6E9F8 50%, #B9D6F2 100%)",
+          background:
+            "linear-gradient(135deg, #EBF3FB 0%, #D6E9F8 50%, #B9D6F2 100%)",
           display: "flex",
           alignItems: "flex-start",
           justifyContent: "center",
@@ -264,26 +284,44 @@ export default function VoterProfile({ voter }) {
         }}
       >
         <div style={{ width: "100%", maxWidth: 600 }}>
-
           {/* ── Page badge ── */}
           <div
             className="vvp-fadeUp"
             style={{
-              display: "flex", justifyContent: "center",
+              display: "flex",
+              justifyContent: "center",
               marginBottom: 22,
             }}
           >
             <div
               style={{
-                display: "inline-flex", alignItems: "center", gap: 7,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 7,
                 background: "rgba(3,83,164,0.08)",
                 border: "1px solid rgba(3,83,164,0.16)",
                 borderRadius: 20,
                 padding: "5px 14px",
               }}
             >
-              <span className="vvp-dot" style={{ width: 7, height: 7, background: "#0353A4", display: "inline-block" }} />
-              <span style={{ fontSize: 10, color: "#0353A4", letterSpacing: "0.12em", fontWeight: 700, fontFamily: "'DM Mono', monospace" }}>
+              <span
+                className="vvp-dot"
+                style={{
+                  width: 7,
+                  height: 7,
+                  background: "#0353A4",
+                  display: "inline-block",
+                }}
+              />
+              <span
+                style={{
+                  fontSize: 10,
+                  color: "#0353A4",
+                  letterSpacing: "0.12em",
+                  fontWeight: 700,
+                  fontFamily: "'DM Mono', monospace",
+                }}
+              >
                 VOTER PROFILE
               </span>
             </div>
@@ -292,9 +330,12 @@ export default function VoterProfile({ voter }) {
           {/* ── Main glass card ── */}
           <div
             className="vvp-glass vvp-fadeUp vvp-d1"
-            style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 4px 24px rgba(3,83,164,0.09)" }}
+            style={{
+              borderRadius: 20,
+              overflow: "hidden",
+              boxShadow: "0 4px 24px rgba(3,83,164,0.09)",
+            }}
           >
-
             {/* ── Top accent strip ── */}
             <div
               style={{
@@ -321,16 +362,25 @@ export default function VoterProfile({ voter }) {
               }}
             >
               {/* Avatar */}
-              <div className="vvp-avatar-ring" style={{ width: 60, height: 60, flexShrink: 0 }}>
+              <div
+                className="vvp-avatar-ring"
+                style={{ width: 60, height: 60, flexShrink: 0 }}
+              >
                 <div
                   style={{
-                    width: 60, height: 60, borderRadius: "50%",
+                    width: 60,
+                    height: 60,
+                    borderRadius: "50%",
                     background: alreadyVoted
                       ? "linear-gradient(135deg, #DC2626, #003559)"
                       : "linear-gradient(135deg, #0353A4, #006DAA)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontFamily: "'Syne', sans-serif",
-                    fontSize: 20, fontWeight: 800, color: "white",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 20,
+                    fontWeight: 800,
+                    color: "white",
                     border: "3px solid white",
                     boxShadow: "0 2px 12px rgba(3,83,164,0.25)",
                   }}
@@ -344,17 +394,28 @@ export default function VoterProfile({ voter }) {
                 <AccentBar />
                 <h2
                   style={{
-                    fontFamily: "'Syne', sans-serif",
-                    fontSize: 20, fontWeight: 800,
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 24,
+                    fontWeight: 800,
                     color: "#061A40",
                     letterSpacing: "-0.01em",
-                    marginTop: 4, marginBottom: 6,
-                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                    marginTop: 4,
+                    marginBottom: 6,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {voter.name}
                 </h2>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    flexWrap: "wrap",
+                  }}
+                >
                   {/* Voter ID pill */}
                   <div
                     style={{
@@ -363,7 +424,9 @@ export default function VoterProfile({ voter }) {
                       borderRadius: 8,
                       padding: "3px 10px",
                       fontFamily: "'DM Mono', monospace",
-                      fontSize: 12, fontWeight: 500, color: "#0353A4",
+                      fontSize: 12,
+                      fontWeight: 500,
+                      color: "#0353A4",
                     }}
                   >
                     {voter.voter_id}
@@ -372,11 +435,15 @@ export default function VoterProfile({ voter }) {
                   {/* Status badge */}
                   <div
                     style={{
-                      display: "inline-flex", alignItems: "center", gap: 5,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 5,
                       padding: "3px 10px",
                       borderRadius: 20,
-                      fontSize: 10, fontWeight: 700,
-                      letterSpacing: "0.10em", textTransform: "uppercase",
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: "0.10em",
+                      textTransform: "uppercase",
                       fontFamily: "'DM Mono', monospace",
                       background: alreadyVoted
                         ? "rgba(239,68,68,0.10)"
@@ -388,7 +455,9 @@ export default function VoterProfile({ voter }) {
                     <span
                       className="vvp-dot"
                       style={{
-                        width: 6, height: 6, display: "inline-block",
+                        width: 6,
+                        height: 6,
+                        display: "inline-block",
                         background: alreadyVoted ? "#DC2626" : "#10B981",
                       }}
                     />
@@ -401,36 +470,60 @@ export default function VoterProfile({ voter }) {
             {/* ── Info rows ── */}
             <div style={{ padding: "12px 14px 8px" }}>
               <InfoRow
-                icon="👤" label="Full Name"
+                icon="👤"
+                label="Full Name"
                 value={voter.name}
                 delay="vvp-d1"
               />
               <InfoRow
-                icon="🪪" label="Voter ID"
+                icon="🪪"
+                label="Voter ID"
                 value={voter.voter_id}
-                mono highlight
+                mono
+                highlight
                 delay="vvp-d2"
               />
               <InfoRow
-                icon="🗳️" label="Has Voted"
-                value={voter.has_voted ? "Yes — Vote Recorded" : "No — Eligible to Vote"}
+                icon="🗳️"
+                label="Has Voted"
+                value={
+                  voter.has_voted
+                    ? "Yes — Vote Recorded"
+                    : "No — Eligible to Vote"
+                }
                 delay="vvp-d3"
               />
               <InfoRow
-                icon="📋" label="Current Status"
+                icon="📋"
+                label="Current Status"
                 value={alreadyVoted ? "VOTED" : "NOT VERIFIED"}
                 mono
                 delay="vvp-d4"
               />
               {/* Render any extra fields dynamically */}
               {voter.constituency && (
-                <InfoRow icon="🗺️" label="Constituency" value={voter.constituency} delay="vvp-d5" />
+                <InfoRow
+                  icon="🗺️"
+                  label="Constituency"
+                  value={voter.constituency}
+                  delay="vvp-d5"
+                />
               )}
               {voter.dob && (
-                <InfoRow icon="🎂" label="Date of Birth" value={voter.dob} delay="vvp-d5" />
+                <InfoRow
+                  icon="🎂"
+                  label="Date of Birth"
+                  value={voter.dob}
+                  delay="vvp-d5"
+                />
               )}
               {voter.address && (
-                <InfoRow icon="🏠" label="Address" value={voter.address} delay="vvp-d5" />
+                <InfoRow
+                  icon="🏠"
+                  label="Address"
+                  value={voter.address}
+                  delay="vvp-d5"
+                />
               )}
             </div>
 
@@ -438,7 +531,8 @@ export default function VoterProfile({ voter }) {
             <div
               style={{
                 height: 1,
-                background: "linear-gradient(90deg, transparent, rgba(3,83,164,0.15), transparent)",
+                background:
+                  "linear-gradient(90deg, transparent, rgba(3,83,164,0.15), transparent)",
                 margin: "4px 28px 0",
               }}
             />
@@ -454,18 +548,34 @@ export default function VoterProfile({ voter }) {
                       background: "rgba(239,68,68,0.07)",
                       border: "1px solid rgba(239,68,68,0.22)",
                       borderRadius: 12,
-                      display: "flex", alignItems: "flex-start", gap: 12,
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 12,
                       marginBottom: 12,
                     }}
                   >
                     <div style={{ fontSize: 26, flexShrink: 0 }}>🚫</div>
                     <div>
-                      <p style={{ fontSize: 13, fontWeight: 700, color: "#B91C1C", marginBottom: 3 }}>
+                      <p
+                        style={{
+                          fontSize: 13,
+                          fontWeight: 700,
+                          color: "#B91C1C",
+                          marginBottom: 3,
+                        }}
+                      >
                         Duplicate Vote Blocked
                       </p>
-                      <p style={{ fontSize: 12, color: "#7F1D1D", lineHeight: 1.55 }}>
-                        This voter has already cast their vote. Face verification cannot be initiated.
-                        This attempt has been logged.
+                      <p
+                        style={{
+                          fontSize: 12,
+                          color: "#7F1D1D",
+                          lineHeight: 1.55,
+                        }}
+                      >
+                        This voter has already cast their vote. Face
+                        verification cannot be initiated. This attempt has been
+                        logged.
                       </p>
                     </div>
                   </div>
@@ -478,15 +588,20 @@ export default function VoterProfile({ voter }) {
                       border: "1.5px solid rgba(3,83,164,0.25)",
                       borderRadius: 10,
                       padding: "12px 0",
-                      fontFamily: "'Syne', sans-serif",
-                      fontSize: 13, fontWeight: 700,
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 13,
+                      fontWeight: 700,
                       color: "#0353A4",
                       cursor: "pointer",
                       transition: "background 0.2s, border-color 0.2s",
                       letterSpacing: "0.03em",
                     }}
-                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(3,83,164,0.06)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "rgba(3,83,164,0.06)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "transparent";
+                    }}
                   >
                     ← Back to Search
                   </button>
@@ -498,7 +613,7 @@ export default function VoterProfile({ voter }) {
                     className="vvp-btn-verify"
                     onClick={handleVerifyClick}
                   >
-                    {ripples.map(r => (
+                    {ripples.map((r) => (
                       <span
                         key={r.id}
                         className="ripple"
@@ -506,28 +621,45 @@ export default function VoterProfile({ voter }) {
                       />
                     ))}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z" fill="white" fillOpacity="0.9"/>
-                      <path d="M9 12l2 2 4-4" stroke="#061A40" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path
+                        d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"
+                        fill="white"
+                        fillOpacity="0.9"
+                      />
+                      <path
+                        d="M9 12l2 2 4-4"
+                        stroke="#061A40"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                     Proceed to Face Verification
                   </button>
                   <p
                     style={{
-                      textAlign: "center", fontSize: 11,
-                      color: "#8096B0", marginTop: 9,
-                      display: "flex", alignItems: "center",
-                      justifyContent: "center", gap: 5,
+                      textAlign: "center",
+                      fontSize: 11,
+                      color: "#8096B0",
+                      marginTop: 9,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 5,
                     }}
                   >
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
-                      <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z" stroke="#8096B0" strokeWidth="2"/>
+                      <path
+                        d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"
+                        stroke="#8096B0"
+                        strokeWidth="2"
+                      />
                     </svg>
                     Facial recognition will confirm this voter's identity
                   </p>
                 </div>
               )}
             </div>
-
           </div>
           {/* ── end glass card ── */}
 
@@ -535,17 +667,28 @@ export default function VoterProfile({ voter }) {
           <div
             className="vvp-fadeUp vvp-d5"
             style={{
-              marginTop: 18, textAlign: "center",
-              display: "flex", alignItems: "center",
-              justifyContent: "center", gap: 6,
+              marginTop: 18,
+              textAlign: "center",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 6,
             }}
           >
-            <span className="vvp-dot" style={{ width: 6, height: 6, background: "#0353A4", display: "inline-block" }} />
+            <span
+              className="vvp-dot"
+              style={{
+                width: 6,
+                height: 6,
+                background: "#0353A4",
+                display: "inline-block",
+              }}
+            />
             <span style={{ fontSize: 11, color: "#8096B0" }}>
-              Voter Verification System · Booth Officer View · Data is end-to-end encrypted
+              Voter Verification System · Booth Officer View · Data is
+              end-to-end encrypted
             </span>
           </div>
-
         </div>
       </div>
     </>

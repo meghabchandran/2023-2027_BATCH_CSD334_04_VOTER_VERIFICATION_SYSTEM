@@ -11,10 +11,9 @@ import { useEffect } from "react";
    Secondary: #006DAA | Surface: #B9D6F2
 ───────────────────────────────────────────── */
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
   .vvs-search * { box-sizing: border-box; }
-  .vvs-search { font-family: 'DM Sans', sans-serif; }
+  .vvs-search { font-family: 'Inter', sans-serif; }
 
   @keyframes vvs-fadeUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -43,10 +42,7 @@ const styles = `
     0%   { background-position: -400px 0; }
     100% { background-position: 400px 0; }
   }
-  @keyframes vvs-scanline {
-    0%   { top: 0; }
-    100% { top: 100%; }
-  }
+
 
   .vvs-fadeUp   { animation: vvs-fadeUp 0.55s cubic-bezier(.22,1,.36,1) both; }
   .vvs-fadeIn   { animation: vvs-fadeIn 0.4s ease both; }
@@ -62,7 +58,7 @@ const styles = `
   .vvs-input {
     flex: 1;
     padding: 13px 16px 13px 44px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
     color: #061A40;
     background: white;
@@ -84,7 +80,7 @@ const styles = `
     border: none;
     border-radius: 10px;
     padding: 13px 28px;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 0.03em;
@@ -127,7 +123,7 @@ const styles = `
     border: none;
     border-radius: 10px;
     padding: 14px 0;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 0.04em;
@@ -155,7 +151,7 @@ const styles = `
     border: 1.5px solid rgba(3,83,164,0.18);
     border-radius: 10px;
     padding: 8px 16px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 13px;
     font-weight: 500;
     color: #0353A4;
@@ -239,15 +235,7 @@ const styles = `
   }
   .vvs-shake { animation: vvs-shake 0.4s ease; }
 
-  /* Scanline on ID strip */
-  .vvs-scanline-wrap { position: relative; overflow: hidden; }
-  .vvs-scanline-wrap::after {
-    content: '';
-    position: absolute; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(3,83,164,0.3), transparent);
-    animation: vvs-scanline 3s linear infinite;
-    pointer-events: none;
-  }
+  
 `;
 
 /* ── Accent bar (matches Home.jsx) ── */
@@ -304,7 +292,7 @@ function InfoRow({ icon, label, value, mono }) {
             fontWeight: 600,
             color: "#061A40",
             marginTop: 1,
-            fontFamily: mono ? "'DM Mono', monospace" : "'DM Sans', sans-serif",
+            fontFamily: mono ? "'DM Mono', monospace" : "'Inter', sans-serif",
           }}
         >
           {value || "—"}
@@ -473,8 +461,8 @@ export default function Search() {
 
           <h1
             style={{
-              fontFamily: "'Syne', sans-serif",
-              fontSize: 32,
+              fontFamily: "'Inter', sans-serif",
+              fontSize: 38,
               fontWeight: 800,
               color: "#061A40",
               letterSpacing: "-0.01em",
@@ -509,8 +497,8 @@ export default function Search() {
             <AccentBar />
             <h2
               style={{
-                fontFamily: "'Syne', sans-serif",
-                fontSize: 18,
+                fontFamily: "'Inter', sans-serif",
+                fontSize: 22,
                 fontWeight: 800,
                 color: "#061A40",
                 marginTop: 6,
@@ -722,8 +710,8 @@ export default function Search() {
                 <AccentBar />
                 <h2
                   style={{
-                    fontFamily: "'Syne', sans-serif",
-                    fontSize: 17,
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 20,
                     fontWeight: 800,
                     color: "#061A40",
                     marginTop: 4,

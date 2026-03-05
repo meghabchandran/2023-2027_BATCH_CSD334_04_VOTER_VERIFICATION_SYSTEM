@@ -11,7 +11,7 @@ function Dashboard() {
 
   useEffect(() => {
     if (!localStorage.getItem("isAuthenticated")) {
-      navigate("/", { replace: true });
+      navigate("/home", { replace: true });
     }
   }, []);
   useEffect(() => {
@@ -29,7 +29,7 @@ function Dashboard() {
       <div className="max-w-6xl mx-auto bg-white/80 backdrop-blur-md rounded-3xl p-8 space-y-8 border border-[#006DAA]/20 shadow-[0_10px_30px_rgba(3,83,164,0.08)]">
         {/* ── Header ── */}
         <div className="flex items-center justify-between pb-4 border-b border-[#0353A4]">
-          <h1 className="text-3xl font-bold text-[#0353A4] tracking-tight">
+          <h1 className="text-4xl font-bold text-[#0353A4] tracking-tight">
             Polling Booth Dashboard
           </h1>
 
@@ -63,23 +63,29 @@ function Dashboard() {
         <section className="bg-[#B9D6F2]/40 border border-[#006DAA]/30 rounded-2xl p-6 shadow-[0_2px_10px_rgba(3,83,164,0.06)]">
           <div className="flex items-center gap-3 mb-3">
             <div className="h-1.5 w-12 bg-[#0353A4] rounded-full"></div>
-            <h2 className="text-lg font-semibold tracking-tight text-[#061A40]">
+            <h2 className="text-xl font-semibold tracking-tight text-[#061A40]">
               Booth Details
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
-            <p>
-              <strong className="text-[#575366]">Booth ID:</strong> {boothId}
-            </p>
-            <p>
-              <strong className="text-[#575366]">Booth Name:</strong>{" "}
-              {booth?.booth_name}
-            </p>
-            <p>
-              <strong className="text-[#575366]">Constituency:</strong>{" "}
-              {booth?.constituency}
-            </p>
+            {[
+              { label: "Booth ID", value: boothId },
+              { label: "Booth Name", value: booth?.booth_name },
+              { label: "Constituency", value: booth?.constituency },
+            ].map(({ label, value }) => (
+              <div
+                key={label}
+                className="bg-white rounded-xl px-4 py-3 border border-[#006DAA]/20"
+              >
+                <p className="text-xs text-gray-400 uppercase tracking-wide">
+                  {label}
+                </p>
+                <p className="text-sm font-semibold text-[#061A40] mt-0.5">
+                  {value || "—"}
+                </p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -87,7 +93,7 @@ function Dashboard() {
         <section className="bg-[#B9D6F2]/40 border border-[#006DAA]/30 rounded-2xl p-6 shadow-[0_2px_10px_rgba(3,83,164,0.06)]">
           <div className="flex items-center gap-3 mb-3">
             <div className="h-1.5 w-12 bg-[#0353A4] rounded-full"></div>
-            <h2 className="text-lg font-semibold tracking-tight text-[#061A40]">
+            <h2 className="text-xl font-semibold tracking-tight text-[#061A40]">
               Candidates
             </h2>
           </div>
@@ -129,16 +135,25 @@ function Dashboard() {
         <section className="rounded-xl p-5 border border-[#d8dced] bg-white shadow-sm">
           <div className="flex items-center gap-3 mb-3">
             <div className="h-1.5 w-12 bg-[#0353A4] rounded-full"></div>
-            <h2 className="text-lg font-semibold tracking-tight text-[#061A40]">
+            <h2 className="text-xl font-semibold tracking-tight text-[#061A40]">
               Actions
             </h2>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
             <button
-              onClick={() => navigate("/Search")}
-              className="px-6 py-2.5 bg-[#0353A4] hover:bg-[#003559] text-white font-medium rounded-lg shadow-sm transition"
+              onClick={() => navigate("/search")}
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#0353A4] hover:bg-[#003559] text-white font-medium rounded-lg shadow-sm transition"
             >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="8" stroke="white" strokeWidth="2" />
+                <path
+                  d="M21 21l-4.35-4.35"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
               Search Voter
             </button>
           </div>

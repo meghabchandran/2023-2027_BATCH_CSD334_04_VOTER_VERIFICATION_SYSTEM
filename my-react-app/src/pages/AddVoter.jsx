@@ -127,7 +127,7 @@ function AddVoter() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate("/add-details")}
-              className="...existing classes..."
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/50 backdrop-blur text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
             >
               ← Add Details
             </button>
@@ -150,144 +150,225 @@ function AddVoter() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3">
-          <input
-            name="voter_id"
-            placeholder="VOTER ID"
-            onChange={handleChange}
-            required
-            className={inputStyle}
-          />
+          {/* Voter ID */}
+          <div>
+            <label className="text-xs font-medium text-gray-600">
+              Voter ID <span className="text-red-500">*</span>
+            </label>
+            <input
+              name="voter_id"
+              placeholder="e.g. V00123456"
+              onChange={handleChange}
+              required
+              className={inputStyle}
+            />
+          </div>
 
-          <input
-            name="name"
-            placeholder="NAME"
-            onChange={handleChange}
-            required
-            className={inputStyle}
-          />
+          {/* Name */}
+          <div>
+            <label className="text-xs font-medium text-gray-600">
+              Full Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              name="name"
+              placeholder="As per official records"
+              onChange={handleChange}
+              required
+              className={inputStyle}
+            />
+          </div>
 
-          {/* DOB Calendar */}
-          <input
-            type="date"
-            name="dob"
-            onChange={handleChange}
-            required
-            className={inputStyle}
-          />
+          {/* DOB + Age side by side */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-xs font-medium text-gray-600">
+                Date of Birth <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="date"
+                name="dob"
+                onChange={handleChange}
+                required
+                className={inputStyle}
+              />
+            </div>
+            <div>
+              <label className="text-xs font-medium text-gray-600">Age</label>
+              <input
+                name="age"
+                value={form.age}
+                readOnly
+                placeholder="Auto calculated"
+                className={`${inputStyle} bg-gray-100 cursor-not-allowed`}
+              />
+            </div>
+          </div>
 
-          {/* Age Auto-filled */}
-          <input
-            name="age"
-            value={form.age}
-            readOnly
-            placeholder="AGE (Auto Calculated)"
-            className={`${inputStyle} bg-gray-100`}
-          />
-
-          {/* Ineligible Message */}
           {!eligible && (
-            <p className="text-red-600 text-sm">
-              Ineligible to vote (Must be 18+)
-            </p>
+            <p className="text-red-500 text-xs">❌ Voter must be 18 or older</p>
           )}
 
-          <input
-            name="fathers_name"
-            placeholder="FATHER'S NAME"
-            onChange={handleChange}
-            required
-            className={inputStyle}
-          />
+          {/* Father's Name */}
+          <div>
+            <label className="text-xs font-medium text-gray-600">
+              Father's Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              name="fathers_name"
+              placeholder="Father's full name"
+              onChange={handleChange}
+              required
+              className={inputStyle}
+            />
+          </div>
 
-          {/* Optional Spouse */}
-          <input
-            name="spouse_name"
-            placeholder="SPOUSE NAME (Optional)"
-            onChange={handleChange}
-            className={inputStyle}
-          />
+          {/* Spouse */}
+          <div>
+            <label className="text-xs font-medium text-gray-600">
+              Spouse Name <span className="text-gray-400">(Optional)</span>
+            </label>
+            <input
+              name="spouse_name"
+              placeholder="Leave blank if not applicable"
+              onChange={handleChange}
+              className={inputStyle}
+            />
+          </div>
 
-          <select
-            name="gender"
-            onChange={handleChange}
-            required
-            className={inputStyle}
-          >
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
+          {/* Gender */}
+          <div>
+            <label className="text-xs font-medium text-gray-600">
+              Gender <span className="text-red-500">*</span>
+            </label>
+            <select
+              name="gender"
+              onChange={handleChange}
+              required
+              className={inputStyle}
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
 
-          <input
-            name="address"
-            placeholder="ADDRESS"
-            onChange={handleChange}
-            required
-            className={inputStyle}
-          />
+          {/* Address */}
+          <div>
+            <label className="text-xs font-medium text-gray-600">
+              Address <span className="text-red-500">*</span>
+            </label>
+            <input
+              name="address"
+              placeholder="Full residential address"
+              onChange={handleChange}
+              required
+              className={inputStyle}
+            />
+          </div>
 
-          <input
-            name="booth_id"
-            placeholder="BOOTH ID"
-            onChange={handleChange}
-            required
-            className={inputStyle}
-          />
+          {/* Booth ID */}
+          <div>
+            <label className="text-xs font-medium text-gray-600">
+              Booth ID <span className="text-red-500">*</span>
+            </label>
+            <input
+              name="booth_id"
+              placeholder="Assigned booth ID"
+              onChange={handleChange}
+              required
+              className={inputStyle}
+            />
+          </div>
 
-          <input
-            name="aadhaar_id"
-            placeholder="AADHAAR ID"
-            pattern="\d{12}"
-            title="Aadhaar must be 12 digits"
-            onChange={handleChange}
-            required
-            className={inputStyle}
-          />
+          {/* Aadhaar */}
+          <div>
+            <label className="text-xs font-medium text-gray-600">
+              Aadhaar ID <span className="text-red-500">*</span>
+            </label>
+            <input
+              name="aadhaar_id"
+              placeholder="12-digit Aadhaar number"
+              pattern="\d{12}"
+              title="Aadhaar must be 12 digits"
+              onChange={handleChange}
+              required
+              className={inputStyle}
+            />
+          </div>
 
-          <input
-            type="file"
-            name="file"
-            onChange={handleChange}
-            required
-            className="w-full text-sm"
-          />
+          {/* Photo upload */}
+          <div>
+            <label className="text-xs font-medium text-gray-600 block mb-1">
+              Voter Photo <span className="text-red-500">*</span>
+            </label>
+            <label
+              htmlFor="photo-upload"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <span className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 transition text-[#0353A4] font-medium text-xs">
+                Choose Photo
+              </span>
+              <span className="text-gray-400 text-xs">
+                {form.file ? form.file.name : "No file chosen"}
+              </span>
+            </label>
+            <input
+              id="photo-upload"
+              type="file"
+              name="file"
+              onChange={handleChange}
+              required
+              className="hidden"
+            />
+          </div>
 
-          <label className="flex items-center gap-2 text-sm text-[#061A40]">
+          {/* Confirm checkbox */}
+          <label className="flex items-center gap-2 text-sm text-[#061A40] cursor-pointer">
             <input
               type="checkbox"
               checked={agreed}
               onChange={() => setAgreed(!agreed)}
+              className="accent-[#0353A4]"
             />
-            All details are correct
+            All details are correct and verified
           </label>
 
-          <div className="mt-3">
-            <p className="font-semibold text-[#061A40]">Captcha: {captcha}</p>
-
+          {/* Captcha */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+            <p className="text-xs text-gray-500 mb-1">
+              Enter the captcha to confirm submission
+            </p>
+            <p className="font-mono font-bold text-[#0353A4] tracking-widest text-lg mb-2">
+              {captcha}
+            </p>
             <input
-              placeholder="Enter Captcha"
+              placeholder="Type captcha here"
               value={userCaptcha}
               onChange={(e) => setUserCaptcha(e.target.value)}
               required
-              className={`${inputStyle} mt-1`}
+              className={inputStyle}
             />
           </div>
 
           <button
             type="submit"
             disabled={!eligible}
-            className={`w-full mt-4 py-2.5 rounded-lg transition ${
+            className={`w-full mt-2 py-2.5 rounded-lg font-medium transition ${
               eligible
                 ? "bg-[#0353A4] hover:bg-[#003559] text-white"
-                : "bg-gray-400 text-white cursor-not-allowed"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
           >
-            Submit
+            Submit Voter Details
           </button>
 
           {message && (
-            <p className="text-center text-sm mt-2 text-[#061A40]">{message}</p>
+            <p
+              className={`text-center text-sm mt-2 ${message.includes("success") ? "text-green-600" : "text-red-500"}`}
+            >
+              {message}
+            </p>
           )}
         </form>
       </div>

@@ -6,10 +6,8 @@ import homeImage from "../mocks/image/login.jpg";
    Styles
 ───────────────────────────────────────────── */
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
-
-  *, *::before, *::after { box-sizing: border-box; }
-  .vvs-root { font-family: 'DM Sans', sans-serif; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');  *, *::before, *::after { box-sizing: border-box; }
+  .vvs-root { font-family: 'Inter', sans-serif; }
 
   @keyframes slideUp {
     from { opacity: 0; transform: translateY(28px); }
@@ -101,7 +99,7 @@ const styles = `
 
   /* Login Dropdown */
   .login-dropdown {
-    position: absolute; top: calc(100% + 8px); right: 0;
+    position: absolute; bottom: calc(100% + 8px); right: 0; 
     min-width: 230px; background: #061A40;
     border: 1px solid rgba(185,214,242,0.18); border-radius: 12px;
     box-shadow: 0 16px 48px rgba(6,26,64,0.55);
@@ -111,7 +109,7 @@ const styles = `
     width: 100%; background: none; border: none; cursor: pointer;
     padding: 13px 16px; display: flex; align-items: center; gap: 12px;
     text-align: left; transition: background 0.18s ease;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     border-bottom: 1px solid rgba(185,214,242,0.08);
   }
   .login-role-btn:last-child { border-bottom: none; }
@@ -176,7 +174,7 @@ function FeatureItem({ icon, title, desc, delay }) {
             fontWeight: 700,
             color: "#0353A4",
             marginBottom: 1,
-            fontFamily: "'Syne', sans-serif",
+            fontFamily: "'Inter', sans-serif",
           }}
         >
           {title}
@@ -190,7 +188,7 @@ function FeatureItem({ icon, title, desc, delay }) {
 }
 
 /* ── Login Dropdown ── */
-function LoginDropdown() {
+function LoginDropdown({ dropUp = false }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const navigate = useNavigate();
@@ -234,7 +232,7 @@ function LoginDropdown() {
           fontSize: 13,
           fontWeight: 600,
           cursor: "pointer",
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "'Inter', sans-serif",
           letterSpacing: "0.02em",
           display: "flex",
           alignItems: "center",
@@ -248,7 +246,10 @@ function LoginDropdown() {
       </button>
 
       {open && (
-        <div className="login-dropdown animate-dropdownOpen">
+        <div
+          className="login-dropdown animate-dropdownOpen"
+          style={dropUp ? { bottom: "calc(100% + 8px)", top: "auto" } : {}}
+        >
           <div
             style={{
               padding: "10px 14px 8px",
@@ -344,7 +345,7 @@ function HelpCard({ onBack }) {
         <AccentBar />
         <h2
           style={{
-            fontFamily: "'Syne', sans-serif",
+            fontFamily: "'Inter', sans-serif",
             fontSize: 22,
             fontWeight: 800,
             color: "#061A40",
@@ -478,33 +479,23 @@ function HelpCard({ onBack }) {
       </div>
 
       {/* Footer */}
-      <div
-        className="animate-slideUp delay-4"
+      <button
+        onClick={onBack}
         style={{
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          color: "#0353A4",
+          fontSize: 12,
+          fontWeight: 700,
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          gap: 4,
+          fontFamily: "'Inter', sans-serif",
         }}
       >
-        <button
-          onClick={onBack}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "#0353A4",
-            fontSize: 12,
-            fontWeight: 700,
-            display: "flex",
-            alignItems: "center",
-            gap: 4,
-            fontFamily: "'DM Sans', sans-serif",
-          }}
-        >
-          ← Back to Home
-        </button>
-        <LoginDropdown />
-      </div>
+        ← Back to Home
+      </button>
     </div>
   );
 }
@@ -618,7 +609,7 @@ export default function Home() {
             <div>
               <h1
                 style={{
-                  fontFamily: "'Syne', sans-serif",
+                  fontFamily: "'Inter', sans-serif",
                   fontWeight: 800,
                   fontSize: 15,
                   color: "white",
@@ -689,7 +680,7 @@ export default function Home() {
                 fontWeight: 500,
                 padding: "8px 12px",
                 borderRadius: 6,
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "'Inter', sans-serif",
               }}
             >
               {view === "about" ? "← Home" : "About"}
@@ -708,7 +699,7 @@ export default function Home() {
                 fontSize: 13,
                 fontWeight: 400,
                 padding: "8px 12px",
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "'Inter', sans-serif",
               }}
             >
               {view === "help" ? "← Home" : "Help"}
@@ -789,7 +780,7 @@ export default function Home() {
               </div>
               <h2
                 style={{
-                  fontFamily: "'Syne', sans-serif",
+                  fontFamily: "'Inter', sans-serif",
                   fontSize: 36,
                   fontWeight: 800,
                   color: "white",
@@ -877,7 +868,7 @@ export default function Home() {
                   <AccentBar />
                   <h2
                     style={{
-                      fontFamily: "'Syne', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: 22,
                       fontWeight: 800,
                       color: "#061A40",
@@ -952,32 +943,23 @@ export default function Home() {
                     marginBottom: 16,
                   }}
                 />
-                <div
+                <button
+                  onClick={() => setView("welcome")}
                   style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#0353A4",
+                    fontSize: 12,
+                    fontWeight: 700,
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "space-between",
+                    gap: 4,
+                    fontFamily: "'Inter', sans-serif",
                   }}
                 >
-                  <button
-                    onClick={() => setView("welcome")}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "#0353A4",
-                      fontSize: 12,
-                      fontWeight: 700,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 4,
-                      fontFamily: "'DM Sans', sans-serif",
-                    }}
-                  >
-                    ← Back to Home
-                  </button>
-                  <LoginDropdown />
-                </div>
+                  ← Back to Home
+                </button>
               </div>
             )}
 
@@ -991,7 +973,7 @@ export default function Home() {
                   <AccentBar />
                   <h2
                     style={{
-                      fontFamily: "'Syne', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       fontSize: 26,
                       fontWeight: 800,
                       color: "#061A40",
@@ -1042,7 +1024,7 @@ export default function Home() {
                     >
                       <div
                         style={{
-                          fontFamily: "'Syne', sans-serif",
+                          fontFamily: "'Inter', sans-serif",
                           fontSize: 18,
                           fontWeight: 800,
                           color: "#0353A4",
@@ -1096,7 +1078,7 @@ export default function Home() {
                         fontSize: 13,
                         fontWeight: 700,
                         cursor: "pointer",
-                        fontFamily: "'Syne', sans-serif",
+                        fontFamily: "'Inter', sans-serif",
                         letterSpacing: "0.02em",
                         display: "flex",
                         alignItems: "center",
@@ -1111,7 +1093,7 @@ export default function Home() {
                             fontSize: 10,
                             fontWeight: 400,
                             opacity: 0.75,
-                            fontFamily: "'DM Sans', sans-serif",
+                            fontFamily: "'Inter', sans-serif",
                             marginTop: 1,
                           }}
                         >
@@ -1142,7 +1124,7 @@ export default function Home() {
                         fontSize: 13,
                         fontWeight: 700,
                         cursor: "pointer",
-                        fontFamily: "'Syne', sans-serif",
+                        fontFamily: "'Inter', sans-serif",
                         letterSpacing: "0.02em",
                         display: "flex",
                         alignItems: "center",
@@ -1157,7 +1139,7 @@ export default function Home() {
                             fontSize: 10,
                             fontWeight: 400,
                             opacity: 0.65,
-                            fontFamily: "'DM Sans', sans-serif",
+                            fontFamily: "'Inter', sans-serif",
                             marginTop: 1,
                           }}
                         >
@@ -1210,7 +1192,7 @@ export default function Home() {
                       fontWeight: 600,
                       textDecoration: "underline",
                       textUnderlineOffset: 3,
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                     }}
                   >
                     Learn how the system works →
@@ -1224,7 +1206,7 @@ export default function Home() {
                       color: "#0353A4",
                       fontSize: 12,
                       fontWeight: 600,
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "'Inter', sans-serif",
                       borderRadius: 8,
                       padding: "5px 12px",
                       display: "flex",

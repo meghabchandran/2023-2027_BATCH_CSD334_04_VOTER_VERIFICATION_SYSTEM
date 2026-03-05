@@ -8,8 +8,7 @@ import {
 import { logout } from "../utils/auth";
 
 const STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap');
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0);    }
@@ -19,10 +18,7 @@ const STYLES = `
     50%      { opacity:.4; transform:scale(.75); }
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes scanline {
-    0%   { top: -2px; }
-    100% { top: 100%; }
-  }
+ 
   @keyframes ripple {
     0%   { transform: scale(0);   opacity: .35; }
     100% { transform: scale(4);   opacity: 0;   }
@@ -39,13 +35,8 @@ const STYLES = `
     from { opacity:0; transform: scale(.96) translateY(6px); }
     to   { opacity:1; transform: scale(1)   translateY(0);   }
   }
-  .vv-root { font-family: 'DM Sans', sans-serif; }
-  .vv-scanline { position:relative; overflow:hidden; }
-  .vv-scanline::after {
-    content:''; position:absolute; left:0; right:0; height:2px;
-    background: linear-gradient(90deg, transparent, rgba(3,83,164,.2), transparent);
-    animation: scanline 4s linear infinite; pointer-events:none;
-  }
+  .vv-root { font-family: 'Inter', sans-serif; }
+  
   .vv-avatar-ring { position:relative; display:inline-flex; align-items:center; justify-content:center; }
   .vv-avatar-ring::before {
     content:''; position:absolute; inset:-3px; border-radius:50%;
@@ -64,7 +55,7 @@ const STYLES = `
   .vv-btn {
     display:flex; align-items:center; justify-content:center; gap:8px;
     border:none; border-radius:10px; cursor:pointer;
-    font-family:'Syne',sans-serif; font-weight:700; letter-spacing:.04em;
+    font-family:'Inter',sans-serif; font-weight:700; letter-spacing:.04em;
     position:relative; overflow:hidden;
     transition: opacity .2s, transform .15s, box-shadow .2s;
   }
@@ -106,7 +97,7 @@ const STYLES = `
     background:rgba(255,255,255,.55); backdrop-filter:blur(12px);
     border:1.5px solid rgba(3,83,164,.18); border-radius:10px;
     padding:8px 16px; cursor:pointer;
-    font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; color:#003559;
+    font-family:'Inter',sans-serif; font-size:13px; font-weight:500; color:#003559;
     transition: background .2s, transform .15s;
   }
   .vv-nav-btn:hover { background:rgba(255,255,255,.88); transform:translateY(-1px); }
@@ -165,7 +156,7 @@ function InfoRow({ icon, label, value, mono, highlight, delay }) {
             fontWeight: highlight ? 700 : 500,
             color: highlight ? "#0353A4" : "#061A40",
             marginTop: 1,
-            fontFamily: mono ? "'DM Mono',monospace" : "'DM Sans',sans-serif",
+            fontFamily: mono ? "'DM Mono',monospace" : "'Inter',sans-serif",
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
@@ -550,7 +541,6 @@ export default function VerifyVoter() {
 
             {/* Hero header */}
             <div
-              className="vv-scanline"
               style={{
                 padding: "24px 28px 20px",
                 background: alreadyVoted
@@ -578,7 +568,7 @@ export default function VerifyVoter() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontFamily: "'Syne',sans-serif",
+                    fontFamily: "'Inter',sans-serif",
                     fontSize: 19,
                     fontWeight: 800,
                     color: "white",
@@ -599,7 +589,7 @@ export default function VerifyVoter() {
                 <AccentBar />
                 <h2
                   style={{
-                    fontFamily: "'Syne',sans-serif",
+                    fontFamily: "'Inter',sans-serif",
                     fontSize: 20,
                     fontWeight: 800,
                     color: "#061A40",
@@ -773,7 +763,7 @@ export default function VerifyVoter() {
                         fontWeight: 800,
                         color: "#065F46",
                         marginBottom: 6,
-                        fontFamily: "'Syne',sans-serif",
+                        fontFamily: "'Inter',sans-serif",
                       }}
                     >
                       Vote Recorded Successfully!
@@ -852,7 +842,7 @@ export default function VerifyVoter() {
                         fontWeight: 700,
                         color: "#B91C1C",
                         marginBottom: 4,
-                        fontFamily: "'Syne',sans-serif",
+                        fontFamily: "'Inter',sans-serif",
                       }}
                     >
                       Duplicate Vote Blocked
@@ -862,6 +852,7 @@ export default function VerifyVoter() {
                         fontSize: 12,
                         color: "#7F1D1D",
                         lineHeight: 1.6,
+                        fontFamily: "'Inter',sans-serif",
                       }}
                     >
                       This voter has already cast their vote. Face verification
