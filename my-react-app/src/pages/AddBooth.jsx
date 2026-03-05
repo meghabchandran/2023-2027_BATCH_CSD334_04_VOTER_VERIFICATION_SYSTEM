@@ -6,7 +6,7 @@ import { logout } from "../utils/auth";
 function AddBooth() {
   const [boothId, setBoothId] = useState("");
   const [location, setLocation] = useState("");
-  const [officerName, setOfficerName] = useState("");
+  const [boothName, setBoothName] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ function AddBooth() {
     const formData = new FormData();
     formData.append("booth_id", boothId);
     formData.append("location", location);
-    formData.append("officer_name", officerName);
+    formData.append("booth_name", boothName);
 
     const res = await fetch("http://127.0.0.1:8000/api/booths/add", {
       method: "POST",
@@ -109,16 +109,15 @@ function AddBooth() {
             />
           </div>
 
-          {/* Officer Name */}
           <div>
             <label className="text-xs font-medium text-gray-600">
-              Officer Name <span className="text-red-500">*</span>
+              Booth Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
-              placeholder="Presiding officer's full name"
-              value={officerName}
-              onChange={(e) => setOfficerName(e.target.value)}
+              placeholder="Name of the polling booth"
+              value={boothName}
+              onChange={(e) => setBoothName(e.target.value)}
               required
               className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none"
             />

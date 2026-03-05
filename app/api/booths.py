@@ -10,7 +10,7 @@ router = APIRouter(tags=["Booths"])
 def add_booth(
     booth_id: str = Form(...),
     location: str = Form(...),
-    officer_name: str = Form(...),
+    booth_name: str = Form(...),
     db: Session = Depends(get_db)
 ):
     existing = db.query(Booth).filter(Booth.booth_id == booth_id).first()
@@ -20,7 +20,7 @@ def add_booth(
     new_booth = Booth(
         booth_id=booth_id,
         location=location,
-        officer_name=officer_name
+        booth_name=booth_name
     )
 
     db.add(new_booth)
