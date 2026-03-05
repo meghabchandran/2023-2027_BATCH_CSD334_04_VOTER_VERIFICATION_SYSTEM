@@ -7,23 +7,43 @@ function Login() {
   const [password, setPassword] = useState("");
   const [boothId, setBoothId] = useState("");
   const [error, setError] = useState("");
+  const [errors, setErrors] = useState({
+    username: "",
+    password: "",
+    boothId: "",
+  });
 
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (!username || !password || !boothId) {
-      setError("All fields are required");
+    const newErrors = { username: "", password: "", boothId: "" };
+    let hasError = false;
+
+    if (!username) {
+      newErrors.username = "Username is required";
+      hasError = true;
+    }
+    if (!password) {
+      newErrors.password = "Password is required";
+      hasError = true;
+    }
+    if (!boothId) {
+      newErrors.boothId = "Booth ID is required";
+      hasError = true;
+    }
+
+    if (hasError) {
+      setErrors(newErrors);
       return;
     }
 
-    setError("");
     localStorage.setItem("boothId", boothId);
-    navigate("/dashboard");
+    localStorage.setItem("isAuthenticated", "true");
+    navigate("/dashboard", { replace: true });
   };
 
   return (
     <div className="min-h-screen grid md:grid-cols-2 bg-[#B9D6F2]/20">
-
       {/* ── Left illustration panel ── */}
       <div className="hidden md:flex relative items-center justify-center bg-[#003559] text-white overflow-hidden">
         <img
@@ -44,7 +64,6 @@ function Login() {
 
       {/* ── Right login panel ── */}
       <div className="flex flex-col items-center justify-center p-6 gap-4">
-
         {/* Back to Home button — above the card, aligned left */}
         <div className="w-full max-w-md">
           <button
@@ -53,7 +72,13 @@ function Login() {
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/50 backdrop-blur text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M19 12H5M5 12L12 19M5 12L12 5"
+                stroke="#0353A4"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
             Back to Home
           </button>
@@ -71,39 +96,64 @@ function Login() {
 
           <div className="space-y-4 mt-6">
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Username</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Username
+              </label>
               <input
-                className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
+                className={`w-full mt-1 px-3 py-2 rounded-lg border outline-none transition focus:ring-2
+      ${errors.username ? "border-red-400 focus:ring-red-200" : "border-gray-300 focus:border-[#006DAA] focus:ring-[#006DAA]/20"}`}
                 type="text"
                 placeholder="Username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  setErrors({ ...errors, username: "" });
+                }}
               />
+              {errors.username && (
+                <p className="text-red-500 text-xs mt-1">{errors.username}</p>
+              )}
             </div>
 
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Password</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Password
+              </label>
               <input
-                className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
+                className={`w-full mt-1 px-3 py-2 rounded-lg border outline-none transition focus:ring-2
+      ${errors.password ? "border-red-400 focus:ring-red-200" : "border-gray-300 focus:border-[#006DAA] focus:ring-[#006DAA]/20"}`}
                 type="password"
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setErrors({ ...errors, password: "" });
+                }}
               />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
             </div>
 
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Booth ID</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Booth ID
+              </label>
               <input
-                className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
+                className={`w-full mt-1 px-3 py-2 rounded-lg border outline-none transition focus:ring-2
+      ${errors.boothId ? "border-red-400 focus:ring-red-200" : "border-gray-300 focus:border-[#006DAA] focus:ring-[#006DAA]/20"}`}
                 type="text"
                 placeholder="Booth ID"
                 value={boothId}
-                onChange={(e) => setBoothId(e.target.value)}
+                onChange={(e) => {
+                  setBoothId(e.target.value);
+                  setErrors({ ...errors, boothId: "" });
+                }}
               />
+              {errors.boothId && (
+                <p className="text-red-500 text-xs mt-1">{errors.boothId}</p>
+              )}
             </div>
-
-            {error && <p className="text-red-500 text-sm">{error}</p>}
 
             <button
               onClick={handleLogin}
