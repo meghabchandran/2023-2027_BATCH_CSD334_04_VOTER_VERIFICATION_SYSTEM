@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.db.models import Booth
 
-router = APIRouter(prefix="/booths", tags=["Booths"])
+router = APIRouter(tags=["Booths"])
 
 
 @router.post("/add")
