@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../utils/auth";
 
 function AddVoter() {
   const navigate = useNavigate();

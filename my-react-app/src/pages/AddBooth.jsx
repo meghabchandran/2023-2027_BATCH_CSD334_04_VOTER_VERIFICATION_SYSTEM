@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { logout } from "../utils/auth";
 
 function AddBooth() {
   const [boothId, setBoothId] = useState("");
