@@ -19,8 +19,10 @@ def get_voter(voter_id: str, db: Session = Depends(get_db)):
     voter = db.query(models.Voter).filter(
         func.lower(models.Voter.voter_id) == voter_id.lower()
     ).first()
+
     if not voter:
         raise HTTPException(status_code=404, detail="Voter not found")
+
     return voter
 
 
@@ -83,9 +85,11 @@ async def add_voter(
         has_voted=False,
         face_image_path=file_location
     )
+
     db.add(new_voter)
     db.commit()
     db.refresh(new_voter)
+
     return {"message": "Voter added successfully"}
 
 
