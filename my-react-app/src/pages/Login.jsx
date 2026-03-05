@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../mocks/image/login.jpg";
 
-export default function Login() {
+function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [boothId, setBoothId] = useState("");
@@ -23,7 +23,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen grid md:grid-cols-2 bg-[#B9D6F2]/20">
-
       {/* ── Left illustration panel ── */}
       <div className="hidden md:flex relative items-center justify-center bg-[#003559] text-white overflow-hidden">
         <img
@@ -36,10 +35,7 @@ export default function Login() {
           <h1 className="text-4xl font-bold tracking-tight text-white">
             Managing the Democratic Process
           </h1>
-
-          <div className="h-1.5 w-16 bg-[#0353A4] rounded-full mt-4 mb-4"></div>
-
-          <p className="text-[#B9D6F2] italic">
+          <p className="mt-4 text-[#B9D6F2] text-base italic">
             Streamlining secure voter verification.
           </p>
         </div>
@@ -47,7 +43,6 @@ export default function Login() {
 
       {/* ── Right login panel ── */}
       <div className="flex flex-col items-center justify-center p-6 gap-4">
-
         {/* Back to Home button — above the card, aligned left */}
         <div className="w-full max-w-md">
           <button
@@ -56,7 +51,13 @@ export default function Login() {
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#0353A4]/25 bg-white/50 backdrop-blur text-[#0353A4] text-sm font-medium hover:bg-[#0353A4]/10 transition"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#0353A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M19 12H5M5 12L12 19M5 12L12 5"
+                stroke="#0353A4"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
             Back to Home
           </button>
@@ -68,44 +69,47 @@ export default function Login() {
             Booth Officer Login
           </h2>
 
-          <p className="text-sm text-[#4B5563] mt-2">
+          <p className="text-sm text-gray-500 mt-1">
             Enter your credentials to access the booth dashboard.
           </p>
 
-          <div className="space-y-5 mt-8">
-            {/* Username */}
+          <div className="space-y-4 mt-6">
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Username</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Username
+              </label>
               <input
                 className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
                 type="text"
+                placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full mt-2 px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none transition"
               />
             </div>
 
-            {/* Password */}
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Password</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Password
+              </label>
               <input
                 className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
                 type="password"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full mt-2 px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none transition"
               />
             </div>
 
-            {/* Booth ID */}
             <div>
-              <label className="text-sm font-medium text-[#061A40]">Booth ID</label>
+              <label className="text-sm font-medium text-[#061A40]">
+                Booth ID
+              </label>
               <input
                 className="w-full mt-1 px-3 py-2 rounded-lg border border-gray-300 outline-none transition focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20"
                 type="text"
+                placeholder="Booth ID"
                 value={boothId}
                 onChange={(e) => setBoothId(e.target.value)}
-                className="w-full mt-2 px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none transition"
               />
             </div>
 
