@@ -6,7 +6,6 @@ import Login from "./pages/Login";
 import Search from "./pages/Search";
 import Dashboard from "./pages/Dashboard";
 import VerifyVoter from "./pages/VerifyVoter";
-import Result from "./pages/Result";
 import DataEntryLogin from "./pages/DataEntryLogin";
 
 // Newly Added Pages
@@ -56,7 +55,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/result" element={<Result />} />
         {/* Data Entry Officer Flow */}
         <Route path="/login-data-entry" element={<DataEntryLogin />} />
         <Route
