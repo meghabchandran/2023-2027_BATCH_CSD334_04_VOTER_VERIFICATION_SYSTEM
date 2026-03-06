@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import homeImage from "../mocks/image/login.jpg";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 100%; overflow-x: hidden; }
-  .vvs-root { font-family: 'DM Sans', sans-serif; }
+  .vvs-root { font-family: 'Inter', sans-serif; }
 
   @keyframes slideUp   { from { opacity:0; transform:translateY(32px); } to { opacity:1; transform:translateY(0); } }
   @keyframes shimmer   { 0% { background-position:-600px 0; } 100% { background-position:600px 0; } }
@@ -56,7 +56,7 @@ const styles = `
   .login-role-btn {
     width:100%; background:rgba(255,255,255,0.7); border:1.5px solid rgba(3,83,164,0.18);
     border-radius:12px; padding:11px 14px; display:flex; align-items:center; gap:12px;
-    cursor:pointer; text-align:left; transition:all 0.22s ease; font-family:'DM Sans',sans-serif;
+    cursor:pointer; text-align:left; transition:all 0.22s ease; font-family:'Inter',sans-serif;
   }
   .login-role-btn:hover {
     background:#eef4fb; border-color:#0353A4;
@@ -66,7 +66,7 @@ const styles = `
 
   .btn-primary {
     position:relative; overflow:hidden; background:#0353A4; color:white;
-    border:none; border-radius:10px; cursor:pointer; font-family:'DM Sans',sans-serif;
+    border:none; border-radius:10px; cursor:pointer; font-family:'Inter',sans-serif;
     font-weight:600; transition:all 0.22s ease;
   }
   .btn-primary::after {
@@ -80,7 +80,7 @@ const styles = `
 
   .nav-link {
     position:relative; background:none; border:none;
-    cursor:pointer; font-family:'DM Sans',sans-serif; transition:color 0.2s;
+    cursor:pointer; font-family:'Inter',sans-serif; transition:color 0.2s;
   }
   .nav-link::after {
     content:''; position:absolute; bottom:-3px; left:0; right:0;
@@ -243,7 +243,7 @@ function HelpCard({ onBack }) {
     <div className="glass-card anim-card" style={{ maxWidth:440, width:"100%", background:"rgba(235,243,251,0.92)", padding:"22px 20px", borderRadius:18, boxShadow:"0 20px 60px rgba(3,83,164,0.13)" }}>
       <div className="anim-slideUp d1">
         <AccentBar />
-        <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:20, fontWeight:800, color:"#061A40", margin:"8px 0 3px" }}>Help &amp; Support</h2>
+        <h2 style={{ fontFamily:"'Inter', sans-serif", fontSize:20, fontWeight:800, color:"#061A40", margin:"8px 0 3px" }}>Help &amp; Support</h2>
         <p style={{ fontSize:12, color:"#4B6080", lineHeight:1.6, marginBottom:14 }}>Reach out to the Election Commission through any channel below.</p>
       </div>
       <div className="divider" />
@@ -265,7 +265,7 @@ function HelpCard({ onBack }) {
         <span style={{ fontSize:14, flexShrink:0 }}>🚨</span>
         <p style={{ fontSize:11, color:"#374151", lineHeight:1.55, margin:0 }}>For <strong>polling day emergencies</strong> — call the hotline immediately and notify your Presiding Officer.</p>
       </div>
-      <button onClick={onBack} style={{ background:"none", border:"none", cursor:"pointer", color:"#0353A4", fontSize:12, fontWeight:700, display:"flex", alignItems:"center", gap:5, fontFamily:"'DM Sans',sans-serif" }}>
+      <button onClick={onBack} style={{ background:"none", border:"none", cursor:"pointer", color:"#0353A4", fontSize:12, fontWeight:700, display:"flex", alignItems:"center", gap:5, fontFamily:"'Inter',sans-serif" }}>
         ← Back to Home
       </button>
     </div>
@@ -321,7 +321,7 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <div className="nav-brand-title" style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, fontSize:14.5, color:"white", letterSpacing:"0.02em", lineHeight:1.2 }}>Voter Verification System</div>
+                <div className="nav-brand-title" style={{ fontFamily:"'Inter', sans-serif", fontWeight:800, fontSize:14.5, color:"white", letterSpacing:"0.02em", lineHeight:1.2 }}>Voter Verification System</div>
                 <div className="nav-subtitle"     style={{ fontSize:8.5, color:"rgba(185,214,242,0.5)", letterSpacing:"0.1em", marginTop:1 }}>ELECTION COMMISSION OF INDIA · AI-POWERED</div>
               </div>
             </div>
@@ -366,7 +366,7 @@ export default function Home() {
               <div className="anim-slideUp d1" style={{ marginBottom:12 }}>
                 <span className="badge-pill"><PulseDot color="#4ade80" size={6}/>{panel.badge}</span>
               </div>
-              <h2 className="anim-slideUp d2 hero-heading" style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, color:"white", lineHeight:1.06, letterSpacing:"-0.02em", marginBottom:12 }}>
+              <h2 className="anim-slideUp d2 hero-heading" style={{ fontFamily:"'Inter', sans-serif", fontWeight:800, color:"white", lineHeight:1.06, letterSpacing:"-0.02em", marginBottom:12 }}>
                 {panel.heading}
               </h2>
               <AccentBar/>
@@ -378,7 +378,7 @@ export default function Home() {
                   <div key={label} className="stat-tile">
                     <span className="stat-icon" style={{ fontSize:18 }}>{icon}</span>
                     <div>
-                      <div className="stat-val"   style={{ fontFamily:"'Syne',sans-serif", fontSize:15, fontWeight:800, color:"white", lineHeight:1.1 }}>{val}</div>
+                      <div className="stat-val"   style={{ fontFamily:"'Inter', sans-serif", fontSize:15, fontWeight:800, color:"white", lineHeight:1.1 }}>{val}</div>
                       <div className="stat-label" style={{ fontSize:9, color:"rgba(185,214,242,0.55)", letterSpacing:"0.05em", marginTop:1 }}>{label}</div>
                     </div>
                   </div>
@@ -408,7 +408,7 @@ export default function Home() {
                 <div key="welcome" className="glass-card anim-card" style={{ width:"100%", maxWidth:460, background:"rgba(235,243,251,0.92)", borderRadius:18, padding:"20px 22px", boxShadow:"0 20px 60px rgba(3,83,164,0.13)" }}>
                   <div className="anim-slideUp d1">
                     <AccentBar/>
-                    <h2 style={{ fontFamily:"'Syne',sans-serif", fontSize:20, fontWeight:800, color:"#061A40", margin:"7px 0 3px" }}>Select Your Role</h2>
+                    <h2 style={{ fontFamily:"'Inter', sans-serif", fontSize:20, fontWeight:800, color:"#061A40", margin:"7px 0 3px" }}>Select Your Role</h2>
                     <p style={{ color:"#4B6080", fontSize:11.5, lineHeight:1.5 }}>Choose your officer type to securely access your dashboard.</p>
                   </div>
                   <div className="divider"/>
@@ -416,7 +416,7 @@ export default function Home() {
                     <button type="button" className="login-role-btn" onClick={() => { window.location.href="/login-data-entry"; }}>
                       <div style={{ width:42, height:42, borderRadius:11, flexShrink:0, background:"linear-gradient(135deg,#0353A4,#006DAA)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:19, boxShadow:"0 4px 14px rgba(3,83,164,0.32)" }}>📋</div>
                       <div style={{ flex:1, minWidth:0 }}>
-                        <div style={{ fontFamily:"'Syne',sans-serif", fontSize:13, fontWeight:700, color:"#061A40", marginBottom:2 }}>Data Entry Officer</div>
+                        <div style={{ fontFamily:"'Inter', sans-serif", fontSize:13, fontWeight:700, color:"#061A40", marginBottom:2 }}>Data Entry Officer</div>
                         <div style={{ fontSize:11, color:"#6B80A0" }}>Voter registration &amp; records management</div>
                       </div>
                       <div style={{ width:26, height:26, borderRadius:7, background:"rgba(3,83,164,0.09)", display:"flex", alignItems:"center", justifyContent:"center", color:"#0353A4", fontSize:13, flexShrink:0 }}>→</div>
@@ -424,7 +424,7 @@ export default function Home() {
                     <button type="button" className="login-role-btn" onClick={() => { window.location.href="/login"; }}>
                       <div style={{ width:42, height:42, borderRadius:11, flexShrink:0, background:"linear-gradient(135deg,#003559,#0353A4)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:19, boxShadow:"0 4px 14px rgba(0,53,89,0.32)" }}>🗳️</div>
                       <div style={{ flex:1, minWidth:0 }}>
-                        <div style={{ fontFamily:"'Syne',sans-serif", fontSize:13, fontWeight:700, color:"#061A40", marginBottom:2 }}>Booth Officer</div>
+                        <div style={{ fontFamily:"'Inter', sans-serif", fontSize:13, fontWeight:700, color:"#061A40", marginBottom:2 }}>Booth Officer</div>
                         <div style={{ fontSize:11, color:"#6B80A0" }}>Polling booth voter verification</div>
                       </div>
                       <div style={{ width:26, height:26, borderRadius:7, background:"rgba(3,83,164,0.09)", display:"flex", alignItems:"center", justifyContent:"center", color:"#0353A4", fontSize:13, flexShrink:0 }}>→</div>
@@ -436,7 +436,7 @@ export default function Home() {
                     <p style={{ fontSize:10.5, color:"#5A7090", lineHeight:1.5, margin:0 }}>Secured with <strong style={{color:"#0353A4"}}>AES-256 encryption</strong>. Authorised officers only. Sessions are logged and audited.</p>
                   </div>
                   <div className="divider" style={{ marginBottom:2 }}/>
-                  <button onClick={() => setView("about")} style={{ background:"none", border:"none", cursor:"pointer", color:"#0353A4", fontSize:11.5, fontWeight:700, display:"flex", alignItems:"center", gap:5, fontFamily:"'DM Sans',sans-serif" }}>
+                  <button onClick={() => setView("about")} style={{ background:"none", border:"none", cursor:"pointer", color:"#0353A4", fontSize:11.5, fontWeight:700, display:"flex", alignItems:"center", gap:5, fontFamily:"'Inter',sans-serif" }}>
                     ← Back to Home
                   </button>
                 </div>
@@ -448,7 +448,7 @@ export default function Home() {
               <div key="about" className="anim-card right-panel-inner" style={{ flex:1, display:"flex", flexDirection:"column", background:"transparent", overflow:"auto" }}>
                 <div className="anim-slideUp d1" style={{ marginBottom:14 }}>
                   <AccentBar/>
-                  <h2 className="about-heading" style={{ fontFamily:"'Syne',sans-serif", fontWeight:800, color:"#061A40", letterSpacing:"-0.01em", margin:"8px 0 5px" }}>About the System</h2>
+                  <h2 className="about-heading" style={{ fontFamily:"'Inter', sans-serif", fontWeight:800, color:"#061A40", letterSpacing:"-0.01em", margin:"8px 0 5px" }}>About the System</h2>
                   <p style={{ fontSize:12.5, color:"#4B6080", lineHeight:1.65 }}>
                     The <strong style={{color:"#061A40"}}>Voter Verification System</strong> uses real-time facial recognition and duplicate-detection to uphold electoral integrity across every polling booth in India.
                   </p>
@@ -458,7 +458,7 @@ export default function Home() {
                   {features.map(({icon,title,desc}) => (
                     <div key={title} className="feature-card">
                       <div style={{ fontSize:22, marginBottom:8 }}>{icon}</div>
-                      <div style={{ fontFamily:"'Syne',sans-serif", fontSize:12.5, fontWeight:700, color:"#0353A4", marginBottom:4 }}>{title}</div>
+                      <div style={{ fontFamily:"'Inter', sans-serif", fontSize:12.5, fontWeight:700, color:"#0353A4", marginBottom:4 }}>{title}</div>
                       <div style={{ fontSize:11.5, color:"#5A7090", lineHeight:1.5 }}>{desc}</div>
                     </div>
                   ))}
@@ -487,7 +487,7 @@ export default function Home() {
                 </div>
                 <div className="divider"/>
                 <div className="anim-slideUp d5" style={{ marginTop:"auto", display:"flex", alignItems:"center", justifyContent:"flex-end", paddingTop:12, borderTop:"1px solid rgba(3,83,164,0.1)", gap:10 }}>
-                  <button onClick={() => setView("help")} style={{ background:"none", border:"none", cursor:"pointer", color:"#0353A4", fontSize:12, fontWeight:600, fontFamily:"'DM Sans',sans-serif" }}>❓ Help</button>
+                  <button onClick={() => setView("help")} style={{ background:"none", border:"none", cursor:"pointer", color:"#0353A4", fontSize:12, fontWeight:600, fontFamily:"'Inter',sans-serif" }}>❓ Help</button>
                   <button className="btn-primary" onClick={() => setView("welcome")} style={{ padding:"8px 22px", fontSize:12.5, borderRadius:9 }}>Login →</button>
                 </div>
               </div>
