@@ -8,7 +8,7 @@ class Booth(Base):
 
     booth_id = Column(String, primary_key=True, index=True)
     location = Column(String, nullable=False)
-    officer_name = Column(String, nullable=False)
+    booth_name = Column(String)
 
     voters = relationship("Voter", back_populates="booth")
 
