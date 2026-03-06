@@ -38,9 +38,17 @@ function AddVoter() {
 
     if (type === "file") {
       setForm({ ...form, file: files[0] });
+
     } else if (name === "dob") {
+
       const today = new Date();
       const birthDate = new Date(value);
+
+      // Prevent future dates even if typed manually
+      if (birthDate > today) {
+        setMessage("Please enter a year till now.");
+        return;
+      }
 
       let calculatedAge = today.getFullYear() - birthDate.getFullYear();
       const m = today.getMonth() - birthDate.getMonth();
@@ -60,6 +68,7 @@ function AddVoter() {
       } else {
         setEligible(true);
       }
+
     } else {
       setForm({ ...form, [name]: value });
     }
@@ -118,7 +127,7 @@ function AddVoter() {
     "w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#006DAA] focus:ring-2 focus:ring-[#006DAA]/20 outline-none";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#B9D6F2]/20 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-[#B9D6F2]/20 p-6 font-[Inter]">
       <div className="w-full max-w-xl bg-white/30 backdrop-blur-md border border-[#0353A4]/30 p-8 rounded-2xl shadow-xl">
 
         <div className="flex items-center justify-between mb-6">
@@ -143,7 +152,6 @@ function AddVoter() {
 
         <form onSubmit={handleSubmit} className="space-y-3">
 
-          {/* Voter ID */}
           <div>
             <label className="text-xs font-medium text-gray-600">
               Voter ID <span className="text-red-500">*</span>
@@ -151,7 +159,6 @@ function AddVoter() {
             <input name="voter_id" onChange={handleChange} required className={inputStyle} />
           </div>
 
-          {/* Name */}
           <div>
             <label className="text-xs font-medium text-gray-600">
               Full Name <span className="text-red-500">*</span>
@@ -159,7 +166,6 @@ function AddVoter() {
             <input name="name" onChange={handleChange} required className={inputStyle} />
           </div>
 
-          {/* DOB + Age */}
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-medium text-gray-600">
@@ -168,6 +174,7 @@ function AddVoter() {
               <input
                 type="date"
                 name="dob"
+                value={form.dob}
                 max={new Date().toISOString().split("T")[0]}
                 onChange={handleChange}
                 required
@@ -190,7 +197,6 @@ function AddVoter() {
             <p className="text-red-500 text-xs">❌ Voter must be 18 or older</p>
           )}
 
-          {/* Father's Name */}
           <div>
             <label className="text-xs font-medium text-gray-600">
               Father's Name <span className="text-red-500">*</span>
@@ -198,7 +204,6 @@ function AddVoter() {
             <input name="fathers_name" onChange={handleChange} required className={inputStyle} />
           </div>
 
-          {/* Spouse */}
           <div>
             <label className="text-xs font-medium text-gray-600">
               Spouse Name
@@ -206,7 +211,6 @@ function AddVoter() {
             <input name="spouse_name" onChange={handleChange} className={inputStyle} />
           </div>
 
-          {/* Gender */}
           <div>
             <label className="text-xs font-medium text-gray-600">
               Gender <span className="text-red-500">*</span>
@@ -219,7 +223,6 @@ function AddVoter() {
             </select>
           </div>
 
-          {/* Address */}
           <div>
             <label className="text-xs font-medium text-gray-600">
               Address <span className="text-red-500">*</span>
@@ -227,7 +230,6 @@ function AddVoter() {
             <input name="address" onChange={handleChange} required className={inputStyle} />
           </div>
 
-          {/* Booth */}
           <div>
             <label className="text-xs font-medium text-gray-600">
               Booth ID <span className="text-red-500">*</span>
@@ -235,7 +237,6 @@ function AddVoter() {
             <input name="booth_id" onChange={handleChange} required className={inputStyle} />
           </div>
 
-          {/* Aadhaar */}
           <div>
             <label className="text-xs font-medium text-gray-600">
               Aadhaar ID <span className="text-red-500">*</span>
@@ -249,7 +250,6 @@ function AddVoter() {
             />
           </div>
 
-          {/* Photo */}
           <div>
             <label className="text-xs font-medium text-gray-600 block mb-1">
               Voter Photo <span className="text-red-500">*</span>
@@ -275,7 +275,6 @@ function AddVoter() {
             />
           </div>
 
-          {/* Declaration */}
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
 
             <p className="text-sm font-semibold text-[#061A40] mb-2">
