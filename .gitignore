@@ -1,24 +1,32 @@
-__pycache__/
-*.pyc
-.env
-venv/
-*.db
-.idea/
-.vscode/
-
-
-# Frontend
-my-react-app/
-
-# Node
-node_modules/
-
 # Python
 venv/
 __pycache__/
 *.pyc
-
-venv/
+*.pyo
 .env
+
+# Database
+*.db
+*.sqlite
+
+# Frontend build output (don't track the build)
+my-react-app/dist/
 my-react-app/node_modules/
+
+# Node
+node_modules/
+dist/
+
+# DeepFace model cache
+.deepface/
+
+# OS
 .DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
