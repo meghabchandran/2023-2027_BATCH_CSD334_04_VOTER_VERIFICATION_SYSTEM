@@ -1,0 +1,32 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Database
+*.db
+*.sqlite
+
+# Frontend build output (don't track the build)
+my-react-app/dist/
+my-react-app/node_modules/
+
+# Node
+node_modules/
+dist/
+
+# DeepFace model cache
+.deepface/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
