@@ -9,6 +9,7 @@ function AddVoter() {
   const [agreed, setAgreed] = useState(false);
   const [message, setMessage] = useState("");
   const [eligible, setEligible] = useState(true);
+  const [dobError, setDobError] = useState("");
 
   const [form, setForm] = useState({
     voter_id: "",
@@ -44,10 +45,17 @@ function AddVoter() {
       const today = new Date();
       const birthDate = new Date(value);
 
-      // Prevent future dates even if typed manually
       if (birthDate > today) {
-        setMessage("Please enter a year till now.");
+        setDobError("Future date is not allowed.");
+        setForm({
+          ...form,
+          dob: value,
+          age: ""
+        });
+        setEligible(false);
         return;
+      } else {
+        setDobError("");
       }
 
       let calculatedAge = today.getFullYear() - birthDate.getFullYear();
@@ -76,6 +84,8 @@ function AddVoter() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (dobError) return;
 
     if (!eligible) return setMessage("Ineligible to vote (Must be 18+)");
 
@@ -171,6 +181,7 @@ function AddVoter() {
               <label className="text-xs font-medium text-gray-600">
                 Date of Birth <span className="text-red-500">*</span>
               </label>
+
               <input
                 type="date"
                 name="dob"
@@ -180,6 +191,11 @@ function AddVoter() {
                 required
                 className={inputStyle}
               />
+
+              {dobError && (
+                <p className="text-red-500 text-xs mt-1">{dobError}</p>
+              )}
+
             </div>
 
             <div>
@@ -193,7 +209,7 @@ function AddVoter() {
             </div>
           </div>
 
-          {!eligible && (
+          {!eligible && !dobError && (
             <p className="text-red-500 text-xs">❌ Voter must be 18 or older</p>
           )}
 
@@ -321,9 +337,9 @@ function AddVoter() {
 
           <button
             type="submit"
-            disabled={!eligible}
+            disabled={!eligible || dobError}
             className={`w-full mt-2 py-2.5 rounded-lg font-medium transition ${
-              eligible
+              eligible && !dobError
                 ? "bg-[#0353A4] hover:bg-[#003559] text-white"
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
