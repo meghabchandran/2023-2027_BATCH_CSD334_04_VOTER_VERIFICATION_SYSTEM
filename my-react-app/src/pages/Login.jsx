@@ -15,6 +15,11 @@ function Login() {
 
   const navigate = useNavigate();
 
+  const BOOTH_USERS = [
+    { username: "booth1", password: "booth@123" },
+    { username: "booth2", password: "booth@456" },
+  ];
+
   const handleLogin = () => {
     const newErrors = { username: "", password: "", boothId: "" };
     let hasError = false;
@@ -37,8 +42,22 @@ function Login() {
       return;
     }
 
+    const user = BOOTH_USERS.find(
+      (u) => u.username === username && u.password === password,
+    );
+
+    if (!user) {
+      setErrors({
+        username: "Invalid credentials",
+        password: "Invalid credentials",
+        boothId: "Invalid credentials",
+      });
+      return;
+    }
+
     localStorage.setItem("boothId", boothId);
     localStorage.setItem("isAuthenticated", "true");
+    localStorage.setItem("username", username);
     navigate("/dashboard", { replace: true });
   };
 
@@ -101,7 +120,7 @@ function Login() {
               </label>
               <input
                 className={`w-full mt-1 px-3 py-2 rounded-lg border outline-none transition focus:ring-2
-      ${errors.username ? "border-red-400 focus:ring-red-200" : "border-gray-300 focus:border-[#006DAA] focus:ring-[#006DAA]/20"}`}
+                  ${errors.username ? "border-red-400 focus:ring-red-200" : "border-gray-300 focus:border-[#006DAA] focus:ring-[#006DAA]/20"}`}
                 type="text"
                 placeholder="Username"
                 value={username}
@@ -121,7 +140,7 @@ function Login() {
               </label>
               <input
                 className={`w-full mt-1 px-3 py-2 rounded-lg border outline-none transition focus:ring-2
-      ${errors.password ? "border-red-400 focus:ring-red-200" : "border-gray-300 focus:border-[#006DAA] focus:ring-[#006DAA]/20"}`}
+                ${errors.password ? "border-red-400 focus:ring-red-200" : "border-gray-300 focus:border-[#006DAA] focus:ring-[#006DAA]/20"}`}
                 type="password"
                 placeholder="Password"
                 value={password}

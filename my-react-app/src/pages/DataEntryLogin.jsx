@@ -21,6 +21,11 @@ function Login() {
 
   const navigate = useNavigate();
 
+  const DATA_ENTRY_USERS = [
+    { username: "entry1", password: "entry@123" },
+    { username: "entry2", password: "entry@456" },
+  ];
+
   const handleLogin = async () => {
     if (!username || !password || !mobile || !otp) {
       setError("All fields required");
@@ -55,9 +60,11 @@ function Login() {
   };
 
   const handleSendOtp = async () => {
+    // newErrors must be declared FIRST
     const newErrors = { username: "", password: "", mobile: "" };
     let hasError = false;
 
+    // Now validate fields
     if (!username) {
       newErrors.username = "Username is required";
       hasError = true;
@@ -82,7 +89,21 @@ function Login() {
       return;
     }
 
-    // clear all errors and proceed
+    // THEN check credentials — after field validation passes
+    const validUser = DATA_ENTRY_USERS.find(
+      (u) => u.username === username && u.password === password,
+    );
+
+    if (!validUser) {
+      setErrors({
+        ...newErrors,
+        username: "Invalid credentials",
+        password: "Invalid credentials",
+      });
+      return;
+    }
+
+    // clear errors and proceed with OTP
     setErrors({ username: "", password: "", mobile: "" });
     setError("");
 
@@ -101,7 +122,7 @@ function Login() {
       } else {
         setError(data.detail || "Failed to send OTP");
       }
-    } catch (err) {
+    } catch {
       setError("Server error. Please try again.");
     }
   };
