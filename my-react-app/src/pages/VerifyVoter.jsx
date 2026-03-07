@@ -341,7 +341,7 @@ export default function VerifyVoter() {
 
       // ✅ Mark as verified — show success panel, NO auto redirect
       setVerified(true);
-      showMessage("Vote recorded successfully!", "success");
+      showMessage("Voter verifiedsuccessfully!", "success");
     } catch (err) {
       const detail = err?.response?.data?.detail || "Error verifying face";
       showMessage(detail, "error");
@@ -766,7 +766,7 @@ export default function VerifyVoter() {
                         fontFamily: "'Inter',sans-serif",
                       }}
                     >
-                      Vote Recorded Successfully!
+                      Voter Verified Successfully!
                     </p>
                     <p
                       style={{
@@ -776,7 +776,7 @@ export default function VerifyVoter() {
                       }}
                     >
                       <strong>{voter.name}</strong>'s identity has been verified
-                      and their vote has been recorded in the system. They may
+                      and their information has been recorded in the system. They may
                       now proceed to cast their vote.
                     </p>
                   </div>
